@@ -16,7 +16,6 @@
       kernel
       essential
       security
-      sudo-rs
 
       kde
       astah
