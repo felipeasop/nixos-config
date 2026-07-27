@@ -4,3 +4,4 @@ result-*
 .direnv/
 
 hardware-configuration.nix.bak
+assets/apps/
