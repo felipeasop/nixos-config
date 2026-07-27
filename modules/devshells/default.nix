@@ -1,84 +1,24 @@
 # uso: nix develop .#rust
 {
-  perSystem = { config, pkgs, ... }: {
-    devShells = {
-      c = pkgs.mkShell {
-        packages = with pkgs; [
-          gcc
-          gnumake
-          cmake
-          gdb
-          clang-tools
-        ];
+  perSystem = { config, pkgs, ... }:
+    let
+      pkgSets = with pkgs; {
+        c = [ gcc gnumake cmake gdb clang-tools ];
+        java = [ jdk21 maven gradle ];
+        go = [ go gopls golangci-lint delve ];
+        rust = [ rustc cargo rust-analyzer clippy rustfmt pkg-config ];
+        python = [ python3 python3Packages.pip python3Packages.virtualenv pyright ];
       };
-
-      java = pkgs.mkShell {
-        packages = with pkgs; [
-          jdk21
-          maven
-          gradle
-        ];
-      };
-
-      go = pkgs.mkShell {
-        packages = with pkgs; [
-          go
-          gopls
-          golangci-lint
-          delve
-        ];
-      };
-
-      rust = pkgs.mkShell {
-        packages = with pkgs; [
-          rustc
-          cargo
-          rust-analyzer
-          clippy
-          rustfmt
-          pkg-config
-        ];
-      };
-
-      python = pkgs.mkShell {
-        packages = with pkgs; [
-          python3
-          python3Packages.pip
-          python3Packages.virtualenv
-          pyright
-        ];
-      };
-
-      # Shell combinado, pra quando um projeto mistura linguagens
-      default = pkgs.mkShell {
-        shellHook = config.pre-commit.installationScript;
-        packages = with pkgs; [
-          gcc
-          gnumake
-          cmake
-          gdb
-          clang-tools
-          jdk21
-          maven
-          gradle
-          go
-          gopls
-          golangci-lint
-          delve
-          rustc
-          cargo
-          rust-analyzer
-          clippy
-          rustfmt
-          pkg-config
-          python3
-          python3Packages.pip
-          python3Packages.virtualenv
-          pyright
-          direnv
-          nix-direnv
-        ];
-      };
+    in
+    {
+      devShells =
+        (builtins.mapAttrs (_name: packages: pkgs.mkShell { inherit packages; }) pkgSets)
+        // {
+          default = pkgs.mkShell {
+            shellHook = config.pre-commit.installationScript;
+            packages = (builtins.concatLists (builtins.attrValues pkgSets))
+              ++ (with pkgs; [ direnv nix-direnv ]);
+          };
+        };
     };
-  };
 }

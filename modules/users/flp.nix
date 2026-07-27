@@ -1,20 +1,16 @@
 { den, ... }: {
   den.aspects.flp = {
     includes =
-      with den.provides;
       with den.aspects;
       [
-        define-user
-        primary-user
-        (user-shell "fish")
-
+        standard-user
 
         logiops
 
         dev
+        fish
         astah
         sql-power-architect
-        fish
         wm
 
         firefox

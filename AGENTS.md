@@ -14,6 +14,33 @@ outro aspect explicitamente via `den.aspects.<nome>` dentro de `includes`.
 quebra `perSystem` e qualquer outra opção que dependa da infra do
 flake-parts.
 
+### flake.nix é gerado — não editar à mão
+
+`flake.nix` tem `flake-file.inputs` declarado de forma distribuída: cada
+módulo que consome um input de flake não-core declara esse input ali
+mesmo (ex: `modules/desktop/wm/niri/default.nix` declara `flake-file.inputs.niri`).
+
+Dois módulos raiz habilitam o mecanismo (espelhando `drupol/infra`,
+outro repo Den+flake-file — github.com/drupol/infra):
+- `modules/flake-file.nix` — só importa `inputs.flake-file.flakeModules.default`
+- `modules/flake-parts/pkgs.nix` — inputs core (nixpkgs, flake-parts,
+  import-tree, home-manager, treefmt-nix, git-hooks,
+  pkgs-by-name-for-flake-parts) + `pkgsDirectory`
+
+Não setar `flake-file.outputs` manualmente — o `outputs = inputs: ...`
+continua escrito no `flake.nix` gerado por padrão, sem precisar mexer
+nessa opção.
+
+Depois de adicionar/mudar um `flake-file.inputs`, rodar
+`nix run .#write-flake` pra regenerar o `flake.nix` na raiz. Nunca editar
+o `flake.nix` diretamente — ele tem cabeçalho `DO-NOT-EDIT`.
+
+### pkgs/by-name
+
+Pacotes locais fora do nixpkgs vão em `pkgs/by-name/<nome>/default.nix`
+e viram `packages.<nome>` automaticamente via
+`pkgs-by-name-for-flake-parts`. Ver `pkgs/README.md`.
+
 ## Convenções de pasta
 
 - `apps/` — software instalável, sempre igual independente de contexto
@@ -34,7 +61,11 @@ flake-parts.
 - `hosts/<nome>/default.nix` — só monta a lista de `includes` pro host;
   hardware real fica em `_hardware.nix` (gerado por
   `nixos-generate-config`, não editar à mão).
-- `users/<nome>.nix` — mesma ideia, mas pro lado home-manager.
+- `users/<nome>.nix` — mesma ideia, mas pro lado home-manager. Infra
+  comum de usuário (define-user, primary-user, shell) fica em
+  `users/standard-user.nix` (`den.aspects.standard-user`); cada
+  `users/<nome>.nix` inclui esse aspect e soma só os apps/gostos
+  pessoais daquele usuário.
 
 ## Padrão de identity flags
 
