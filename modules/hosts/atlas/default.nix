@@ -16,6 +16,8 @@
       kernel
       essential
       security
+      secrets
+      (ssh-identity-for { user = "flp"; })
 
       kde
       astah

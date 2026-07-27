@@ -1,0 +1,8 @@
+keys:
+  - &atlas age1le2a7zv6ln9h34znl74qg7w86ntlzf9wr9f9p7rlu4pyqxmrud2qk24rpk
+
+creation_rules:
+  - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *atlas

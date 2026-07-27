@@ -2,16 +2,51 @@
   den.aspects.fish = {
     homeManager = {
       programs.fish.interactiveShellInit = ''
+        if test -f ~/.fish_profile
+          source ~/.fish_profile
+        end
+
+        fish_add_path ~/.local/bin ~/.cargo/bin ~/Applications/depot_tools
+
+        # Fluxo do dia a dia: stage tudo + rebuild via nh (progress bar,
+        # diff bonito). Use pra qualquer mudança que NÃO adicione/altere
+        # um flake-file.inputs em algum módulo.
         function rebuild
-            sudo nixos-rebuild switch --flake $NIXOS_CONFIG_DIR#(hostname) $argv
+            cd $NIXOS_CONFIG_DIR; or return 1
+            git add -A
+            nh os switch . $argv
         end
 
         function rebuild-test
-            sudo nixos-rebuild test --flake $NIXOS_CONFIG_DIR#(hostname) $argv
+            cd $NIXOS_CONFIG_DIR; or return 1
+            git add -A
+            nh os test . $argv
         end
 
-        function update
-            nix flake update --flake $NIXOS_CONFIG_DIR ; and sudo nixos-rebuild switch --flake $NIXOS_CONFIG_DIR#(hostname)
+        # Atualiza o flake.lock (todas as dependências) e rebuilda.
+        function rebuild-update
+            cd $NIXOS_CONFIG_DIR; or return 1
+            nh os switch . --update $argv
+        end
+
+        # Só regenera o flake.nix a partir dos flake-file.inputs
+        # distribuídos pelos módulos, sem rebuildar nada. Útil pra
+        # revisar o diff antes de aplicar.
+        function flake-regenerate
+            cd $NIXOS_CONFIG_DIR; or return 1
+            nix run .#write-flake
+            and git add -A
+            and git diff --cached --stat flake.nix
+        end
+
+        # Fluxo completo: regenera flake.nix (pega inputs novos/mudados),
+        # stage tudo, rebuild via nh. Use quando você sabe que mexeu em
+        # flake-file.inputs (ex: adicionou input num módulo novo).
+        function rebuild-with-new-inputs
+            cd $NIXOS_CONFIG_DIR; or return 1
+            nix run .#write-flake
+            and git add -A
+            and nh os switch . $argv
         end
 
         function __history_previous_command
