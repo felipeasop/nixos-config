@@ -1,27 +1,25 @@
 { den, ... }: {
   den.aspects.flp = {
-    includes =
-      with den.aspects;
-      [
-        standard-user
+    includes = with den.aspects; [
+      standard-user
 
-        logiops
+      logiops
 
-        dev
-        fish
-        astah
-        sql-power-architect
-        wm
+      dev
+      fish
+      astah
+      sql-power-architect
+      wm
 
-        firefox
-        librewolf
-        zen-browser
+      firefox
+      librewolf
+      zen-browser
 
-        discord
-        spotify
-        r2modman
-        solaar
-      ];
+      discord
+      spotify
+      r2modman
+      solaar
+    ];
 
   };
 }

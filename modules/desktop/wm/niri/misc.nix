@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+_: {
   den.aspects.niri = {
     description = ''
       Niri: compositor Wayland em tiling scrollável (https://github.com/YaLTeR/niri)
@@ -6,7 +6,7 @@
       Configurado via https://github.com/sodiboo/niri-flake.
     '';
 
-    homeManager = { ... }: {
+    homeManager = _: {
       programs.niri.settings = {
         prefer-no-csd = true;
         screenshot-path = null;

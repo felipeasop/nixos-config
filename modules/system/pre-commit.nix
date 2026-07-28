@@ -1,7 +1,7 @@
 { inputs, ... }: {
   imports = [ inputs.git-hooks.flakeModule ];
 
-  perSystem = { config, lib, self', ... }: {
+  perSystem = { lib, self', ... }: {
     pre-commit.settings.hooks = {
       treefmt = {
         enable = true;

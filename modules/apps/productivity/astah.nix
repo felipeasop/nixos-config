@@ -1,4 +1,4 @@
-{ inputs, self, ... }: {
+{ self, ... }: {
   den.aspects.astah = {
     nixos = { pkgs, ... }: {
       environment.systemPackages = [

@@ -16,7 +16,6 @@
 
   imports = [
     inputs.pkgs-by-name-for-flake-parts.flakeModule
-    inputs.flake-file.flakeModules.default
   ];
 
   perSystem = {

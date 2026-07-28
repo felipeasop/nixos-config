@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
   den.aspects.essential = {
     nixos = {
       # Desabilitado por padrão — ativar por host quando quiser,

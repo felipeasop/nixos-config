@@ -1,5 +1,5 @@
 {
-  den.aspects.essential = {
+  den.aspects.security = {
     nixos = {
       services.fail2ban = {
         enable = true;

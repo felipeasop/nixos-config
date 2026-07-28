@@ -1,4 +1,4 @@
-{ den, ... }: {
+_: {
   den.aspects.security = {
     nixos = {
       security.sudo.enable = false;

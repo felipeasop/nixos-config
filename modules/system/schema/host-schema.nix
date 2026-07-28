@@ -1,4 +1,4 @@
-{ lib, ... }: {
+_: {
   den.schema.host.imports = [
     ({ lib, ... }: {
       options = {
