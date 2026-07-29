@@ -20,8 +20,6 @@
       (ssh-identity-for { user = "flp"; })
 
       kde
-      astah
-      sql-power-architect
       flatpak
 
       { nixos = import ./_hardware.nix; }

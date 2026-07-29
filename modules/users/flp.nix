@@ -7,8 +7,6 @@
 
       dev
       fish
-      astah
-      sql-power-architect
       wm
 
       firefox
