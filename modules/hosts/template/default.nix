@@ -21,15 +21,12 @@
     includes = with den.aspects; [
       den.provides.hostname
 
-      essential
-      security
+      standard-host
       grub
       # kde
       cli
       fish
       # flatpak
-      cachy-kernel
-      # latest-kernel
 
       identities
 

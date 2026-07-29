@@ -13,9 +13,7 @@
       den.provides.hostname
 
       grub
-      kernel
-      essential
-      security
+      standard-host
       secrets
       (ssh-identity-for { user = "flp"; })
 

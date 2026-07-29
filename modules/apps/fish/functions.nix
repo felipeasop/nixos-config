@@ -2,12 +2,6 @@
   den.aspects.fish = {
     homeManager = {
       programs.fish.interactiveShellInit = ''
-        if test -f ~/.fish_profile
-          source ~/.fish_profile
-        end
-
-        fish_add_path ~/.local/bin ~/.cargo/bin ~/Applications/depot_tools
-
         # Fluxo do dia a dia: stage tudo + rebuild via nh (progress bar,
         # diff bonito). Use pra qualquer mudança que NÃO adicione/altere
         # um flake-file.inputs em algum módulo.
