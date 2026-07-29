@@ -5,9 +5,11 @@
   };
 
   den.aspects.niri = {
-    nixos = {
+    nixos = { pkgs, ... }: {
       imports = [ inputs.niri.nixosModules.niri ];
       programs.niri.enable = true;
+
+      environment.systemPackages = [ pkgs.xwayland-satellite ];
     };
   };
 }
