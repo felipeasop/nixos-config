@@ -1,9 +1,11 @@
-{ inputs, ... }: {
+{ inputs, lib, ... }: {
   flake-file.inputs = {
+    flake-file.url = "github:denful/flake-file";
+    den.url = "github:denful/den";
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:denful/import-tree";
-    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
     git-hooks.url = "github:cachix/git-hooks.nix";
@@ -14,11 +16,7 @@
     };
   };
 
-  imports = [
-    inputs.pkgs-by-name-for-flake-parts.flakeModule
-  ];
+  imports = [ inputs.flake-file.flakeModules.default ];
 
-  perSystem = {
-    pkgsDirectory = ../../pkgs/by-name;
-  };
+  flake-file.outputs = lib.mkDefault "dendritic";
 }

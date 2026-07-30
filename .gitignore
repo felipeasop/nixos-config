@@ -1,6 +1,11 @@
+# Build outputs / symlinks do nix build
 result
 result-*
 
+# direnv
 .direnv/
 
+# arquivos de hardware gerados por nixos-generate-config
+# (mantenha versionado o _hardware.nix de cada host; isso aqui é
+# só pra sobras temporárias que a ferramenta às vezes deixa por perto)
 hardware-configuration.nix.bak

@@ -8,12 +8,10 @@
 #   2. includes = [ standard-host <o que esse host específico precisar> ]
 { den, ... }: {
   den.aspects.standard-host = {
-    includes =
-      with den.aspects;
-      [
-        essential
-        security
-        kernel
-      ];
+    includes = with den.aspects; [
+      essential
+      security
+      kernel
+    ];
   };
 }

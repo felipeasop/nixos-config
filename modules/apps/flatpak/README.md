@@ -1,1 +1,3 @@
-Verifique se flatpak está sendo importado para os outros apps funcionarem
+## IMPORTANTE
+
+Verifique se flatpak.nix está sendo importado pelo user/host para os outros apps flatpak funcionarem

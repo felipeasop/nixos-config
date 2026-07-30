@@ -2,28 +2,27 @@
 
 Minha configuração NixOS usando o [padrão dendrítico](https://github.com/mightyiam/dendritic) com o framework [Den](https://den.denful.dev).
 
-## Estrutura
+## Ferramentas
 
-- `modules/apps/` — software instalável, igual em qualquer contexto
-- `modules/features/` — capacidades de sistema reutilizáveis
-- `modules/identities/` — combina apps+features num papel de host/user
-- `modules/hosts/<nome>/` — config por máquina; `template/` documenta como criar uma nova
-- `modules/users/` — config por usuário (home-manager); `standard-user.nix` é a infra base
-- `modules/flake-file.nix`, `modules/flake-parts/pkgs.nix` — inputs de flake e config do próprio flake (gerado, ver abaixo)
-- `pkgs/by-name/` — pacotes locais fora do nixpkgs
+- [Nix](https://nixos.org) (flakes) + [nixpkgs unstable](https://github.com/NixOS/nixpkgs)
+- [Den](https://den.denful.dev) — composição por aspects sobre flake-parts
+- [import-tree](https://github.com/denful/import-tree) — descoberta automática de módulos
+- [flake-file](https://github.com/denful/flake-file) — `flake.nix` gerado a partir de inputs declarados junto ao módulo que os usa
+- [home-manager](https://github.com/nix-community/home-manager)
+- [treefmt](https://github.com/numtide/treefmt-nix) + [git-hooks.nix](https://github.com/cachix/git-hooks.nix) — formatação e lint (`nixfmt`, `deadnix`, `statix`, `shfmt`)
+- [sops-nix](https://github.com/Mic92/sops-nix) — segredos cifrados
+- [nh](https://github.com/nix-community/nh) — CLI de rebuild
+- [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx) — kernel CachyOS
 
-Detalhes de convenção pra quem for mexer no repo: ver `AGENTS.md`.
-
-## Comandos comuns
+## Comandos
 
 ```sh
-sudo nixos-rebuild switch --flake .#<host>
-nix fmt                    # formata tudo (treefmt)
-nix flake check            # lint + checks
-nix run .#write-flake      # regenera flake.nix a partir dos flake-file.inputs
-nix develop .#<linguagem>  # devshell (c, java, go, rust, python, ou default combinado)
+nix run .#write-flake && git add -A && nh os switch .   # após mudar flake-file.inputs
+git add -A && nh os switch .                             # dia a dia
+nh os test .                                             # testa sem persistir no boot
+nix fmt                                                   # formata tudo
+nix flake check                                           # lint + checks
+nix develop .#<c|java|go|rust|python>                     # devshell
 ```
 
-`flake.nix` é gerado automaticamente e não deve ser editado à mão —
-inputs de flake são declarados perto do módulo que os usa via
-`flake-file.inputs`.
+Convenções e detalhes de arquitetura: ver `AGENTS.md`. Segredos: ver `secrets/README.md`.
