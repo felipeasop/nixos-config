@@ -1,5 +1,82 @@
 # HANDOFF
 
+Last updated: 2026-07-31 21:16 UTC
+
+## Current State
+
+Investigado e corrigido `error: attribute 'sops' missing` ao rodar
+`nh os switch . -u -vvv` após adicionar `apps/dev/git/github-token.nix`
+com `den.aspects.git.nixos.sops.secrets...`. Causa: `git` é incluído
+só do lado **user** (`flp.includes`), então a classe `nixos` desse
+aspect nunca chegava no host `atlas` — `config.sops` não existe nesse
+ponto de avaliação porque o aspect `secrets` (dono de `sops.*`) só é
+`includes`d em `atlas`, não em `flp`. Confirmado contra a doc oficial
+([Host↔User Mutual Providers](https://den.denful.dev/guides/mutual/)):
+"No battery required" — cross-entity routing é built-in, sem precisar
+de `den._.mutual-provider` (uma nota de changelog antiga sugeria o
+contrário; a doc atual, que é a fonte de verdade, contradiz isso).
+Fix: `den.aspects.git.provides.to-hosts.nixos = { config, ... }: { ... }`
+em vez de `den.aspects.git.nixos = { ... }`. Documentado em `AGENTS.md`
+na seção "Padrão oficial: host↔user mutual providers", com regra
+prática nova ("quem é dono de um aspect misto") e exemplo canônico do
+próprio README do Den.
+
+A partir desse caso, auditados todos os ~35 aspects do repo procurando
+o mesmo padrão (aspect com classes `nixos` + `homeManager` ao mesmo
+tempo, mas `includes`d só de um lado, sem `provides` cobrindo a classe
+minoritária). Resultado da auditoria, arquivos com correção **pronta
+mas ainda não escrita no repo** (ver blocos de código na conversa):
+- `modules/desktop/kde/default.nix` — dono host (`atlas.includes`);
+  faltava `provides.to-users.homeManager` (plasma-manager, mouse
+  Logitech, atalho Ghostty).
+- `modules/security/keyring.nix` — dono host (`standard-host`);
+  faltava `provides.to-users.homeManager.services.gnome-keyring.enable`.
+- `modules/desktop/wm/niri/default.nix` — dono user (`flp` → `wm`);
+  faltava `provides.to-hosts.nixos` (`programs.niri.enable` nunca
+  chegava no host — niri provavelmente não aparecia como sessão no
+  SDDM).
+- `modules/apps/peripherals/solaar.nix` — dono user (`flp`); faltava
+  `provides.to-hosts.nixos.hardware.logitech.wireless` (driver nunca
+  ativado no sistema).
+- `modules/apps/dev/git/github-token.nix` — arquivo novo (token do
+  GitHub pro rate limit da API, via sops + `nix.extraOptions`), mesma
+  correção `provides.to-hosts.nixos`, criado durante essa investigação
+  mas ainda não escrito em disco.
+
+Não corrigido, só identificado: `modules/apps/fish/default.nix` tem
+`nixos.programs.fish.enable = true` que é provavelmente redundante
+com a battery `(user-shell "fish")` já incluída via `standard-user`
+(que, segundo `AGENTS.md`, "habilita o shell em ambas as classes") —
+precisa confirmar isso antes de remover, para não perder
+`programs.fish.enable` a nível de sistema sem substituto.
+
+Também avaliada (a pedido do usuário) a hipótese de abandonar o Den e
+usar flake-parts + import-tree puro. Decisão: não compensa agora. O
+erro que motivou a pergunta não era um bug do Den (ver acima); "file
+path independence" vem do `import-tree`, não do Den, então essa
+vantagem seria preservada de qualquer forma — mas o roteamento
+host↔user automático (`provides.to-hosts`/`to-users`) teria que ser
+reimplementado manualmente em ~100 arquivos, reintroduzindo o mesmo
+tipo de problema (host↔user routing) sem o mecanismo declarativo.
+
+## Top 3 Next Actions
+
+- Aplicar os 5 arquivos com correção pronta listados acima (comandos
+  fish com heredoc já fornecidos na conversa) e rodar
+  `nh os switch . -vvv` pra confirmar build limpo antes de commitar.
+- Confirmar se `(user-shell "fish")` já cobre `programs.fish.enable`
+  a nível `nixos` antes de remover a fatia `nixos` redundante de
+  `apps/fish/default.nix`.
+- Gerar o secret `github_token` no `secrets/secrets.yaml` via sops
+  (formato `access-tokens = github.com=ghp_xxx`, não só o token cru)
+  — o arquivo `github-token.nix` já espera essa chave existir.
+
+## Blockers
+
+Nenhum.
+
+---
+
 Last updated: 2026-07-31 23:30 UTC
 
 ## Current State
@@ -66,3 +143,69 @@ Isso ainda não foi implementado no repo.
   mas não decidido/aplicado.
 
 ## Blockers
+
+---
+
+Last updated: 2026-07-31 22:39 UTC
+
+## Current State
+
+Resolvido o bloqueio real de boot causado pelo `github-token.nix`
+criado na sessão anterior. O `nix-daemon` estava em
+`start-limit-hit`: o `nix.conf` gerado (já ativo no sistema, de um
+switch anterior) continha `!include /run/secrets/github_token`
+apontando direto pro secret cru — que armazena só o token
+(`ghp_...`), sem a chave `access-tokens = github.com=...` na frente.
+O parser do `nix.conf` não reconhece uma linha sem `chave = valor` e
+falha a cada tentativa de start do daemon, inclusive em boot
+(`Connection refused` / depois `Connection reset by peer` com o
+socket "vivo" mas o daemon morto atrás dele).
+
+Tentativa intermediária de usar `builtins.readFile` no path do
+secret para montar `nix.settings.access-tokens` diretamente falhou
+com `access to absolute path '/run/secrets/github_token' is
+forbidden in pure evaluation mode` — a avaliação da flake roda em
+modo puro (sandbox), então `readFile` não pode ler `/run/secrets/*`
+em build-time, só o sops-nix consegue popular esse conteúdo, e isso
+só acontece em ativação.
+
+Fix definitivo: `sops.templates."nix-github-token.conf"`, que gera
+um arquivo com `access-tokens = github.com=${config.sops.placeholder.github_token}`
+em ativação (o placeholder é só uma string mágica em build-time, sem
+`readFile`; o sops-nix substitui pelo valor real depois). O
+`nix.extraOptions` do aspect `git` agora faz `!include` desse
+template em vez do secret cru — sintaxe sempre válida, secret nunca
+em texto plano no Nix store.
+
+Para destravar o boot já quebrado (sem esperar reboot com generation
+antigo), foi usado um bind mount temporário sobre
+`/etc/static/nix/nix.conf` com uma cópia do `nix.conf` sem a linha
+`!include` quebrada, só o suficiente para reviver o `nix-daemon` e
+rodar o switch que aplica o fix declarativo de verdade. O bind mount
+foi desfeito após o switch bem-sucedido; o `nix.conf` definitivo
+passou a ser gerado normalmente a partir da config corrigida.
+
+Confirmado por `nh os switch . -vvv`: build limpo (13 derivações),
+`nix-github-token.conf` aparece como `ADDED` no diff de ativação,
+`switch-to-configuration test` e `boot` completados sem erro.
+
+Nenhum segredo foi adicionado a arquivos rastreados — o secret
+`github/token` já existia cifrado em `secrets/secrets.yaml`; só o
+mecanismo de consumo dele mudou.
+
+## Top 3 Next Actions
+
+- Confirmar se `(user-shell "fish")` já cobre `programs.fish.enable`
+  a nível `nixos` antes de remover a fatia `nixos` redundante de
+  `apps/fish/default.nix` (pendência já registrada na entrada
+  anterior, ainda não resolvida).
+- Validar em uso normal que `git` (clone/fetch de repos privados via
+  HTTPS, ou qualquer chamada que use o rate limit autenticado da API
+  do GitHub) está de fato usando o token novo.
+- Nenhuma ação pendente relacionada ao bind mount — já desfeito nesta
+  sessão; não deixar esse passo documentado como procedimento padrão,
+  era só recuperação pontual de um estado quebrado.
+
+## Blockers
+
+Nenhum.

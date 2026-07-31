@@ -219,6 +219,53 @@ fatia `homeManager` fica sem nenhum caminho de chegar no user, e
 `home-manager.users.<user>.home.stateVersion` falha por não ter valor
 definido.
 
+### Regra prática: quem é "dono" de um aspect misto
+
+Não existe regra do Den sobre em qual lado (host ou user) um aspect
+*deve* ser `includes`d — isso é decisão de design do repo, caso a caso.
+A convenção deste repo: o lado em que o aspect aparece no `includes` é
+o dono declarado (ex: `kde`/`security` são incluídos em `atlas.includes`
+→ o **host** é dono; `niri`/`solaar` são incluídos em `flp.includes` →
+o **user** é dono). Quando esse aspect também define a *outra* classe
+(`homeManager` num aspect dono-host, ou `nixos` num aspect dono-user),
+essa classe minoritária **precisa** de `provides.to-users`/`to-hosts`
+pra ter algum caminho de chegar no outro lado — sem isso ela fica órfã
+e nunca é avaliada, silenciosamente (não dá erro até algo tentar ler
+uma opção que dependia dela, como aconteceu com `sops` no `git`).
+
+Isso é exatamente o padrão do exemplo canônico do
+[README oficial do Den](https://github.com/denful/den):
+
+```nix
+# host contribui pra todos seus users
+den.aspects.igloo.provides.to-users.homeManager.programs.helix.enable = true;
+
+# user contribui pra todos os hosts onde vive
+den.aspects.tux.provides.to-hosts.nixos.programs.nh.enable = true;
+```
+
+**Auditoria feita em 2026-07-31**: todo aspect com classes `nixos` +
+`homeManager` no mesmo aspect foi verificado quanto a essa regra.
+Corrigidos (adicionado `provides` faltante): `kde` (dono host, faltava
+`provides.to-users.homeManager`), `security`/keyring (dono host,
+faltava `provides.to-users.homeManager` só na fatia do
+`security/keyring.nix`), `niri` (dono user, faltava
+`provides.to-hosts.nixos`), `solaar` (dono user, faltava
+`provides.to-hosts.nixos`), `git` (dono user, faltava
+`provides.to-hosts.nixos` — caso original que motivou essa auditoria,
+ver `apps/dev/git/github-token.nix`). `fish.nixos.programs.fish.enable`
+identificado como provavelmente redundante com a battery
+`(user-shell "fish")` já incluída em `standard-user` — não corrigido
+ainda, pendente de confirmação (ver `HANDOFF.md`).
+
+**Não é bug do Den.** O erro `attribute 'sops' missing` que motivou
+essa auditoria foi causado por não seguir essa regra (adicionar
+`nixos` a um aspect dono-user sem `provides.to-hosts`), não por
+qualquer defeito do framework. A "file path independence" citada nesse
+documento vem do `import-tree` (que descobre e importa qualquer `.nix`
+sob `modules/` automaticamente), não do Den — o Den é quem implementa
+o roteamento `provides`/`includes` por cima disso.
+
 ## Antes de propor mudança estrutural
 
 - Não inventar mecanismo interno do Den não documentado (`_module.args`
