@@ -28,6 +28,6 @@
           "Ghostty" = "Meta+Enter";
         };
       };
-    }
+    };
   };
 }
