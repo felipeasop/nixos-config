@@ -15,15 +15,19 @@
       };
     };
 
-    homeManager = {
-      imports = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+    provides.to-users.homeManager = {
+      imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
       programs.plasma = {
         enable = true;
-        input.mice = [{
-          name = "Logitech USB Receiver Mouse";
-          accelerationProfile = "flat";
-          accelerationSpeed = 0.0;
-        }];
+        input.mice = [
+          {
+            name = "Logitech USB Receiver Mouse";
+            vendorId = "046D";
+            productId = "C548";
+            accelerationProfile = "none";
+            acceleration = 0.0;
+          }
+        ];
         shortcuts.kwin = {
           "Ghostty" = "Meta+Enter";
         };

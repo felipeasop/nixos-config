@@ -5,7 +5,7 @@
   };
 
   den.aspects.niri = {
-    nixos = { pkgs, ... }: {
+    provides.to-hosts.nixos = { pkgs, ... }: {
       imports = [ inputs.niri.nixosModules.niri ];
       programs.niri.enable = true;
 
