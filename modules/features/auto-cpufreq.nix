@@ -1,14 +1,17 @@
 {
   den.aspects.auto-cpufreq = {
     nixos = {
-      services.auto-cpufreq.enable = true;
-      services.auto-cpufreq.settings = {
-        battery.governor = "powersave";
-        charger.governor = "performance";
+      services = {
+        auto-cpufreq = {
+          enable = true;
+          settings = {
+            battery.governor = "powersave";
+            charger.governor = "performance";
+          };
+        };
+        power-profiles-daemon.enable = false;
+        upower.enable = true;
       };
-
-      services.power-profiles-daemon.enable = false;
-      services.upower.enable = true;
     };
   };
 }

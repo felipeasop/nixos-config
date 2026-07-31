@@ -10,6 +10,6 @@
       security.pam.services.sddm.enableGnomeKeyring = true;
     };
 
-    homeManager.services.gnome-keyring.enable = true;
+    provides.to-users.homeManager.services.gnome-keyring.enable = true;
   };
 }
