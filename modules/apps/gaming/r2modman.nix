@@ -1,7 +1,7 @@
 {
   den.aspects.r2modman = {
-    nixos = { pkgs, ... }: {
-      environment.systemPackages = [ pkgs.r2modman ];
+    homeManager = { pkgs, ... }: {
+      home.packages = [ pkgs.r2modman ];
     };
   };
 }

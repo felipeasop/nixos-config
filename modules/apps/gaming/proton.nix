@@ -1,7 +1,7 @@
 {
   den.aspects.proton = {
-    nixos = { pkgs, ... }: {
-      environment.systemPackages = [ pkgs.protonup-qt ];
+    homeManager = { pkgs, ... }: {
+      home.packages = [ pkgs.protonup-qt ];
     };
   };
 }
