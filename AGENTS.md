@@ -1,4 +1,45 @@
-# AGENTS.md
+# AGENTS
+
+## Workflow para agentes
+
+### Início de sessão
+
+Ler nesta ordem:
+
+1. `README.md`
+1. `HANDOFF.md`
+
+### Durante o trabalho
+
+- Manter `HANDOFF.md` alinhado com o estado atual e próximas ações.
+- Registrar decisões de arquitetura duráveis neste arquivo (`AGENTS.md`),
+  mantendo-as enxutas e estáveis — não em `HANDOFF.md`, que é efêmero.
+- Atualizar `HANDOFF.md` no meio da sessão se uma decisão significativa for tomada.
+- Em commits, incluir um subject curto mais um corpo que explica o
+  propósito da mudança e o resultado pro usuário/sistema, não só quais
+  arquivos mudaram.
+
+### Fim de sessão
+
+- Atualizar `HANDOFF.md`:
+  - timestamp `Last updated` (`YYYY-MM-DD HH:MM UTC`)
+  - estado atual
+  - top 3 próximas ações
+  - blockers (se houver)
+  - confirmar que nenhum segredo foi adicionado a arquivos rastreados
+- Não atualizar `HANDOFF.md` para mudanças menores ou de documentação.
+
+## Build e deploy
+
+```sh
+nix run .#write-flake && git add -A && nh os switch .   # após mudar flake-file.inputs
+git add -A && nh os switch .                             # dia a dia
+nh os test .                                             # testa sem persistir no boot
+nix fmt                                                   # formata tudo
+nix flake check                                           # lint + checks
+```
+
+## Arquitetura
 
 Contexto pra IA (ou humano) mexer nesse repo sem quebrar convenções.
 Fontes oficiais citadas ao longo do documento: [padrão dendrítico](https://github.com/mightyiam/dendritic),
@@ -215,6 +256,33 @@ batteries oficiais. A chave usada dentro do secret
 (`ssh.${config.networking.hostName}.*`) usa `config.networking.hostName`
 em vez de repetir o nome do host como parâmetro — evita duplicar o dado
 que `den.batteries.hostname` já define.
+
+## Fontes: todos os frameworks e inputs externos usados
+
+Lista de todo `flake-file.inputs.*` declarado no repo hoje (ver
+`modules/flake-file/inputs.nix` pros inputs core, e o próprio arquivo
+de cada aspect pros inputs específicos de feature), com link de doc
+oficial. Manter esta tabela em dia sempre que um `flake-file.inputs`
+novo for adicionado ou removido.
+
+| Input | Repo | Doc / Fonte |
+| --- | --- | --- |
+| `den` | `denful/den` | https://den.denful.dev |
+| `flake-file` | `denful/flake-file` | https://github.com/denful/flake-file |
+| `import-tree` | `denful/import-tree` | https://github.com/denful/import-tree |
+| `nixpkgs` | `nixos/nixpkgs` (unstable) | https://github.com/NixOS/nixpkgs |
+| `flake-parts` | `hercules-ci/flake-parts` | https://flake.parts |
+| `home-manager` | `nix-community/home-manager` | https://nix-community.github.io/home-manager |
+| `treefmt-nix` | `numtide/treefmt-nix` | https://github.com/numtide/treefmt-nix |
+| `git-hooks` | `cachix/git-hooks.nix` | https://github.com/cachix/git-hooks.nix |
+| `niri` | `sodiboo/niri-flake` | https://github.com/sodiboo/niri-flake (doc completa em `docs.md` do repo) |
+| `noctalia` | `noctalia-dev/noctalia` | https://github.com/noctalia-dev — **conferir** se a URL declarada bate com o repo real (`noctalia-shell` aparece como nome em outras referências da comunidade) |
+| `nix-flatpak` | `gmodena/nix-flatpak` | https://github.com/gmodena/nix-flatpak |
+| `zen-browser` | `0xc000022070/zen-browser-flake` | https://github.com/0xc000022070/zen-browser-flake |
+| `sops-nix` | `Mic92/sops-nix` | https://github.com/Mic92/sops-nix |
+| `chaotic` (kernel cachy) | `chaotic-cx/nyx` | https://github.com/chaotic-cx/nyx — **atenção**: o repo original foi arquivado em 2025-12-08; forks ativos da comunidade (ex: `ninelore/chaotic-nyx`) continuam recebendo update. Se o input parar de atualizar/quebrar, trocar a URL pra um fork mantido é o caminho, não esperar o original voltar. |
+
+Padrão dendrítico geral (não é input, é a metodologia): https://github.com/mightyiam/dendritic
 
 ## Ferramentas do dia a dia (fish functions)
 
