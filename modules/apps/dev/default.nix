@@ -6,6 +6,7 @@
       ghostty
       git
       jujutsu
+      neovim
       zed-editor
     ];
   };
