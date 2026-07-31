@@ -1,7 +1,6 @@
 # TODO
 
 - [ ] Niri: testar steam e discord, arrumar tema
-- [ ] Documentação: Adicionar HANDOFF.md e atualizar AGENTS.md
 - [ ] Documentar uso de IA
 - [ ] Quando adicionar o laptop: seguir `secrets/README.md` pra gerar a
       chave SSH dele e criar `modules/hosts/laptop/` a partir de

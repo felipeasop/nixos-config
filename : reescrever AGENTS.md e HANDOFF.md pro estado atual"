@@ -1,0 +1,258 @@
+[38;5;3mModified regular file AGENTS.md:[39m
+    ...
+[2m[38;5;1m  29[0m [2m[38;5;2m  29[0m:   - confirmar que nenhum segredo foi adicionado a arquivos rastreados
+[2m[38;5;1m  30[0m [2m[38;5;2m  30[0m: - Não atualizar `HANDOFF.md` para mudanças menores ou de documentação.
+[2m[38;5;1m  31[0m [2m[38;5;2m  31[0m: 
+[38;5;1m  32[39m     : [4m[38;5;1m## Build e [24mdeploy[4m[24m[39m
+[38;5;1m  33[39m     : [4m[38;5;1m[24m[39m
+[38;5;1m  34[39m     : [4m[38;5;1m```sh[24m[39m
+[38;5;1m  35[39m     : [4m[38;5;1mnix[24m [4mrun[24m [4m.#write-flake[24m [4m&&[24m [4mgit[24m [4madd[24m [4m-A[24m [4m&&[24m [4mnh[24m [4mos[24m [4mswitch[24m [4m.[24m   [4m#[24m [4mapós[24m [4mmudar[24m [4mflake-file.inputs[24m[39m
+[38;5;1m  36[39m     : [4m[38;5;1mgit[24m [4madd[24m [4m-A[24m [4m&&[24m [4mnh[24m [4mos[24m [4mswitch[24m [4m.[24m                             [4m#[24m [4mdia[24m [4ma[24m [4mdia[24m[39m
+[38;5;1m  37[39m     : [4m[38;5;1mnh[24m [4mos[24m [4mtest[24m [4m.[24m                                             [4m#[24m [4mtesta[24m [4msem[24m [4mpersistir[24m [4mno[24m [4mboot[24m[39m
+[38;5;1m  38[39m     : [4m[38;5;1mnix[24m [4mfmt[24m                                                   [4m#[24m [4mformata[24m [4mtudo[24m[39m
+[38;5;1m  39[39m     : [4m[38;5;1mnix[24m [4mflake[24m [4mcheck[24m                                     [4m      # lint + checks[24m[39m
+[38;5;1m  40[39m     : [4m[38;5;1m```[24m[39m
+     [38;5;2m  32[39m: [4m[38;5;2mComandos de build/[24mdeploy[4m:[24m [4mver[24m [4m`README.md`.[24m[39m
+     [38;5;2m  33[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m  34[39m: [4m[38;5;2m##[24m [4mControle[24m [4mde[24m [4mversão:[24m [4m`jj`[24m [4m(Jujutsu)[24m [4mtem[24m [4mprioridade[24m [4msobre[24m [4m`git`[24m[39m
+     [38;5;2m  35[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m  36[39m: [4m[38;5;2mDecisão[24m [4mdo[24m [4musuário[24m [4m(2026-07-31):[24m [4m**`jj`[24m [4mé[24m [4mo[24m [4mfront-end[24m [4mobrigatório[24m [4mpor[24m[39m
+     [38;5;2m  37[39m: [4m[38;5;2mpadrão**[24m [4mpra[24m [4minteragir[24m [4mcom[24m [4mo[24m [4mhistórico[24m [4mdeste[24m [4mrepo,[24m [4msempre[24m [4mque[24m[39m
+     [38;5;2m  38[39m: [4m[38;5;2mdisponível[24m [4mna[24m [4mmáquina.[24m [4mNão[24m [4mé[24m [4m"preferência[24m [4mquando[24m [4mconveniente"[24m [4m—[24m [4mao[24m[39m
+     [38;5;2m  39[39m: [4m[38;5;2mpropor[24m [4mqualquer[24m [4mcomando[24m [4mde[24m [4mcommit/branch/histórico,[24m [4musar[24m [4m`jj`[24m [4mprimeiro[24m[39m
+     [38;5;2m  40[39m: [4m[38;5;2me[24m [4msó[24m [4mcair[24m [4mpra[24m [4m`git`[24m [4mpuro[24m [4mse[24m [4m`jj`[24m [4mnão[24m [4mestiver[24m [4minstalado[24m [4mou[24m [4mo[24m [4musuário[24m[39m
+     [38;5;2m  41[39m: [4m[38;5;2mpedir[24m [4mexplicitamente[24m [4m`git`.[24m [4mO[24m [4mbackend[24m [4mcontinua[24m [4msendo[24m [4mo[24m [4mmesmo[24m [4m`.git`[24m [4m—[24m[39m
+     [38;5;2m  42[39m: [4m[38;5;2m`jj`[24m [4mnão[24m [4msubstitui[24m [4mo[24m [4mrepositório,[24m [4msó[24m [4ma[24m [4mforma[24m [4mde[24m [4moperar[24m [4mnele.[24m[39m
+     [38;5;2m  43[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m  44[39m: [4m[38;5;2mDiferenças[24m [4mque[24m [4mimportam[24m [4mpra[24m [4mquem[24m [4m(humano[24m [4mou[24m [4mIA)[24m [4msó[24m [4mconhece[24m [4m`git`:[24m[39m
+     [38;5;2m  45[39m: [4m[38;5;2m-[24m [4mNão[24m [4mexiste[24m [4mstaging[24m [4marea.[24m [4mTodo[24m [4marquivo[24m [4mno[24m [4mworking[24m [4mdirectory[24m [4mjá[24m [4mfaz[24m[39m
+     [38;5;2m  46[39m: [38;5;2m  [4mparte[24m [4mdo[24m [4mcommit[24m [4matual[24m [4m("working-copy[24m [4mcommit")[24m [4m—[24m [4mnão[24m [4mtem[24m [4m`jj[24m [4madd`.[24m[39m
+     [38;5;2m  47[39m: [4m[38;5;2m-[24m [4m`jj[24m [4mdescribe[24m [4m-m[24m [4m"msg"`[24m [4mdá[24m [4mmensagem[24m [4mao[24m [4mcommit[24m [4matual[24m [4msem[24m [4m"fechar"[24m[39m
+     [38;5;2m  48[39m: [38;5;2m  [4mnada.[24m [4m`jj[24m [4mnew`[24m [4mfecha[24m [4mo[24m [4mcommit[24m [4matual[24m [4me[24m [4mabre[24m [4mo[24m [4mpróximo[24m [4m—[24m [4misso[24m [4mé[24m [4mo[24m[39m
+     [38;5;2m  49[39m: [38;5;2m  [4mequivalente[24m [4mreal[24m [4ma[24m [4m"finalizar[24m [4mum[24m [4mcommit".[24m [4m`jj[24m [4mcommit[24m [4m-m[24m [4m"msg"`[24m [4mfaz[24m[39m
+     [38;5;2m  50[39m: [38;5;2m  [4mos[24m [4mdois[24m [4mpassos[24m [4mde[24m [4muma[24m [4mvez[24m [4m(mais[24m [4mparecido[24m [4mcom[24m [4m`git[24m [4mcommit[24m [4m-am`).[24m[39m
+     [38;5;2m  51[39m: [4m[38;5;2m-[24m [4mEditar[24m [4mum[24m [4mcommit[24m [4mjá[24m [4mfeito[24m [4m(mesmo[24m [4mnão[24m [4msendo[24m [4mo[24m [4mmais[24m [4mrecente)[24m [4mé[24m[39m
+     [38;5;2m  52[39m: [38;5;2m  [4m`jj[24m [4medit[24m [4m<change-id>`;[24m [4mos[24m [4mcommits[24m [4mdescendentes[24m [4msão[24m [4mreescritos[24m[39m
+     [38;5;2m  53[39m: [38;5;2m  [4mautomaticamente[24m [4m(rebase[24m [4mautomático),[24m [4msem[24m [4mrebase[24m [4minterativo[24m [4mmanual.[24m[39m
+     [38;5;2m  54[39m: [4m[38;5;2m-[24m [4m`jj[24m [4msquash`[24m [4mjunta[24m [4mas[24m [4mmudanças[24m [4mdo[24m [4mcommit[24m [4matual[24m [4mno[24m [4mpai.[24m[39m
+     [38;5;2m  55[39m: [4m[38;5;2m- Push/pull continuam indo pro mesmo remote GitHub:[24m[39m
+     [38;5;2m  56[39m: [4m[38;5;2m  `jj git fetch` / `jj git push --branch main`.[24m[39m
+     [38;5;2m  57[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m  58[39m: [4m[38;5;2mComandos de `git` citados noutras partes deste arquivo (ex: `git add -A`[24m[39m
+     [38;5;2m  59[39m: [4m[38;5;2mna seção "flake.nix é gerado") descrevem o mecanismo subjacente do[24m[39m
+     [38;5;2m  60[39m: [4m[38;5;2mimport-tree (precisa que o arquivo esteja rastreado, staged ou não) —[24m[39m
+     [38;5;2m  61[39m: [4m[38;5;2mnão são uma instrução de usar `git` em vez de `jj`. Em `jj`, o[24m[39m
+     [38;5;2m  62[39m: [4m[38;5;2mequivalente é simplesmente ter o arquivo no working copy — não precisa[24m[39m
+     [38;5;2m  63[39m: [4m[38;5;2mde `jj add`, o rastreamento é automático a cada `jj status`/`jj diff`.[24m[39m
+[2m[38;5;1m  41[0m [2m[38;5;2m  64[0m: 
+[2m[38;5;1m  42[0m [2m[38;5;2m  65[0m: ## Arquitetura
+[2m[38;5;1m  43[0m [2m[38;5;2m  66[0m: 
+    ...
+[2m[38;5;1m 334[0m [2m[38;5;2m 357[0m: ## Ferramentas do dia a dia (fish functions)
+[2m[38;5;1m 335[0m [2m[38;5;2m 358[0m: 
+[2m[38;5;1m 336[0m [2m[38;5;2m 359[0m: Definidas em `modules/apps/fish/functions.nix`:
+[38;5;1m 337[39m     : [38;5;1m- `[4mrebuild[24m` — `git add -A` + [4m`nh os switch .`[24m[39m
+[38;5;1m 338[39m     : [4m[38;5;1m- `rebuild-test` — idem, sem persistir no boot menu (`nh os test`)[24m[39m
+[38;5;1m 339[39m     : [4m[38;5;1m- `rebuild-update` — atualiza `flake.lock` + rebuild[24m[39m
+[38;5;1m 340[39m     : [4m[38;5;1m- `flake-regenerate` — só roda `write-flake`, sem rebuild (revisar[24m diff[4m)[24m[39m
+[38;5;1m 341[39m     : [4m[38;5;1m- `rebuild-with-new-inputs` — `write-flake` + `git add -A` + rebuild[24m[39m
+[38;5;1m 342[39m     : [4m[38;5;1m  (usar sempre que um `flake-file.inputs` for adicionado/mudado)[24m[39m
+     [38;5;2m 360[39m: [38;5;2m- `[4mwrite-flake[24m` — [4mregenera `flake.nix` (`nix run .#write-flake`) e já[24m[39m
+     [38;5;2m 361[39m: [4m[38;5;2m  stage o resultado ([24m`git add -A` + [4mmostra o[24m diff[4m cacheado de[24m[39m
+     [38;5;2m 362[39m: [4m[38;5;2m  `flake.nix`), pra revisar antes de commitar.[24m[39m
+[38;5;3mModified regular file HANDOFF.md:[39m
+    ...
+[2m[38;5;1m 209[0m [2m[38;5;2m 209[0m: ## Blockers
+[2m[38;5;1m 210[0m [2m[38;5;2m 210[0m: 
+[2m[38;5;1m 211[0m [2m[38;5;2m 211[0m: Nenhum.
+     [38;5;2m 212[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 213[39m: [4m[38;5;2m---[24m[39m
+     [38;5;2m 214[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 215[39m: [4m[38;5;2mLast updated: 2026-07-31 22:39 UTC[24m[39m
+     [38;5;2m 216[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 217[39m: [4m[38;5;2m## Current State[24m[39m
+     [38;5;2m 218[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 219[39m: [4m[38;5;2mResolvido o bloqueio real de boot causado pelo `github-token.nix`[24m[39m
+     [38;5;2m 220[39m: [4m[38;5;2mcriado na sessão anterior. O `nix-daemon` estava em[24m[39m
+     [38;5;2m 221[39m: [4m[38;5;2m`start-limit-hit`: o `nix.conf` gerado (já ativo no sistema, de um[24m[39m
+     [38;5;2m 222[39m: [4m[38;5;2mswitch anterior) continha `!include /run/secrets/github_token`[24m[39m
+     [38;5;2m 223[39m: [4m[38;5;2mapontando direto pro secret cru — que armazena só o token[24m[39m
+     [38;5;2m 224[39m: [4m[38;5;2m(`ghp_...`), sem a chave `access-tokens = github.com=...` na frente.[24m[39m
+     [38;5;2m 225[39m: [4m[38;5;2mO parser do `nix.conf` não reconhece uma linha sem `chave = valor` e[24m[39m
+     [38;5;2m 226[39m: [4m[38;5;2mfalha a cada tentativa de start do daemon, inclusive em boot[24m[39m
+     [38;5;2m 227[39m: [4m[38;5;2m(`Connection refused` / depois `Connection reset by peer` com o[24m[39m
+     [38;5;2m 228[39m: [4m[38;5;2msocket "vivo" mas o daemon morto atrás dele).[24m[39m
+     [38;5;2m 229[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 230[39m: [4m[38;5;2mTentativa intermediária de usar `builtins.readFile` no path do[24m[39m
+     [38;5;2m 231[39m: [4m[38;5;2msecret para montar `nix.settings.access-tokens` diretamente falhou[24m[39m
+     [38;5;2m 232[39m: [4m[38;5;2mcom `access to absolute path '/run/secrets/github_token' is[24m[39m
+     [38;5;2m 233[39m: [4m[38;5;2mforbidden in pure evaluation mode` — a avaliação da flake roda em[24m[39m
+     [38;5;2m 234[39m: [4m[38;5;2mmodo puro (sandbox), então `readFile` não pode ler `/run/secrets/*`[24m[39m
+     [38;5;2m 235[39m: [4m[38;5;2mem build-time, só o sops-nix consegue popular esse conteúdo, e isso[24m[39m
+     [38;5;2m 236[39m: [4m[38;5;2msó acontece em ativação.[24m[39m
+     [38;5;2m 237[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 238[39m: [4m[38;5;2mFix definitivo: `sops.templates."nix-github-token.conf"`, que gera[24m[39m
+     [38;5;2m 239[39m: [4m[38;5;2mum arquivo com `access-tokens = github.com=${config.sops.placeholder.github_token}`[24m[39m
+     [38;5;2m 240[39m: [4m[38;5;2mem ativação (o placeholder é só uma string mágica em build-time, sem[24m[39m
+     [38;5;2m 241[39m: [4m[38;5;2m`readFile`; o sops-nix substitui pelo valor real depois). O[24m[39m
+     [38;5;2m 242[39m: [4m[38;5;2m`nix.extraOptions` do aspect `git` agora faz `!include` desse[24m[39m
+     [38;5;2m 243[39m: [4m[38;5;2mtemplate em vez do secret cru — sintaxe sempre válida, secret nunca[24m[39m
+     [38;5;2m 244[39m: [4m[38;5;2mem texto plano no Nix store.[24m[39m
+     [38;5;2m 245[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 246[39m: [4m[38;5;2mPara destravar o boot já quebrado (sem esperar reboot com generation[24m[39m
+     [38;5;2m 247[39m: [4m[38;5;2mantigo), foi usado um bind mount temporário sobre[24m[39m
+     [38;5;2m 248[39m: [4m[38;5;2m`/etc/static/nix/nix.conf` com uma cópia do `nix.conf` sem a linha[24m[39m
+     [38;5;2m 249[39m: [4m[38;5;2m`!include` quebrada, só o suficiente para reviver o `nix-daemon` e[24m[39m
+     [38;5;2m 250[39m: [4m[38;5;2mrodar o switch que aplica o fix declarativo de verdade. O bind mount[24m[39m
+     [38;5;2m 251[39m: [4m[38;5;2mfoi desfeito após o switch bem-sucedido; o `nix.conf` definitivo[24m[39m
+     [38;5;2m 252[39m: [4m[38;5;2mpassou a ser gerado normalmente a partir da config corrigida.[24m[39m
+     [38;5;2m 253[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 254[39m: [4m[38;5;2mConfirmado por `nh os switch . -vvv`: build limpo (13 derivações),[24m[39m
+     [38;5;2m 255[39m: [4m[38;5;2m`nix-github-token.conf` aparece como `ADDED` no diff de ativação,[24m[39m
+     [38;5;2m 256[39m: [4m[38;5;2m`switch-to-configuration test` e `boot` completados sem erro.[24m[39m
+     [38;5;2m 257[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 258[39m: [4m[38;5;2mNenhum segredo foi adicionado a arquivos rastreados — o secret[24m[39m
+     [38;5;2m 259[39m: [4m[38;5;2m`github/token` já existia cifrado em `secrets/secrets.yaml`; só o[24m[39m
+     [38;5;2m 260[39m: [4m[38;5;2mmecanismo de consumo dele mudou.[24m[39m
+     [38;5;2m 261[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 262[39m: [4m[38;5;2mNos commits que seguiram, o histórico foi reorganizado (via[24m[39m
+     [38;5;2m 263[39m: [4m[38;5;2m`git reset --soft` + recommits) pra separar o fix do github-token dos[24m[39m
+     [38;5;2m 264[39m: [4m[38;5;2moutros achados da auditoria de mutual providers (kde, niri, keyring,[24m[39m
+     [38;5;2m 265[39m: [4m[38;5;2msolaar, fish), cada tema em commit próprio, docs por último.[24m[39m
+     [38;5;2m 266[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 267[39m: [4m[38;5;2m## Top 3 Next Actions[24m[39m
+     [38;5;2m 268[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 269[39m: [4m[38;5;2m- Confirmar se `(user-shell "fish")` já cobre `programs.fish.enable`[24m[39m
+     [38;5;2m 270[39m: [4m[38;5;2m  a nível `nixos` antes de remover a fatia `nixos` redundante de[24m[39m
+     [38;5;2m 271[39m: [4m[38;5;2m  `apps/fish/default.nix` (pendência já registrada na entrada[24m[39m
+     [38;5;2m 272[39m: [4m[38;5;2m  anterior, ainda não resolvida).[24m[39m
+     [38;5;2m 273[39m: [4m[38;5;2m- Validar em uso normal que `git` (clone/fetch de repos privados via[24m[39m
+     [38;5;2m 274[39m: [4m[38;5;2m  HTTPS, ou qualquer chamada que use o rate limit autenticado da API[24m[39m
+     [38;5;2m 275[39m: [4m[38;5;2m  do GitHub) está de fato usando o token novo.[24m[39m
+     [38;5;2m 276[39m: [4m[38;5;2m- Nenhuma ação pendente relacionada ao bind mount — já desfeito nesta[24m[39m
+     [38;5;2m 277[39m: [4m[38;5;2m  sessão; não deixar esse passo documentado como procedimento padrão,[24m[39m
+     [38;5;2m 278[39m: [4m[38;5;2m  era só recuperação pontual de um estado quebrado.[24m[39m
+     [38;5;2m 279[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 280[39m: [4m[38;5;2m## Blockers[24m[39m
+     [38;5;2m 281[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 282[39m: [4m[38;5;2mNenhum.[24m[39m
+     [38;5;2m 283[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 284[39m: [4m[38;5;2m---[24m[39m
+     [38;5;2m 285[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 286[39m: [4m[38;5;2mLast updated: 2026-07-31 23:07 UTC[24m[39m
+     [38;5;2m 287[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 288[39m: [4m[38;5;2m## Current State[24m[39m
+     [38;5;2m 289[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 290[39m: [4m[38;5;2m`AGENTS.md` enxugado pra remover redundância e conteúdo desatualizado.[24m[39m
+     [38;5;2m 291[39m: [4m[38;5;2mA seção "Build e deploy" duplicava quase 1:1 a seção "Comandos" do[24m[39m
+     [38;5;2m 292[39m: [4m[38;5;2m`README.md` — removida, agora só aponta pra lá. A seção "Ferramentas[24m[39m
+     [38;5;2m 293[39m: [4m[38;5;2mdo dia a dia (fish functions)" listava `rebuild`, `rebuild-test`,[24m[39m
+     [38;5;2m 294[39m: [4m[38;5;2m`rebuild-update` e `rebuild-with-new-inputs` — nenhuma dessas existe[24m[39m
+     [38;5;2m 295[39m: [4m[38;5;2mmais em `modules/apps/fish/functions.nix`; o usuário já tinha removido[24m[39m
+     [38;5;2m 296[39m: [4m[38;5;2mtodas manualmente, restando só `write-flake` (regenera `flake.nix`,[24m[39m
+     [38;5;2m 297[39m: [4m[38;5;2mjá dá `git add -A` e mostra o diff cacheado pra revisão antes de[24m[39m
+     [38;5;2m 298[39m: [4m[38;5;2mcommitar) mais os utilitários de shell pré-existentes (histórico com[24m[39m
+     [38;5;2m 299[39m: [4m[38;5;2m`!`, `backup`, `copy`). A seção foi reescrita pra refletir isso.[24m[39m
+     [38;5;2m 300[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 301[39m: [4m[38;5;2mAdotado `jj` (Jujutsu) como front-end **prioritário** sobre `git` puro[24m[39m
+     [38;5;2m 302[39m: [4m[38;5;2mpra todo trabalho de versionamento neste repo daqui pra frente —[24m[39m
+     [38;5;2m 303[39m: [4m[38;5;2mdecisão do usuário, documentada numa seção própria em `AGENTS.md`[24m[39m
+     [38;5;2m 304[39m: [4m[38;5;2m("Controle de versão: `jj` tem prioridade sobre `git`"). A seção[24m[39m
+     [38;5;2m 305[39m: [4m[38;5;2manterior tinha uma referência quebrada a "seção Build e deploy acima"[24m[39m
+     [38;5;2m 306[39m: [4m[38;5;2m(que não existe mais) e citava `rebuild`/`rebuild-test` como exemplo[24m[39m
+     [38;5;2m 307[39m: [4m[38;5;2mde comandos `git` ainda não portados — ambos corrigidos: a referência[24m[39m
+     [38;5;2m 308[39m: [4m[38;5;2mcruzada foi trocada por uma explicação de que `git add -A` citado na[24m[39m
+     [38;5;2m 309[39m: [4m[38;5;2mseção "flake.nix é gerado" descreve o mecanismo do import-tree[24m[39m
+     [38;5;2m 310[39m: [4m[38;5;2m(arquivo precisa estar rastreado), não uma instrução de usar `git` em[24m[39m
+     [38;5;2m 311[39m: [4m[38;5;2mvez de `jj` — em `jj` o equivalente é só ter o arquivo no working[24m[39m
+     [38;5;2m 312[39m: [4m[38;5;2mcopy, sem precisar de `jj add`. `jj` opera sobre o mesmo `.git` já[24m[39m
+     [38;5;2m 313[39m: [4m[38;5;2mexistente; nenhuma migração de repositório foi feita.[24m[39m
+     [38;5;2m 314[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 315[39m: [4m[38;5;2mSessão anterior explorou uma função fish combinada (`os[24m[39m
+     [38;5;2m 316[39m: [4m[38;5;2mswitch/test/boot` com flags combináveis pra verbose, update, flake,[24m[39m
+     [38;5;2m 317[39m: [4m[38;5;2mdry-run, ask) mas foi descartada por complexidade desproporcional ao[24m[39m
+     [38;5;2m 318[39m: [4m[38;5;2mganho — decisão consciente do usuário de manter `write-flake` como[24m[39m
+     [38;5;2m 319[39m: [4m[38;5;2múnica função fish "de fluxo", chamando `nh`/`jj` diretamente pra[24m[39m
+     [38;5;2m 320[39m: [4m[38;5;2mqualquer outra coisa.[24m[39m
+     [38;5;2m 321[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 322[39m: [4m[38;5;2m## Top 3 Next Actions[24m[39m
+     [38;5;2m 323[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 324[39m: [4m[38;5;2m- Confirmar se `(user-shell "fish")` já cobre `programs.fish.enable`[24m[39m
+     [38;5;2m 325[39m: [4m[38;5;2m  a nível `nixos` antes de remover a fatia `nixos` redundante de[24m[39m
+     [38;5;2m 326[39m: [4m[38;5;2m  `apps/fish/default.nix` (pendência antiga, ainda não resolvida).[24m[39m
+     [38;5;2m 327[39m: [4m[38;5;2m- Migrar o fluxo de commit real do usuário pra `jj` na próxima sessão[24m[39m
+     [38;5;2m 328[39m: [4m[38;5;2m  em que houver mudanças a commitar — a decisão foi documentada, mas[24m[39m
+     [38;5;2m 329[39m: [4m[38;5;2m  ainda não exercitada na prática neste repo.[24m[39m
+     [38;5;2m 330[39m: [4m[38;5;2m- Validar em uso normal que `git`/`jj` (clone/fetch de repos privados[24m[39m
+     [38;5;2m 331[39m: [4m[38;5;2m  via HTTPS, ou qualquer chamada que use o rate limit autenticado da[24m[39m
+     [38;5;2m 332[39m: [4m[38;5;2m  API do GitHub) está de fato usando o token novo do github-token.nix.[24m[39m
+     [38;5;2m 333[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 334[39m: [4m[38;5;2m## Blockers[24m[39m
+     [38;5;2m 335[39m: [4m[38;5;2m[24m[39m
+     [38;5;2m 336[39m: [4m[38;5;2mNenhum.[24m[39m
+[38;5;3mModified regular file TODO.md:[39m
+[2m[38;5;1m   1[0m [2m[38;5;2m   1[0m: # TODO
+[2m[38;5;1m   2[0m [2m[38;5;2m   2[0m: 
+[2m[38;5;1m   3[0m [2m[38;5;2m   3[0m: - [ ] Niri: testar steam e discord, arrumar tema
+[38;5;1m   4[39m     : [4m[38;5;1m- [ ] Documentação: Adicionar HANDOFF.md e atualizar AGENTS.md[24m[39m
+[2m[38;5;1m   5[0m [2m[38;5;2m   4[0m: - [ ] Documentar uso de IA
+[2m[38;5;1m   6[0m [2m[38;5;2m   5[0m: - [ ] Quando adicionar o laptop: seguir `secrets/README.md` pra gerar a
+[2m[38;5;1m   7[0m [2m[38;5;2m   6[0m:       chave SSH dele e criar `modules/hosts/laptop/` a partir de
+    ...
+[38;5;3mModified regular file modules/apps/fish/functions.nix:[39m
+[2m[38;5;1m   1[0m [2m[38;5;2m   1[0m: {
+[2m[38;5;1m   2[0m [2m[38;5;2m   2[0m:   den.aspects.fish = {
+[2m[38;5;1m   3[0m [2m[38;5;2m   3[0m:     homeManager = {
+[2m[38;5;1m   4[0m [2m[38;5;2m   4[0m:       programs.fish.interactiveShellInit = ''
+[38;5;1m   5[39m     : [38;5;1m        [4m# Fluxo único de rebuild, combinável por subcomando:[24m[39m
+[38;5;1m   6[39m     : [4m[38;5;1m        #   rebuild                -> git add -A + nh os switch . -v[24m[39m
+[38;5;1m   7[39m     : [4m[38;5;1m        #   rebuild update         -> + atualiza flake.lock (nh --update)[24m[39m
+[38;5;1m   8[39m     : [4m[38;5;1m        #   rebuild flake          -> + regenera flake.nix (write-flake) antes[24m[39m
+[38;5;1m   9[39m     : [4m[38;5;1m        #   rebuild flake update   -> os dois juntos[24m[39m
+[38;5;1m  10[39m     : [4m[38;5;1m        #   rebuild test [...]     -> nh os test em vez de switch (não persiste no boot)[24m[39m
+[38;5;1m  11[39m     : [4m[38;5;1m        # Qualquer argumento extra não reconhecido é repassado pro nh (ex: rebuild -H outname).[24m[39m
+[38;5;1m  12[39m     : [4m[38;5;1m        function rebuild[24m[39m
+[38;5;1m  13[39m     : [4m[38;5;1m            cd $NIXOS_CONFIG_DIR; or return 1[24m[39m
+[38;5;1m  14[39m     : [4m[38;5;1m[24m[39m
+[38;5;1m  15[39m     : [4m[38;5;1m            set -l cmd switch[24m[39m
+[38;5;1m  16[39m     : [4m[38;5;1m            set -l do_flake 0[24m[39m
+[38;5;1m  17[39m     : [4m[38;5;1m            set -l do_update 0[24m[39m
+[38;5;1m  18[39m     : [4m[38;5;1m            set -l passthrough[24m[39m
+[38;5;1m  19[39m     : [4m[38;5;1m[24m[39m
+[38;5;1m  20[39m     : [4m[38;5;1m            for arg in $argv[24m[39m
+[38;5;1m  21[39m     : [4m[38;5;1m                switch $arg[24m[39m
+[38;5;1m  22[39m     : [4m[38;5;1m                    case flake[24m[39m
+[38;5;1m  23[39m     : [4m[38;5;1m                        set do_flake 1[24m[39m
+[38;5;1m  24[39m     : [4m[38;5;1m                    case update[24m[39m
+[38;5;1m  25[39m     : [4m[38;5;1m                        set do_update 1[24m[39m
+[38;5;1m  26[39m     : [4m[38;5;1m                    case test[24m[39m
+[38;5;1m  27[39m     : [4m[38;5;1m                        set cmd test[24m[39m
+[38;5;1m  28[39m     : [4m[38;5;1m                    case '*'[24m[39m
+[38;5;1m  29[39m     : [4m[38;5;1m                        set -a passthrough $arg[24m[39m
+[38;5;1m  30[39m     : [4m[38;5;1m                end[24m[39m
+[38;5;1m  31[39m     : [4m[38;5;1m            end[24m[39m
+[38;5;1m  32[39m     : [4m[38;5;1m[24m[39m
+[38;5;1m  33[39m     : [4m[38;5;1m            if test $do_flake -eq 1[24m[39m
+[38;5;1m  34[39m     : [4m[38;5;1m                nix run .#write-flake; or return 1[24m[39m
+[38;5;1m  35[39m     : [4m[38;5;1m            end[24m[39m
+[38;5;1m  36[39m     : [4m[38;5;1m[24m[39m
+[38;5;1m  37[39m     : [4m[38;5;1m            git add -A[24m[39m
+[38;5;1m  38[39m     : [4m[38;5;1m[24m[39m
+[38;5;1m  39[39m     : [4m[38;5;1m            set -l nh_args -v[24m[39m
+[38;5;1m  40[39m     : [4m[38;5;1m            if test $do_update -eq 1[24m[39m
+[38;5;1m  41[39m     : [4m[38;5;1m                set -a nh_args --update[24m[39m
+[38;5;1m  42[39m     : [4m[38;5;1m            end[24m[39m
+[38;5;1m  43[39m     : [4m[38;5;1m[24m[39m
+[38;5;1m  44[39m     : [4m[38;5;1m            nh os $cmd . $nh_args $passthrough[24m[39m
+[38;5;1m  45[39m     : [4m[38;5;1m        end[24m[39m
+[38;5;1m  46[39m     : [4m[38;5;1m[24m[39m
+[38;5;1m  47[39m     : [4m[38;5;1m        # Só regenera o flake.nix a partir dos flake-file.inputs[24m[39m
+[38;5;1m  48[39m     : [4m[38;5;1m        # distribuídos pelos módulos, sem rebuildar nada. Útil pra[24m[39m
+[38;5;1m  49[39m     : [4m[38;5;1m        # revisar o diff antes de aplicar (equivale a `rebuild flake`[24m[39m
+[38;5;1m  50[39m     : [4m[38;5;1m        # sem o rebuild em si).[24m[39m
+[38;5;1m  51[39m     : [4m[38;5;1m        function[24m [4mflake[24m-[4mregenerate[24m[39m
+     [38;5;2m   5[39m: [38;5;2m        [4mfunction[24m [4mwrite[24m-[4mflake[24m[39m
+[2m[38;5;1m  52[0m [2m[38;5;2m   6[0m:             cd $NIXOS_CONFIG_DIR; or return 1
+[2m[38;5;1m  53[0m [2m[38;5;2m   7[0m:             nix run .#write-flake
+[2m[38;5;1m  54[0m [2m[38;5;2m   8[0m:             and git add -A
+    ...

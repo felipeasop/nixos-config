@@ -29,15 +29,38 @@ Ler nesta ordem:
   - confirmar que nenhum segredo foi adicionado a arquivos rastreados
 - Não atualizar `HANDOFF.md` para mudanças menores ou de documentação.
 
-## Build e deploy
+Comandos de build/deploy: ver `README.md`.
 
-```sh
-nix run .#write-flake && git add -A && nh os switch .   # após mudar flake-file.inputs
-git add -A && nh os switch .                             # dia a dia
-nh os test .                                             # testa sem persistir no boot
-nix fmt                                                   # formata tudo
-nix flake check                                           # lint + checks
-```
+## Controle de versão: `jj` (Jujutsu) tem prioridade sobre `git`
+
+Decisão do usuário (2026-07-31): **`jj` é o front-end obrigatório por
+padrão** pra interagir com o histórico deste repo, sempre que
+disponível na máquina. Não é "preferência quando conveniente" — ao
+propor qualquer comando de commit/branch/histórico, usar `jj` primeiro
+e só cair pra `git` puro se `jj` não estiver instalado ou o usuário
+pedir explicitamente `git`. O backend continua sendo o mesmo `.git` —
+`jj` não substitui o repositório, só a forma de operar nele.
+
+Diferenças que importam pra quem (humano ou IA) só conhece `git`:
+- Não existe staging area. Todo arquivo no working directory já faz
+  parte do commit atual ("working-copy commit") — não tem `jj add`.
+- `jj describe -m "msg"` dá mensagem ao commit atual sem "fechar"
+  nada. `jj new` fecha o commit atual e abre o próximo — isso é o
+  equivalente real a "finalizar um commit". `jj commit -m "msg"` faz
+  os dois passos de uma vez (mais parecido com `git commit -am`).
+- Editar um commit já feito (mesmo não sendo o mais recente) é
+  `jj edit <change-id>`; os commits descendentes são reescritos
+  automaticamente (rebase automático), sem rebase interativo manual.
+- `jj squash` junta as mudanças do commit atual no pai.
+- Push/pull continuam indo pro mesmo remote GitHub:
+  `jj git fetch` / `jj git push --branch main`.
+
+Comandos de `git` citados noutras partes deste arquivo (ex: `git add -A`
+na seção "flake.nix é gerado") descrevem o mecanismo subjacente do
+import-tree (precisa que o arquivo esteja rastreado, staged ou não) —
+não são uma instrução de usar `git` em vez de `jj`. Em `jj`, o
+equivalente é simplesmente ter o arquivo no working copy — não precisa
+de `jj add`, o rastreamento é automático a cada `jj status`/`jj diff`.
 
 ## Arquitetura
 
@@ -334,9 +357,6 @@ Padrão dendrítico geral (não é input, é a metodologia): https://github.com/
 ## Ferramentas do dia a dia (fish functions)
 
 Definidas em `modules/apps/fish/functions.nix`:
-- `rebuild` — `git add -A` + `nh os switch .`
-- `rebuild-test` — idem, sem persistir no boot menu (`nh os test`)
-- `rebuild-update` — atualiza `flake.lock` + rebuild
-- `flake-regenerate` — só roda `write-flake`, sem rebuild (revisar diff)
-- `rebuild-with-new-inputs` — `write-flake` + `git add -A` + rebuild
-  (usar sempre que um `flake-file.inputs` for adicionado/mudado)
+- `write-flake` — regenera `flake.nix` (`nix run .#write-flake`) e já
+  stage o resultado (`git add -A` + mostra o diff cacheado de
+  `flake.nix`), pra revisar antes de commitar.

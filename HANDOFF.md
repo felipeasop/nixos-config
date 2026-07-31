@@ -209,3 +209,128 @@ mecanismo de consumo dele mudou.
 ## Blockers
 
 Nenhum.
+
+---
+
+Last updated: 2026-07-31 22:39 UTC
+
+## Current State
+
+Resolvido o bloqueio real de boot causado pelo `github-token.nix`
+criado na sessão anterior. O `nix-daemon` estava em
+`start-limit-hit`: o `nix.conf` gerado (já ativo no sistema, de um
+switch anterior) continha `!include /run/secrets/github_token`
+apontando direto pro secret cru — que armazena só o token
+(`ghp_...`), sem a chave `access-tokens = github.com=...` na frente.
+O parser do `nix.conf` não reconhece uma linha sem `chave = valor` e
+falha a cada tentativa de start do daemon, inclusive em boot
+(`Connection refused` / depois `Connection reset by peer` com o
+socket "vivo" mas o daemon morto atrás dele).
+
+Tentativa intermediária de usar `builtins.readFile` no path do
+secret para montar `nix.settings.access-tokens` diretamente falhou
+com `access to absolute path '/run/secrets/github_token' is
+forbidden in pure evaluation mode` — a avaliação da flake roda em
+modo puro (sandbox), então `readFile` não pode ler `/run/secrets/*`
+em build-time, só o sops-nix consegue popular esse conteúdo, e isso
+só acontece em ativação.
+
+Fix definitivo: `sops.templates."nix-github-token.conf"`, que gera
+um arquivo com `access-tokens = github.com=${config.sops.placeholder.github_token}`
+em ativação (o placeholder é só uma string mágica em build-time, sem
+`readFile`; o sops-nix substitui pelo valor real depois). O
+`nix.extraOptions` do aspect `git` agora faz `!include` desse
+template em vez do secret cru — sintaxe sempre válida, secret nunca
+em texto plano no Nix store.
+
+Para destravar o boot já quebrado (sem esperar reboot com generation
+antigo), foi usado um bind mount temporário sobre
+`/etc/static/nix/nix.conf` com uma cópia do `nix.conf` sem a linha
+`!include` quebrada, só o suficiente para reviver o `nix-daemon` e
+rodar o switch que aplica o fix declarativo de verdade. O bind mount
+foi desfeito após o switch bem-sucedido; o `nix.conf` definitivo
+passou a ser gerado normalmente a partir da config corrigida.
+
+Confirmado por `nh os switch . -vvv`: build limpo (13 derivações),
+`nix-github-token.conf` aparece como `ADDED` no diff de ativação,
+`switch-to-configuration test` e `boot` completados sem erro.
+
+Nenhum segredo foi adicionado a arquivos rastreados — o secret
+`github/token` já existia cifrado em `secrets/secrets.yaml`; só o
+mecanismo de consumo dele mudou.
+
+Nos commits que seguiram, o histórico foi reorganizado (via
+`git reset --soft` + recommits) pra separar o fix do github-token dos
+outros achados da auditoria de mutual providers (kde, niri, keyring,
+solaar, fish), cada tema em commit próprio, docs por último.
+
+## Top 3 Next Actions
+
+- Confirmar se `(user-shell "fish")` já cobre `programs.fish.enable`
+  a nível `nixos` antes de remover a fatia `nixos` redundante de
+  `apps/fish/default.nix` (pendência já registrada na entrada
+  anterior, ainda não resolvida).
+- Validar em uso normal que `git` (clone/fetch de repos privados via
+  HTTPS, ou qualquer chamada que use o rate limit autenticado da API
+  do GitHub) está de fato usando o token novo.
+- Nenhuma ação pendente relacionada ao bind mount — já desfeito nesta
+  sessão; não deixar esse passo documentado como procedimento padrão,
+  era só recuperação pontual de um estado quebrado.
+
+## Blockers
+
+Nenhum.
+
+---
+
+Last updated: 2026-07-31 23:07 UTC
+
+## Current State
+
+`AGENTS.md` enxugado pra remover redundância e conteúdo desatualizado.
+A seção "Build e deploy" duplicava quase 1:1 a seção "Comandos" do
+`README.md` — removida, agora só aponta pra lá. A seção "Ferramentas
+do dia a dia (fish functions)" listava `rebuild`, `rebuild-test`,
+`rebuild-update` e `rebuild-with-new-inputs` — nenhuma dessas existe
+mais em `modules/apps/fish/functions.nix`; o usuário já tinha removido
+todas manualmente, restando só `write-flake` (regenera `flake.nix`,
+já dá `git add -A` e mostra o diff cacheado pra revisão antes de
+commitar) mais os utilitários de shell pré-existentes (histórico com
+`!`, `backup`, `copy`). A seção foi reescrita pra refletir isso.
+
+Adotado `jj` (Jujutsu) como front-end **prioritário** sobre `git` puro
+pra todo trabalho de versionamento neste repo daqui pra frente —
+decisão do usuário, documentada numa seção própria em `AGENTS.md`
+("Controle de versão: `jj` tem prioridade sobre `git`"). A seção
+anterior tinha uma referência quebrada a "seção Build e deploy acima"
+(que não existe mais) e citava `rebuild`/`rebuild-test` como exemplo
+de comandos `git` ainda não portados — ambos corrigidos: a referência
+cruzada foi trocada por uma explicação de que `git add -A` citado na
+seção "flake.nix é gerado" descreve o mecanismo do import-tree
+(arquivo precisa estar rastreado), não uma instrução de usar `git` em
+vez de `jj` — em `jj` o equivalente é só ter o arquivo no working
+copy, sem precisar de `jj add`. `jj` opera sobre o mesmo `.git` já
+existente; nenhuma migração de repositório foi feita.
+
+Sessão anterior explorou uma função fish combinada (`os
+switch/test/boot` com flags combináveis pra verbose, update, flake,
+dry-run, ask) mas foi descartada por complexidade desproporcional ao
+ganho — decisão consciente do usuário de manter `write-flake` como
+única função fish "de fluxo", chamando `nh`/`jj` diretamente pra
+qualquer outra coisa.
+
+## Top 3 Next Actions
+
+- Confirmar se `(user-shell "fish")` já cobre `programs.fish.enable`
+  a nível `nixos` antes de remover a fatia `nixos` redundante de
+  `apps/fish/default.nix` (pendência antiga, ainda não resolvida).
+- Migrar o fluxo de commit real do usuário pra `jj` na próxima sessão
+  em que houver mudanças a commitar — a decisão foi documentada, mas
+  ainda não exercitada na prática neste repo.
+- Validar em uso normal que `git`/`jj` (clone/fetch de repos privados
+  via HTTPS, ou qualquer chamada que use o rate limit autenticado da
+  API do GitHub) está de fato usando o token novo do github-token.nix.
+
+## Blockers
+
+Nenhum.
