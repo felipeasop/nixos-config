@@ -16,7 +16,9 @@
       discord
       spotify
       r2modman
+
       solaar
+      solaar-m650l # traz solaar junto (dependência declarada no próprio aspect)
     ];
 
   };

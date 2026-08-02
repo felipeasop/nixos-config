@@ -1,6 +1,75 @@
 # HANDOFF
 
-Last updated: 2026-07-31 21:16 UTC
+Last updated: 2026-08-01 23:00 UTC
+
+## Current State
+
+Fix do delay press->release dos botoes M4/M5 (Back/Forward) do
+Logitech M650L, validado no laptop CachyOS (host `nitro`, ainda nao
+migrado pra NixOS). Causa raiz: firmware HID++ trata os botoes
+laterais como possivel gatilho de gesto de scroll horizontal e so
+emite o evento depois de descartar o gesto -- delay reproduz identico
+em Linux e Windows, independe de driver. `logiops`/`logid` (config em
+`modules/apps/peripherals/logiops.nix`, incluido em `flp.nix`) nao
+resolve porque so tem modo `OnRelease`, sem `OnPress`
+(`PixlOne/logiops#496`); testado com `Keypress` simples no CID certo
+(0x53/0x56) e o delay persiste mesmo assim.
+
+Fix real, via Solaar: divergir (`divert-keys`) os botoes Back/Forward
+pra HID++ notification em vez de evento de mouse nativo, e uma regra
+(`rules.yaml`) que emite `depress`/`release` reais via `uinput`
+diretamente no press/release fisico -- replica hold nativo de M1/M2.
+Validado com `libinput debug-events` no CachyOS: `KEY_FORWARD pressed`
+-> `released` ~1.2s depois, batendo com o tempo real que o botao ficou
+pressionado.
+
+Organizacao final: `solaar.nix` mantido generico (pacote +
+`hardware.logitech.wireless`). Fix especifico do M650L em
+`solaar-m650l.nix` (aspect `solaar-m650l`), separado porque e conteudo
+atado ao nome/CID desse mouse -- trocar de mouse no futuro vira
+"deletar um arquivo", nao "limpar lixo misturado no aspect generico".
+
+Dependencia `solaar-m650l` -> `solaar` declarada em dois niveis:
+1. `includes = [ den.aspects.solaar ]` dentro do proprio
+   `solaar-m650l.nix` -- traz o aspect solaar automaticamente, sem
+   exigir que quem inclui `solaar-m650l` lembre de incluir `solaar`
+   tambem.
+2. `assertions` em home-manager, checando se `pkgs.solaar` esta em
+   `home.packages` -- rede de seguranca: se o merge de `includes`
+   falhar por algum motivo estrutural do Den (framework de terceiros,
+   nao nixpkgs/home-manager puro), o build FALHA com mensagem clara
+   em vez de instalar rules.yaml/servico sem o daemon que os usa.
+
+Auditado o repo inteiro por outros aspects com dependencia unica
+similar (`includes = [ den.aspects.X ]`, singular): nao existe
+nenhum outro caso hoje. Todos os demais usos de `includes` sao listas
+agregadoras (`wm`, `dev`, `flp` etc) sem relacao de dependencia
+estrita entre si -- nao ha candidato pra replicar o padrao assertions
+no momento.
+
+`flp.nix` simplificado: so lista `solaar-m650l` (nao lista mais
+`solaar` separado, ja vem via includes do aspect).
+
+config.yaml (guarda divert-keys) e escrito pelo proprio Solaar em
+runtime, identificado por serial do mouse pareado
+(`lib/solaar/configuration.py`) -- nao da pra declarar via
+xdg.configFile sem risco de perder outro estado que o Solaar grava
+sozinho (bateria etc). Solucao: versionar o COMANDO `solaar config`
+(idempotente) num `systemd.user.services.solaar-m650l-divert`
+(oneshot, `WantedBy graphical-session.target`, `sleep 5` + aplica
+divert nos CIDs 83/86) em vez do arquivo de estado. **Zero passo
+manual** -- reaplica sozinho a cada login.
+
+`logiops.nix` continua incluido em `flp.nix` (nao removido, nao
+desabilitado). No CachyOS o `logid.service` foi parado manualmente
+(`systemctl status logid` confirmado `inactive/disabled`) antes de
+validar o fix via Solaar -- os dois nunca foram testados rodando
+simultaneamente. Sem evidencia de conflito real, apenas nao testado.
+Pendencia em aberto: decidir se `logiops` deve ser removido de
+`flp.nix`/deletado, ou mantido desabilitado por padrao.
+
+---
+
 
 ## Current State
 
