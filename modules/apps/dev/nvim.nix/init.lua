@@ -14,11 +14,16 @@ vim.opt.clipboard = "unnamedplus"
 require("gitsigns").setup()
 require("lualine").setup { options = { theme = "auto" } }
 require("nvim-autopairs").setup()
-require("nvim-treesitter.configs").setup {
-  highlight = { enable = true },
-  indent = { enable = true },
-  ensure_installed = {},
-}
+require("nvim-treesitter").setup()
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    local ok = pcall(vim.treesitter.start)
+    if ok then
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
+})
 
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
