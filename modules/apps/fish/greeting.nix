@@ -8,37 +8,48 @@
 
         interactiveShellInit = ''
           function fish_greeting
-              set_color yellow
-              echo -n "time "
-              set_color bryellow
+              # uptime -p não existe no util-linux do NixOS (só no
+              # procps/Debian) — por isso o erro "uptime: opção
+              # inválida -- p". Calcula direto de /proc/uptime, sem
+              # depender de flag de binário.
+              set -l seconds (string split -f1 "." (cat /proc/uptime))
+              set -l days (math -s0 "$seconds / 86400")
+              set -l hours (math -s0 "($seconds % 86400) / 3600")
+              set -l mins (math -s0 "($seconds % 3600) / 60")
+              set -l up ""
+              if test $days -gt 0
+                  set up "$days"d" $hours"h
+              else if test $hours -gt 0
+                  set up "$hours"h" $mins"m
+              else
+                  set up "$mins"m
+              end
+
+              set -l os (grep -m1 '^ID=' /etc/os-release | cut -d= -f2 | string trim -c '"')
+              set -l kernel (uname -r | cut -d- -f1)
               set -l now (date "+%H:%M")
+
+              set_color brblue
+              echo -n "  "
+              set_color yellow
               echo -n "$now"
               set_color brblack
-              echo -n " || "
-              set_color green;
-              echo -n "up "
+              echo -n "  "
+              set_color green
+              echo -n " "
               set_color brgreen
-              set -l up (uptime -p | string replace "up " "" \
-                                  | string replace " hours, " "h " \
-                                  | string replace " hour, " "h " \
-                                  | string replace " hours" "h" \
-                                  | string replace " hour" "h" \
-                                  | string replace " minutes" "m" \
-                                  | string replace " minute" "m")
               echo -n "$up"
               set_color brblack
-              echo -n " || "
-              set_color cyan;
-              echo -n "os "
+              echo -n "  "
+              set_color cyan
+              echo -n " "
               set_color brcyan
-              set -l os (grep -m1 '^ID=' /etc/os-release | cut -d= -f2 | string trim -c '"')
               echo -n "$os"
               set_color brblack
-              echo -n " || "
-              set_color purple;
-              echo -n "kernel "
+              echo -n "  "
+              set_color purple
+              echo -n " "
               set_color brpurple
-              set -l kernel (uname -r | cut -d- -f1)
               echo -n "$kernel"
               set_color normal
               echo
