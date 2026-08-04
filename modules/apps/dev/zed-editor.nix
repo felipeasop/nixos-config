@@ -16,7 +16,7 @@
           ui_font_size = 14;
 
           theme = {
-            mode = "system"
+            mode = "system";
           };
         };
       };
