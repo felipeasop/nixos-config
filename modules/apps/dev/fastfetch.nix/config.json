@@ -1,0 +1,97 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "source": "nixos",
+    "padding": {
+      "top": 1,
+      "left": 2,
+      "right": 2
+    },
+    "color": {
+      "1": "#7fbbb3",
+      "2": "#a7c080"
+    }
+  },
+  "display": {
+    "separator": "  ",
+    "color": "#a7c080"
+  },
+  "modules": [
+    {
+      "type": "title",
+      "key": "",
+      "keyColor": "#d699b6"
+    },
+    "break",
+    {
+      "type": "os",
+      "key": "",
+      "keyColor": "#7fbbb3",
+      "format": "{name} {version}"
+    },
+    {
+      "type": "kernel",
+      "key": "",
+      "keyColor": "#d699b6",
+      "format": "{release}"
+    },
+    {
+      "type": "de",
+      "key": "",
+      "keyColor": "#7fbbb3"
+    },
+    {
+      "type": "shell",
+      "key": "",
+      "keyColor": "#83c092"
+    },
+    {
+      "type": "packages",
+      "key": "",
+      "keyColor": "#83c092"
+    },
+    {
+      "type": "uptime",
+      "key": "",
+      "keyColor": "#dbbc7f"
+    },
+    "break",
+    {
+      "type": "cpu",
+      "key": "",
+      "keyColor": "#e69875",
+      "format": "{name}"
+    },
+    {
+      "type": "gpu",
+      "key": "",
+      "keyColor": "#e69875",
+      "format": "{name}"
+    },
+    {
+      "type": "memory",
+      "key": "",
+      "keyColor": "#e69875"
+    },
+    {
+      "type": "disk",
+      "key": "",
+      "keyColor": "#e69875",
+      "folders": "/"
+    },
+    "break",
+    {
+      "type": "localip",
+      "key": "",
+      "keyColor": "#e67e80",
+      "showIpv4": true
+    },
+    "break",
+    {
+      "type": "colors",
+      "key": "",
+      "keyColor": "#d699b6",
+      "symbol": "circle"
+    }
+  ]
+}
