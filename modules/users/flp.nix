@@ -3,8 +3,6 @@
     includes = with den.aspects; [
       standard-user
 
-      logiops
-
       dev
       fish
       wm
