@@ -13,6 +13,8 @@
       den.provides.hostname
 
       grub
+      amd-graphics
+
       standard-host
       secrets
       (ssh-identity-for { user = "flp"; })

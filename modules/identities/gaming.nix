@@ -5,7 +5,6 @@
       proton
       sober
       gamescope
-      graphics
       controllers
       mangohud
     ];
