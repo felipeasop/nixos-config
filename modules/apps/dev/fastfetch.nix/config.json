@@ -5,148 +5,105 @@
     "padding": {
       "top": 1,
       "left": 2,
-      "right": 2
+      "right": 3
     },
     "color": {
       "1": "#7fbbb3",
-      "2": "#a7c080"
+      "2": "#a7c080",
+      "3": "#7fbbb3",
+      "4": "#a7c080",
+      "5": "#7fbbb3",
+      "6": "#a7c080"
     }
   },
   "display": {
-    "separator": "  ",
-    "color": "#a7c080"
+    "separator": " "
   },
   "modules": [
     "break",
     {
       "type": "title",
-      "key": "\uf2bd",
-      "keyColor": "#d699b6"
+      "format": "\u001b[38;2;127;187;179m{user-name}\u001b[38;2;90;90;80m@\u001b[38;2;167;192;128m{host-name}"
     },
     "break",
     {
       "type": "custom",
-      "format": "\u001b[38;2;127;187;179m╭─\uf109 Hardware"
+      "format": "\u001b[38;2;127;187;179m╭─  Sistema"
     },
     {
-      "type": "host",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf109",
-      "keyColor": "#a7c080"
+      "type": "os",
+      "key": "\u001b[38;2;127;187;179m├─ \u001b[38;2;167;192;128m",
+      "keyColor": "default",
+      "format": "NixOS {version}"
+    },
+    {
+      "type": "kernel",
+      "key": "\u001b[38;2;127;187;179m├─ \u001b[38;2;214;153;182m",
+      "keyColor": "default",
+      "format": "{release}"
+    },
+    {
+      "type": "packages",
+      "key": "\u001b[38;2;127;187;179m├─ \u001b[38;2;167;192;128m",
+      "keyColor": "default",
+      "format": "{all}"
+    },
+    {
+      "type": "uptime",
+      "key": "\u001b[38;2;127;187;179m╰─ \u001b[38;2;219;188;127m",
+      "keyColor": "default"
+    },
+    "break",
+    {
+      "type": "custom",
+      "format": "\u001b[38;2;127;187;179m╭─  Hardware"
     },
     {
       "type": "cpu",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2db",
-      "keyColor": "#a7c080",
+      "key": "\u001b[38;2;127;187;179m├─ \u001b[38;2;230;152;117m",
+      "keyColor": "default",
       "format": "{name}"
     },
     {
       "type": "gpu",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2db",
-      "keyColor": "#a7c080",
+      "key": "\u001b[38;2;127;187;179m├─ \u001b[38;2;230;152;117m",
+      "keyColor": "default",
       "format": "{name}"
     },
     {
       "type": "memory",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uefc5",
-      "keyColor": "#a7c080"
+      "key": "\u001b[38;2;127;187;179m├─ \u001b[38;2;230;152;117m",
+      "keyColor": "default"
     },
     {
       "type": "disk",
-      "key": "\u001b[38;2;127;187;179m╰─\u001b[0m \uf0a0",
-      "keyColor": "#a7c080",
+      "key": "\u001b[38;2;127;187;179m╰─ \u001b[38;2;230;152;117m",
+      "keyColor": "default",
       "folders": "/"
     },
     "break",
     {
       "type": "custom",
-      "format": "\u001b[38;2;127;187;179m╭─\uf013 Software"
-    },
-    {
-      "type": "os",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf313",
-      "keyColor": "#a7c080",
-      "format": "{name} {version}"
-    },
-    {
-      "type": "kernel",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf31a",
-      "keyColor": "#a7c080",
-      "format": "{release}"
-    },
-    {
-      "type": "bios",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2db",
-      "keyColor": "#a7c080",
-      "format": "{name} {version}"
-    },
-    {
-      "type": "packages",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf1b2",
-      "keyColor": "#a7c080",
-      "format": "{all}"
-    },
-    {
-      "type": "shell",
-      "key": "\u001b[38;2;127;187;179m╰─\u001b[0m \uea85",
-      "keyColor": "#a7c080"
-    },
-    "break",
-    {
-      "type": "custom",
-      "format": "\u001b[38;2;127;187;179m╭─\uf108 Desktop"
+      "format": "\u001b[38;2;127;187;179m╭─  Ambiente"
     },
     {
       "type": "de",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf108",
-      "keyColor": "#a7c080"
+      "key": "\u001b[38;2;127;187;179m├─ \u001b[38;2;131;192;146m",
+      "keyColor": "default"
     },
     {
-      "type": "lm",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2f6",
-      "keyColor": "#a7c080"
-    },
-    {
-      "type": "wm",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2d0",
-      "keyColor": "#a7c080"
-    },
-    {
-      "type": "wmtheme",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf53f",
-      "keyColor": "#a7c080"
+      "type": "shell",
+      "key": "\u001b[38;2;127;187;179m├─ \u001b[38;2;131;192;146m",
+      "keyColor": "default"
     },
     {
       "type": "terminal",
-      "key": "\u001b[38;2;127;187;179m╰─\u001b[0m \uf120",
-      "keyColor": "#a7c080"
-    },
-    "break",
-    {
-      "type": "custom",
-      "format": "\u001b[38;2;127;187;179m╭─\uf017 Time"
-    },
-    {
-      "type": "command",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf073",
-      "keyColor": "#a7c080",
-      "text": "birth=$(stat -c %W / 2>/dev/null || echo 0); if [ \"$birth\" -eq 0 ]; then echo \"Unknown\"; else now=$(date +%s); diff=$((now - birth)); days=$((diff/86400)); echo \"$days days\"; fi"
-    },
-    {
-      "type": "uptime",
-      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf017",
-      "keyColor": "#a7c080"
-    },
-    {
-      "type": "datetime",
-      "key": "\u001b[38;2;127;187;179m╰─\u001b[0m \uf073",
-      "keyColor": "#a7c080",
-      "format": "{hour}:{minute}:{second} - {day}/{month}/{year}"
+      "key": "\u001b[38;2;127;187;179m╰─ \u001b[38;2;131;192;146m",
+      "keyColor": "default"
     },
     "break",
     {
       "type": "colors",
-      "key": "\uefcc",
-      "keyColor": "#d699b6",
       "symbol": "circle"
     },
     "break"
