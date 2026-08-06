@@ -17,81 +17,138 @@
     "color": "#a7c080"
   },
   "modules": [
+    "break",
     {
       "type": "title",
-      "key": "",
+      "key": "\uf2bd",
       "keyColor": "#d699b6"
     },
     "break",
     {
-      "type": "os",
-      "key": "",
-      "keyColor": "#7fbbb3",
-      "format": "{name} {version}"
+      "type": "custom",
+      "format": "\u001b[38;2;127;187;179m╭─\uf109 Hardware"
     },
     {
-      "type": "kernel",
-      "key": "",
-      "keyColor": "#d699b6",
-      "format": "{release}"
+      "type": "host",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf109",
+      "keyColor": "#a7c080"
     },
-    {
-      "type": "de",
-      "key": "",
-      "keyColor": "#7fbbb3"
-    },
-    {
-      "type": "shell",
-      "key": "",
-      "keyColor": "#83c092"
-    },
-    {
-      "type": "packages",
-      "key": "",
-      "keyColor": "#83c092"
-    },
-    {
-      "type": "uptime",
-      "key": "",
-      "keyColor": "#dbbc7f"
-    },
-    "break",
     {
       "type": "cpu",
-      "key": "",
-      "keyColor": "#e69875",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2db",
+      "keyColor": "#a7c080",
       "format": "{name}"
     },
     {
       "type": "gpu",
-      "key": "",
-      "keyColor": "#e69875",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2db",
+      "keyColor": "#a7c080",
       "format": "{name}"
     },
     {
       "type": "memory",
-      "key": "",
-      "keyColor": "#e69875"
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uefc5",
+      "keyColor": "#a7c080"
     },
     {
       "type": "disk",
-      "key": "",
-      "keyColor": "#e69875",
+      "key": "\u001b[38;2;127;187;179m╰─\u001b[0m \uf0a0",
+      "keyColor": "#a7c080",
       "folders": "/"
     },
     "break",
     {
-      "type": "localip",
-      "key": "",
-      "keyColor": "#e67e80",
-      "showIpv4": true
+      "type": "custom",
+      "format": "\u001b[38;2;127;187;179m╭─\uf013 Software"
+    },
+    {
+      "type": "os",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf313",
+      "keyColor": "#a7c080",
+      "format": "{name} {version}"
+    },
+    {
+      "type": "kernel",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf31a",
+      "keyColor": "#a7c080",
+      "format": "{release}"
+    },
+    {
+      "type": "bios",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2db",
+      "keyColor": "#a7c080",
+      "format": "{name} {version}"
+    },
+    {
+      "type": "packages",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf1b2",
+      "keyColor": "#a7c080",
+      "format": "{all}"
+    },
+    {
+      "type": "shell",
+      "key": "\u001b[38;2;127;187;179m╰─\u001b[0m \uea85",
+      "keyColor": "#a7c080"
+    },
+    "break",
+    {
+      "type": "custom",
+      "format": "\u001b[38;2;127;187;179m╭─\uf108 Desktop"
+    },
+    {
+      "type": "de",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf108",
+      "keyColor": "#a7c080"
+    },
+    {
+      "type": "lm",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2f6",
+      "keyColor": "#a7c080"
+    },
+    {
+      "type": "wm",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf2d0",
+      "keyColor": "#a7c080"
+    },
+    {
+      "type": "wmtheme",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf53f",
+      "keyColor": "#a7c080"
+    },
+    {
+      "type": "terminal",
+      "key": "\u001b[38;2;127;187;179m╰─\u001b[0m \uf120",
+      "keyColor": "#a7c080"
+    },
+    "break",
+    {
+      "type": "custom",
+      "format": "\u001b[38;2;127;187;179m╭─\uf017 Time"
+    },
+    {
+      "type": "command",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf073",
+      "keyColor": "#a7c080",
+      "text": "birth=$(stat -c %W / 2>/dev/null || echo 0); if [ \"$birth\" -eq 0 ]; then echo \"Unknown\"; else now=$(date +%s); diff=$((now - birth)); days=$((diff/86400)); echo \"$days days\"; fi"
+    },
+    {
+      "type": "uptime",
+      "key": "\u001b[38;2;127;187;179m├─\u001b[0m \uf017",
+      "keyColor": "#a7c080"
+    },
+    {
+      "type": "datetime",
+      "key": "\u001b[38;2;127;187;179m╰─\u001b[0m \uf073",
+      "keyColor": "#a7c080",
+      "format": "{hour}:{minute}:{second} - {day}/{month}/{year}"
     },
     "break",
     {
       "type": "colors",
-      "key": "",
+      "key": "\uefcc",
       "keyColor": "#d699b6",
       "symbol": "circle"
-    }
+    },
+    "break"
   ]
 }
