@@ -7,8 +7,10 @@
     ];
 
     nixos = {
-      services.logind.lidSwitch = "suspend";
-      services.logind.lidSwitchExternalPower = "lock";
+      services.logind = {
+        lidSwitch = "suspend";
+        lidSwitchExternalPower = "lock";
+      };
     };
   };
 }
