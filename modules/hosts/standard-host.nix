@@ -12,6 +12,7 @@
       essential
       security
       kernel
+      kernel-tuning
     ];
   };
 }

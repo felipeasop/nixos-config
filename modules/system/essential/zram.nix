@@ -6,7 +6,7 @@
     nixos = {
       zramSwap = {
         enable = true;
-        memoryPercent = 25;
+        memoryPercent = 50;
         priority = 100;
         algorithm = "zstd";
       };
