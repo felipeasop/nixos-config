@@ -1,5 +1,88 @@
 # HANDOFF
 
+Last updated: 2026-08-07 (ver data real do commit) UTC
+
+## Current State
+
+Fix da etapa 1 (hold press/release, ver entrada abaixo de
+2026-08-01) resolvia o comportamento em apps de desktop, mas M4/M5
+continuavam **não funcionando dentro de jogos** (confirmado com Risk
+of Rain 2 no NixOS/host `atlas`). Investigado e corrigido.
+
+Causa raiz confirmada com `sudo libinput debug-events` rodando no
+`atlas` (NixOS, não CachyOS) enquanto os botoes eram pressionados:
+o Solaar emite os botoes diverted como `KEY_BACK`/`KEY_FORWARD` num
+device de **TECLADO** virtual (`solaar-keyboard`, criado pelo
+proprio Solaar via uinput) -- nao como botao de mouse. Apps de
+desktop (browser etc) bindam essas teclas normalmente porque
+`XF86_Back`/`XF86_Forward` sao convencao de teclado multimidia, mas
+jogos esperam literalmente `Mouse4`/`Mouse5` (`BTN_SIDE`/`BTN_EXTRA`)
+lido via evdev/raw input -- nunca reconhecem tecla como bind de mouse.
+Isso e esperado ser identico em qualquer distro/compositor, nao e bug
+especifico do NixOS.
+
+Confirmado tambem, contra a documentacao oficial do Solaar
+(`pwr-solaar.github.io/Solaar/rules`), que o Solaar **nao tem
+capacidade nativa** de emitir botao de mouse lateral: a action
+`MouseClick` das regras so cobre `left`/`middle`/`right`. Nao existe
+combinacao de `rules.yaml` que resolva isso -- nao e erro de
+configuracao, e limitacao da ferramenta.
+
+Investigado (sem resolucao definitiva) por que o mesmo `rules.yaml`
+(so `KeyPress`, sem nenhuma ferramenta adicional) foi validado pelo
+usuario como reconhecido como "Mouse 4/5" dentro do RoR2 no CachyOS/
+laptop `nitro`. Tecnicamente isso nao deveria ser possivel com o
+mecanismo confirmado (teclado, nao mouse) -- permanece inconsistencia
+nao explicada; hipoteses nao confirmadas: versao diferente do Solaar,
+Steam Input remapeando/rotulando a tecla como "Mouse4" na UI, ou uma
+config adicional que nao sobreviveu nos logs/trechos revisados. Nao
+documentado como fato, so como duvida em aberto.
+
+Fix: novo daemon (`m650l-mouse-remap.py`, `python-evdev`) que le o
+device `solaar-keyboard` que o Solaar ja cria, faz `grab()` nele
+(pra nao vazar como tecla pro resto do sistema, so pro daemon) e
+reemite `KEY_BACK`->`BTN_SIDE`, `KEY_FORWARD`->`BTN_EXTRA` num
+segundo device uinput (`m650l-mouse-buttons`), esse sim visto pelo
+kernel/jogos como mouse de verdade. Roda como
+`systemd.services.m650l-mouse-remap` (nivel de SISTEMA, nao user --
+`/dev/uinput` e o `grab()` exclusivo de `/dev/input/eventX`
+normalmente exigem acesso que `systemd.user` nao garante por padrao
+sem regra udev extra). Reconecta automaticamente se o device sumir
+(troca de bateria, sleep, mouse desligado/religado).
+
+Fundido no mesmo arquivo `solaar-m650l.nix` (nao criado aspect
+separado) -- e o mesmo fix conceitual (M4/M5 do M650L), so com uma
+segunda etapa. `homeManager` mantem o hold (`rules.yaml` +
+`solaar-m650l-divert`, ja existente); `provides.to-hosts.nixos`
+ganhou o novo `systemd.services.m650l-mouse-remap` +
+`services.udev.extraRules` (`uinput` com `TAG+="uaccess"`) +
+`users.groups.input`/`users.flp.extraGroups`.
+
+Ainda **nao validado em maquina real** (usuario ainda vai testar) --
+proxima sessao deve confirmar com `sudo libinput debug-events`
+mostrando `BTN_SIDE`/`BTN_EXTRA` (nao mais `KEYBOARD_KEY`) ao
+pressionar M4/M5, e testar RoR2 direto.
+
+## Top 3 Next Actions
+
+- Testar em maquina real (`nh os switch`) e confirmar via
+  `libinput debug-events` que M4/M5 agora saem como
+  `BTN_SIDE`/`BTN_EXTRA` num device `m650l-mouse-buttons`, nao mais
+  `KEYBOARD_KEY` no `solaar-keyboard`.
+- Testar especificamente no RoR2 (ou outro jogo) se o bind
+  "Mouse 4"/"Mouse 5" agora reconhece o input.
+- Se `after = [ "graphical-session.target" ]` no servico de sistema
+  nao ordenar corretamente contra o `solaar.service` (que e
+  `systemd.user`, arvore separada), considerar trocar por trigger via
+  regra `udev` no aparecimento do device `solaar-keyboard`, em vez de
+  depender so do polling de 60s (`wait_for_source`) + `Restart=on-failure`.
+
+## Blockers
+
+Nenhum.
+
+---
+
 Last updated: 2026-08-01 23:00 UTC
 
 ## Current State

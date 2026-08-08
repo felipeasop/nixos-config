@@ -2,7 +2,6 @@
 
 - [ ] Niri: testar steam e discord, arrumar tema
 - [ ] Arrumar fish greeting
-- [ ] Baixar Obsidian
 - [ ] Mover arquivos criados/alterados recentemente
 - [ ] Ver cor de fastfetch
 - [ ] Quando adicionar o laptop: seguir `secrets/README.md` pra gerar a
