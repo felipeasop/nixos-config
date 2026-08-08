@@ -8,11 +8,9 @@
 
         interactiveShellInit = ''
           function fish_greeting
-              # uptime -p não existe no util-linux do NixOS (só no
-              # procps/Debian) — por isso o erro "uptime: opção
-              # inválida -- p". Calcula direto de /proc/uptime, sem
-              # depender de flag de binário.
-              set -l seconds (string split -f1 "." (cat /proc/uptime))
+              # Correção da leitura do uptime
+              set -l seconds (cut -d. -f1 /proc/uptime)
+
               set -l days (math -s0 "$seconds / 86400")
               set -l hours (math -s0 "($seconds % 86400) / 3600")
               set -l mins (math -s0 "($seconds % 3600) / 60")
@@ -29,28 +27,43 @@
               set -l kernel (uname -r | cut -d- -f1)
               set -l now (date "+%H:%M")
 
+              # Peixe
+              set_color 7fbbb3
+              echo -n "󰈺  "
+
+              # Relógio e Hora
               set_color brblue
-              echo -n "  "
+              echo -n " "
               set_color yellow
               echo -n "$now"
+
               set_color brblack
               echo -n "  "
+
+              # Ampulheta e Uptime
               set_color green
-              echo -n " "
+              echo -n " "
               set_color brgreen
               echo -n "$up"
+
               set_color brblack
               echo -n "  "
+
+              # Logo do NixOS e OS
               set_color cyan
-              echo -n " "
+              echo -n " "
               set_color brcyan
               echo -n "$os"
+
               set_color brblack
               echo -n "  "
+
+              # Tux (Pinguim) e Kernel
               set_color purple
-              echo -n " "
+              echo -n " "
               set_color brpurple
               echo -n "$kernel"
+
               set_color normal
               echo
           end
