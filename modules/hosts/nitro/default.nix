@@ -1,9 +1,8 @@
 { den, ... }: {
-  den.hosts.x86_64-linux.nitro = {
-    hostName = "nitro";
-    kernel = "cachy";
-    users.flp = { };
-  };
+  # den.hosts.x86_64-linux.nitro = {
+  #   hostName = "nitro";
+  #   kernel = "cachy";
+  # };
 
   den.aspects.nitro = {
     includes = with den.aspects; [
