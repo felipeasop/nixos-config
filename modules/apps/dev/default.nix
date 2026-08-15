@@ -7,6 +7,7 @@
       ghostty
       git
       jujutsu
+      lazygit
       neovim
       zed-editor
     ];
