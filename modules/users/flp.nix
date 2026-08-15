@@ -6,7 +6,7 @@
       dev
       fish
       wm
-      gaming # antes vinha via isGaming=true + identities; agora direto
+      gaming
 
       firefox
       librewolf

@@ -2,6 +2,7 @@
   den.hosts.x86_64-linux.desktop = {
     hostName = "desktop";
     kernel = "cachy";
+    users.flp = { };
   };
 
   den.aspects.desktop = {
@@ -10,6 +11,7 @@
 
       grub
       amd-graphics
+      gaming
 
       standard-host
       secrets
@@ -22,7 +24,6 @@
     ];
 
     provides.to-users.includes = with den.aspects; [
-      identities
       essential
     ];
   };
