@@ -6,6 +6,7 @@
       dev
       fish
       wm
+      gaming # antes vinha via isGaming=true + identities; agora direto
 
       firefox
       librewolf
@@ -14,10 +15,10 @@
       discord
       spotify
       r2modman
+      prismlauncher
 
       solaar
       solaar-m650l # traz solaar junto (dependência declarada no próprio aspect)
     ];
-
   };
 }
