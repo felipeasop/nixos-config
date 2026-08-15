@@ -45,14 +45,14 @@ Anota o valor `age1...` impresso.
 
 ```yaml
 keys:
-  - &atlas age1le2a7zv6ln9h34znl74qg7w86ntlzf9wr9f9p7rlu4pyqxmrud2qk24rpk
+  - &desktop age1le2a7zv6ln9h34znl74qg7w86ntlzf9wr9f9p7rlu4pyqxmrud2qk24rpk
   - &laptop age1...   # cole aqui o valor do passo 2
 
 creation_rules:
   - path_regex: secrets/secrets\.yaml$
     key_groups:
       - age:
-          - *atlas
+          - *desktop
           - *laptop
 ```
 
@@ -67,12 +67,12 @@ Adicionar uma entrada nova, seguindo o padrão já existente:
 
 ```yaml
 ssh:
-  atlas:
+  desktop:
     private_key: |
       -----BEGIN OPENSSH PRIVATE KEY-----
       ...
       -----END OPENSSH PRIVATE KEY-----
-    public_key: "ssh-ed25519 AAAA... flp@atlas"
+    public_key: "ssh-ed25519 AAAA... flp@desktop"
   laptop:
     private_key: |
       -----BEGIN OPENSSH PRIVATE KEY-----
