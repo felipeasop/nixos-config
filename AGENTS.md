@@ -222,10 +222,10 @@ O padrão certo é `provides.<alvo>` num aspect de host ou user:
   todo host onde esse user vive
 - `provides.<nome-especifico>` — entrega só pra aquele host/user nomeado
 
-Usado em `hosts/atlas/default.nix`:
+Usado em `hosts/desktop/default.nix`:
 
 ```nix
-den.aspects.atlas = {
+den.aspects.desktop = {
   includes = [ ... ];              # config do próprio host (classe nixos)
   provides.to-users.includes = with den.aspects; [
     identities
@@ -247,7 +247,7 @@ definido.
 Não existe regra do Den sobre em qual lado (host ou user) um aspect
 *deve* ser `includes`d — isso é decisão de design do repo, caso a caso.
 A convenção deste repo: o lado em que o aspect aparece no `includes` é
-o dono declarado (ex: `kde`/`security` são incluídos em `atlas.includes`
+o dono declarado (ex: `kde`/`security` são incluídos em `desktop.includes`
 → o **host** é dono; `niri`/`solaar` são incluídos em `flp.includes` →
 o **user** é dono). Quando esse aspect também define a *outra* classe
 (`homeManager` num aspect dono-host, ou `nixos` num aspect dono-user),

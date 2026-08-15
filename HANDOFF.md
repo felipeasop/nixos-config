@@ -7,10 +7,10 @@ Last updated: 2026-08-07 (ver data real do commit) UTC
 Fix da etapa 1 (hold press/release, ver entrada abaixo de
 2026-08-01) resolvia o comportamento em apps de desktop, mas M4/M5
 continuavam **não funcionando dentro de jogos** (confirmado com Risk
-of Rain 2 no NixOS/host `atlas`). Investigado e corrigido.
+of Rain 2 no NixOS/host `desktop`). Investigado e corrigido.
 
 Causa raiz confirmada com `sudo libinput debug-events` rodando no
-`atlas` (NixOS, não CachyOS) enquanto os botoes eram pressionados:
+`desktop` (NixOS, não CachyOS) enquanto os botoes eram pressionados:
 o Solaar emite os botoes diverted como `KEY_BACK`/`KEY_FORWARD` num
 device de **TECLADO** virtual (`solaar-keyboard`, criado pelo
 proprio Solaar via uinput) -- nao como botao de mouse. Apps de
@@ -160,9 +160,9 @@ Investigado e corrigido `error: attribute 'sops' missing` ao rodar
 `nh os switch . -u -vvv` após adicionar `apps/dev/git/github-token.nix`
 com `den.aspects.git.nixos.sops.secrets...`. Causa: `git` é incluído
 só do lado **user** (`flp.includes`), então a classe `nixos` desse
-aspect nunca chegava no host `atlas` — `config.sops` não existe nesse
+aspect nunca chegava no host `desktop` — `config.sops` não existe nesse
 ponto de avaliação porque o aspect `secrets` (dono de `sops.*`) só é
-`includes`d em `atlas`, não em `flp`. Confirmado contra a doc oficial
+`includes`d em `desktop`, não em `flp`. Confirmado contra a doc oficial
 ([Host↔User Mutual Providers](https://den.denful.dev/guides/mutual/)):
 "No battery required" — cross-entity routing é built-in, sem precisar
 de `den._.mutual-provider` (uma nota de changelog antiga sugeria o
@@ -178,7 +178,7 @@ o mesmo padrão (aspect com classes `nixos` + `homeManager` ao mesmo
 tempo, mas `includes`d só de um lado, sem `provides` cobrindo a classe
 minoritária). Resultado da auditoria, arquivos com correção **pronta
 mas ainda não escrita no repo** (ver blocos de código na conversa):
-- `modules/desktop/kde/default.nix` — dono host (`atlas.includes`);
+- `modules/desktop/kde/default.nix` — dono host (`desktop.includes`);
   faltava `provides.to-users.homeManager` (plasma-manager, mouse
   Logitech, atalho Ghostty).
 - `modules/security/keyring.nix` — dono host (`standard-host`);
@@ -245,7 +245,7 @@ config real de driver/kernel, não de usuário). `modules/apps/dev/cli-tools.nix
 foi avaliado e mantido em `nixos.environment.systemPackages` de
 propósito — decisão consciente de que essas ferramentas (ripgrep, fzf,
 htop, jq etc.) devem estar disponíveis a qualquer usuário do host,
-mesmo fora de sessão gráfica, não só ao `flp`. `hosts/atlas/default.nix`
+mesmo fora de sessão gráfica, não só ao `flp`. `hosts/desktop/default.nix`
 e `users/flp.nix` foram revisados e confirmados corretos sem alteração
 — identities e essential já chegam ao user via `provides.to-users`,
 como documentado em `AGENTS.md`. `fish` permanece incluído só em
