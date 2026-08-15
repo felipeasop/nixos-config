@@ -2,15 +2,6 @@ _: {
   den.schema.user.imports = [
     ({ lib, ... }: {
       options = {
-        isGaming = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          description = ''
-            Se este usuário deve incluir o identity de gaming (steam,
-            proton, gamescope, etc).
-          '';
-        };
-
         fullName = lib.mkOption {
           type = lib.types.nullOr lib.types.str;
           default = null;
