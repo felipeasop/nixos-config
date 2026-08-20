@@ -5,7 +5,7 @@
         enable = true;
         settings.user = {
           name = "felipeasop";
-          email = "flpasop27@example.com";
+          email = "flpasop27@gmail.com";
         };
       };
     };

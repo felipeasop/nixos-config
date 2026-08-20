@@ -4,6 +4,7 @@
       standard-user
 
       dev
+      codex
       fish
       wm
       gaming
@@ -13,7 +14,9 @@
       zen-browser
 
       discord
+      zapzap
       spotify
+      obsidian
       r2modman
       prismlauncher
 

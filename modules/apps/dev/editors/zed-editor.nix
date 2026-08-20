@@ -1,12 +1,17 @@
 {
   den.aspects.zed-editor = {
-    homeManager = {
+    homeManager = { pkgs, ... }: {
       programs.zed-editor = {
         enable = true;
 
         extensions = [
           "nix"
           "toml"
+        ];
+
+        extraPackages = with pkgs; [
+          nil
+          nixd
         ];
 
         userSettings = {
