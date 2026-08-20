@@ -1,3 +1,4 @@
+# modules/apps/browsers/zen-browser.nix
 { inputs, ... }:
 {
   flake-file.inputs.zen-browser = {
@@ -44,6 +45,11 @@
           settings = {
             "zen.view.compact.enable-at-startup" = true;
             "zen.workspaces.continue-where-left-off" = true;
+
+            # Restaurar abas/janelas da sessão anterior. Sem mkDefault de
+            # propósito: o preset betterfox desativa isso por padrão
+            # (privacidade), então aqui precisa ter prioridade sobre o preset.
+            "browser.startup.page" = 3;
           };
 
           # Search: Startpage não é engine nativa, é fornecida pela extensão,
@@ -85,12 +91,11 @@
               icon = "🫡";
             };
 
-
             "Faculdade" = {
               id = "7c9ee082-757b-425f-9c7b-7d029686cee4";
               position = 4000;
               icon = "🥵";
-              container = 2;
+              container = 1;
             };
           };
 
