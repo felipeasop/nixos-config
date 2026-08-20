@@ -1,9 +1,9 @@
 {
   den.aspects.niri = {
     homeManager = {
-      programs.niri.settings.spawn-at-startup = [
-        { command = [ "noctalia" ]; }
-      ];
+      # noctalia sobe via systemd user service
+      # Não é necessário subir aqui também via spawn-at-startup
+      programs.niri.settings.spawn-at-startup = [ ];
     };
   };
 }

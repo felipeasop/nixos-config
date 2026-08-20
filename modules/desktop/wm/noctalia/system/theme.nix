@@ -12,7 +12,7 @@
 
         templates = {
           enable_builtin_templates = true;
-          enable_community_templates = false;
+          enable_community_templates = true;
           builtin_ids = [
             "gtk3"
             "gtk4"

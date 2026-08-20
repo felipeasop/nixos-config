@@ -8,7 +8,7 @@
         };
 
         brightness = {
-          enable_ddcutil = false;
+          enable_ddcutil = true;
           sync_all_monitors = false;
           minimum_brightness = 0.0;
           # ignore_mmids = [ ];  # IDs de monitores a ignorar

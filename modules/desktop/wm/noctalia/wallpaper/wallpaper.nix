@@ -1,4 +1,4 @@
-{
+{ inputs, ... }: {
   den.aspects.noctalia = {
     homeManager = {
       programs.noctalia.settings.wallpaper = {
@@ -18,7 +18,7 @@
         transition_on_startup = false;
         per_monitor_directories = false;
 
-        directory = "${../../../../../assets/wallpaper}";
+        directory = "${inputs.self}/assets/wallpaper";
         # directory_light = "";
         # directory_dark  = "";
 

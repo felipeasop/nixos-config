@@ -203,10 +203,6 @@
         "Mod+Shift+Minus".action.set-window-height = "-10%";
         "Mod+Shift+Equal".action.set-window-height = "+10%";
 
-        "Mod+Shift+1".action.set-column-width = "33.333%";
-        "Mod+Shift+2".action.set-column-width = "50%";
-        "Mod+Shift+3".action.set-column-width = "66.667%";
-
         "Mod+T".action.toggle-window-floating = { };
         "Mod+Shift+F".action.fullscreen-window = { };
 
