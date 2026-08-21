@@ -49,9 +49,13 @@
             acceleration = 0.0;
           }
         ];
-        shortcuts.kwin = {
-          "Ghostty" = "Meta+Enter";
+
+        hotkeys.commands."launch-ghostty" = {
+          name = "Launch Ghostty";
+          key = "Meta+Return";
+          command = "ghostty";
         };
+        shortcuts."services/plasma-manager-commands.desktop"."launch-ghostty" = "Meta+Return";
       };
     };
   };
