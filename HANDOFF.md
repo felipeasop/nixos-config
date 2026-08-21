@@ -1,6 +1,35 @@
 # HANDOFF
 
-Last updated: 2026-08-07 (ver data real do commit) UTC
+Last updated: 2026-08-21 02:02 UTC
+
+## Current State
+
+Referências de arquivos do repositório em módulos movíveis foram
+convertidas para caminhos ancorados em `inputs.self`: avatar do SDDM,
+configuração do Fastfetch, init.lua do Neovim e script de remapeamento
+do Solaar. A auditoria não encontrou outras referências funcionais
+relativas desse tipo.
+
+Exceção intencional: os três imports `./_hardware.nix` dos hosts
+permanecem relativos. Eles são avaliados durante a construção dos
+outputs do flake; trocar por `inputs.self` causa recursão infinita.
+
+O atalho de Ghostty no KDE também está corrigido mas ainda não foi
+commitado: usa a ação `_launch` do `.desktop` real pelo grupo
+`services/com.mitchellh.ghostty.desktop`, com `Meta+Return`, em vez de
+uma ação inexistente do KWin.
+
+## Top 3 Next Actions
+
+- Aplicar `nh os switch .` e confirmar `Meta+Return` no Plasma.
+- Criar commits para o atalho do Ghostty e para a refatoração de paths.
+- Testar em máquina real o remapeamento M4/M5 descrito na seção abaixo.
+
+## Blockers
+
+Nenhum. Nenhum segredo foi adicionado a arquivos rastreados.
+
+---
 
 ## Current State
 
