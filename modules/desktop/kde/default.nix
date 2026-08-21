@@ -17,7 +17,7 @@
       # SDDM (tela de login) lê o ícone via accountsservice.
       system.activationScripts.userAvatar.text = ''
         mkdir -p /var/lib/AccountsService/icons
-        cp ${../../../assets/avatar/margarida.jpg} /var/lib/AccountsService/icons/flp
+        cp ${inputs.self}/assets/avatar/margarida.jpg /var/lib/AccountsService/icons/flp
         chmod 644 /var/lib/AccountsService/icons/flp
       '';
 
