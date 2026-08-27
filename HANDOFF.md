@@ -1,6 +1,35 @@
 # HANDOFF
 
-Last updated: 2026-08-21 02:02 UTC
+Last updated: 2026-08-26 21:12 UTC
+
+## Current State
+
+O aspect `direnv` não instala toolchains de C/C++, Java, Go, Rust ou Python
+no perfil do usuário. As linguagens ficam declaradas nos `flake.nix` dos
+projetos que as utilizam.
+
+`tmux` foi isolado no módulo `modules/applications/development/tools/tmux.nix`
+e incluído pelo aspect `dev`. A alteração foi validada com `git diff --check`,
+mas `nix flake check`/`nh os switch` não puderam acessar o daemon Nix neste
+ambiente; a solicitação de permissão elevada foi recusada.
+
+A árvore de development foi reorganizada por responsabilidade: editores em
+`editors/`, controle de versão em `version-control/` e ferramentas em `tools/`.
+O módulo do Neovim agora vive em `editors/neovim/`, com seu `init.lua` ao lado.
+
+As declarações centralizadas de ambientes de desenvolvimento foram removidas;
+cada projeto deve fornecer seus próprios ambientes via `flake.nix`.
+
+## Top 3 Next Actions
+
+- Aplicar `nh os switch .` em um ambiente com acesso ao daemon Nix.
+- Confirmar que `tmux` aparece no perfil do usuário `flp`.
+- Criar `flake.nix` nos projetos que precisarem de ambientes de desenvolvimento.
+
+## Blockers
+
+O daemon Nix está inacessível neste ambiente por permissão. Nenhum segredo
+foi adicionado a arquivos rastreados.
 
 ## Current State
 
