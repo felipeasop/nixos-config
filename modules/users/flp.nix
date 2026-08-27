@@ -15,6 +15,8 @@
 
       discord
       zapzap
+      gimp
+      libreoffice
       spotify
       obsidian
       r2modman
