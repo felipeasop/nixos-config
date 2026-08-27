@@ -22,7 +22,6 @@ git add -A && nh os switch .                             # dia a dia
 nh os test .                                             # testa sem persistir no boot
 nix fmt                                                   # formata tudo
 nix flake check                                           # lint + checks
-nix develop .#<c|java|go|rust|python>                     # devshell
 ```
 
 Convenções e detalhes de arquitetura: ver `AGENTS.md`. Segredos: ver `secrets/README.md`.
