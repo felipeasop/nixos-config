@@ -1,0 +1,135 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "source": "NixOS",
+    "padding": {
+      "top": 1,
+      "left": 2,
+      "right": 3
+    },
+    "color": {
+      "1": "#7fbbb3",
+      "2": "#a7c080",
+      "3": "#7fbbb3",
+      "4": "#a7c080",
+      "5": "#7fbbb3",
+      "6": "#a7c080"
+    }
+  },
+  "display": {
+    "separator": "  "
+  },
+  "modules": [
+    "break",
+    {
+      "type": "title",
+      "format": "\u001b[38;2;167;192;128m{user-name}\u001b[38;2;133;146;137m@\u001b[38;2;127;187;179m{host-name}"
+    },
+    "break",
+    {
+      "type": "custom",
+      "format": "\u001b[38;2;127;187;179m╭─ sistema"
+    },
+    {
+      "type": "os",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;167;192;128m  \u001b[38;2;211;198;170mSistema",
+      "keyColor": "default",
+      "format": "NixOS {version}"
+    },
+    {
+      "type": "kernel",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;214;153;182m  \u001b[38;2;211;198;170mKernel",
+      "keyColor": "default",
+      "format": "{release}"
+    },
+    {
+      "type": "uptime",
+      "key": "\u001b[38;2;127;187;179m╰─ \u001b[38;2;219;188;127m  \u001b[38;2;211;198;170mSessão",
+      "keyColor": "default"
+    },
+    "break",
+    {
+      "type": "custom",
+      "format": "\u001b[38;2;127;187;179m╭─ máquina"
+    },
+    {
+      "type": "board",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;214;153;182m󰌢  \u001b[38;2;211;198;170mPlaca-mãe",
+      "keyColor": "default",
+      "format": "{vendor} {name}"
+    },
+    {
+      "type": "cpu",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;230;152;117m  \u001b[38;2;211;198;170mCPU",
+      "keyColor": "default",
+      "format": "{name} · {cores-physical}C/{cores-logical}T · até {freq-max}"
+    },
+    {
+      "type": "gpu",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;230;152;117m󰢮  \u001b[38;2;211;198;170mGPU",
+      "keyColor": "default",
+      "format": "{name}"
+    },
+    {
+      "type": "memory",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;219;188;127m  \u001b[38;2;211;198;170mMemória",
+      "keyColor": "default",
+      "format": "{used} / {total} ({percentage})"
+    },
+    {
+      "type": "disk",
+      "key": "\u001b[38;2;127;187;179m╰─ \u001b[38;2;167;192;128m󰋊  \u001b[38;2;211;198;170mDisco",
+      "keyColor": "default",
+      "folders": "/",
+      "format": "{size-used} / {size-total} ({size-percentage})"
+    },
+    "break",
+    {
+      "type": "custom",
+      "format": "\u001b[38;2;127;187;179m╭─ ambiente"
+    },
+    {
+      "type": "de",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;127;187;179m  \u001b[38;2;211;198;170mDesktop",
+      "keyColor": "default"
+    },
+    {
+      "type": "wm",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;219;188;127m󰖯  \u001b[38;2;211;198;170mSessão",
+      "keyColor": "default"
+    },
+    {
+      "type": "theme",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;214;153;182m󰔎  \u001b[38;2;211;198;170mTema",
+      "keyColor": "default"
+    },
+    {
+      "type": "display",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;230;152;117m󰍹  \u001b[38;2;211;198;170mTela",
+      "keyColor": "default",
+      "format": "{width}x{height} · {type}"
+    },
+    {
+      "type": "terminalfont",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;219;188;127m  \u001b[38;2;211;198;170mFonte",
+      "keyColor": "default",
+      "format": "{name} · {size}"
+    },
+    {
+      "type": "shell",
+      "key": "\u001b[38;2;127;187;179m│  \u001b[38;2;167;192;128m  \u001b[38;2;211;198;170mShell",
+      "keyColor": "default"
+    },
+    {
+      "type": "terminal",
+      "key": "\u001b[38;2;127;187;179m╰─ \u001b[38;2;214;153;182m  \u001b[38;2;211;198;170mTerminal",
+      "keyColor": "default"
+    },
+    "break",
+    {
+      "type": "colors",
+      "symbol": "circle"
+    },
+    "break"
+  ]
+}

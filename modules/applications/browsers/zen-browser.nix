@@ -1,4 +1,3 @@
-# modules/apps/browsers/zen-browser.nix
 { inputs, ... }:
 {
   flake-file.inputs.zen-browser = {

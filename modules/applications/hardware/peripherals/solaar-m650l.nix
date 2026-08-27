@@ -58,7 +58,7 @@
             message = ''
               solaar-m650l requer o pacote `solaar` em home.packages,
               mas ele não foi encontrado. Este aspect depende do
-              aspect `solaar` (veja apps/peripherals/solaar.nix) —
+              aspect `solaar` (veja applications/hardware/peripherals/solaar.nix) —
               confirme que `includes = [ den.aspects.solaar ]` está
               presente em solaar-m650l.nix e que nada removeu o
               aspect solaar do merge final.
