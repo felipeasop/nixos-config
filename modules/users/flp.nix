@@ -6,7 +6,7 @@
       dev
       codex
       fish
-      wm
+      desktop-stack
       gaming
 
       firefox

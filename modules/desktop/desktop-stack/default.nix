@@ -1,5 +1,5 @@
 { den, ... }: {
-  den.aspects.wm = {
+  den.aspects.desktop-stack = {
     includes = with den.aspects; [
       niri
       noctalia

@@ -17,6 +17,10 @@ A árvore de development foi reorganizada por responsabilidade: editores em
 `editors/`, controle de versão em `version-control/` e ferramentas em `tools/`.
 O módulo do Neovim agora vive em `editors/neovim/`, com seu `init.lua` ao lado.
 
+A árvore de desktop foi reorganizada por responsabilidade: KDE em
+`environments/kde`, integração em `integration`, Niri em `compositors/niri`,
+Noctalia em `shells/noctalia` e o bundle agregador em `desktop-stack`.
+
 As declarações centralizadas de ambientes de desenvolvimento foram removidas;
 cada projeto deve fornecer seus próprios ambientes via `flake.nix`.
 

@@ -5,7 +5,7 @@
   #   2. rode `nixos-generate-config` na máquina alvo e copie o
   #      hardware-configuration.nix gerado pra ./_hardware.nix
   #   3. ajuste a lista de includes pro que esse host realmente precisa
-  #      niri/xdg/noctalia vêm via `wm`, incluído do lado do user, não do host)
+  #      niri/xdg/noctalia vêm via `desktop-stack`, incluído do lado do user, não do host)
   den.hosts.x86_64-linux.template = {
     hostName = "template";
     kernel = "latest";
