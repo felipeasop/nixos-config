@@ -2,7 +2,8 @@
   den.aspects.dev = {
     includes = with den.aspects; [
       cli
-      dev-tools
+      direnv
+      tmux
       fastfetch
       ghostty
       git
@@ -10,6 +11,7 @@
       lazygit
       neovim
       zed-editor
+      rstudio
     ];
   };
 }

@@ -7,7 +7,7 @@
         viAlias = true;
         vimAlias = true;
 
-        extraLuaConfig = builtins.readFile "${inputs.self}/modules/apps/dev/editors/nvim.nix/init.lua";
+        extraLuaConfig = builtins.readFile "${inputs.self}/modules/applications/development/editors/neovim/init.lua";
 
         plugins = with pkgs.vimPlugins; [
           plenary-nvim
