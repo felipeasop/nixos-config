@@ -21,6 +21,10 @@ A árvore de desktop foi reorganizada por responsabilidade: KDE em
 `environments/kde`, integração em `integration`, Niri em `compositors/niri`,
 Noctalia em `shells/noctalia` e o bundle agregador em `desktop-stack`.
 
+Foram adicionados aspects opcionais mínimos para MangoWM e COSMIC. Eles não
+estão incluídos no `desktop-stack`; Noctalia continua sendo a única desktop
+shell configurada.
+
 As declarações centralizadas de ambientes de desenvolvimento foram removidas;
 cada projeto deve fornecer seus próprios ambientes via `flake.nix`.
 
