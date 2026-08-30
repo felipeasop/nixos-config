@@ -31,36 +31,16 @@ Ler nesta ordem:
 
 Comandos de build/deploy: ver `README.md`.
 
-## Controle de versão: `jj` (Jujutsu) tem prioridade sobre `git`
+## Convenção de commits
 
-Decisão do usuário (2026-07-31): **`jj` é o front-end obrigatório por
-padrão** pra interagir com o histórico deste repo, sempre que
-disponível na máquina. Não é "preferência quando conveniente" — ao
-propor qualquer comando de commit/branch/histórico, usar `jj` primeiro
-e só cair pra `git` puro se `jj` não estiver instalado ou o usuário
-pedir explicitamente `git`. O backend continua sendo o mesmo `.git` —
-`jj` não substitui o repositório, só a forma de operar nele.
+Usar Conventional Commits em português, no formato
+`tipo(escopo): resumo no imperativo`. O escopo é opcional quando não melhora a
+clareza. Tipos usuais: `feat`, `fix`, `refactor`, `chore` e `docs`.
 
-Diferenças que importam pra quem (humano ou IA) só conhece `git`:
-- Não existe staging area. Todo arquivo no working directory já faz
-  parte do commit atual ("working-copy commit") — não tem `jj add`.
-- `jj describe -m "msg"` dá mensagem ao commit atual sem "fechar"
-  nada. `jj new` fecha o commit atual e abre o próximo — isso é o
-  equivalente real a "finalizar um commit". `jj commit -m "msg"` faz
-  os dois passos de uma vez (mais parecido com `git commit -am`).
-- Editar um commit já feito (mesmo não sendo o mais recente) é
-  `jj edit <change-id>`; os commits descendentes são reescritos
-  automaticamente (rebase automático), sem rebase interativo manual.
-- `jj squash` junta as mudanças do commit atual no pai.
-- Push/pull continuam indo pro mesmo remote GitHub:
-  `jj git fetch` / `jj git push --branch main`.
-
-Comandos de `git` citados noutras partes deste arquivo (ex: `git add -A`
-na seção "flake.nix é gerado") descrevem o mecanismo subjacente do
-import-tree (precisa que o arquivo esteja rastreado, staged ou não) —
-não são uma instrução de usar `git` em vez de `jj`. Em `jj`, o
-equivalente é simplesmente ter o arquivo no working copy — não precisa
-de `jj add`, o rastreamento é automático a cada `jj status`/`jj diff`.
+Todo commit deve ter subject curto e corpo em português: o corpo explica o
+propósito da mudança e o resultado para o usuário ou sistema, não apenas os
+arquivos alterados. Separar mudanças de responsabilidades distintas em commits
+independentes e adicionar ao índice somente os paths de cada grupo.
 
 ## Arquitetura
 
@@ -130,14 +110,17 @@ independence" que é um benefício central do padrão.
 
 `flake.nix` tem `flake-file.inputs` declarado de forma distribuída: cada
 módulo que consome um input de flake não-core declara esse input ali
-mesmo (ex: `modules/desktop/wm/niri/default.nix` declara `flake-file.inputs.niri`).
+mesmo (ex: `modules/desktop/compositors/niri/default.nix` declara
+`flake-file.inputs.niri`).
 
-`modules/flake-parts/core.nix` habilita o mecanismo: importa
-`inputs.flake-file.flakeModules.default` e declara os inputs core
-(nixpkgs, flake-parts, import-tree, home-manager, treefmt-nix,
-git-hooks). Não setar `flake-file.outputs` manualmente além do que já
-está lá — o preset `"dendritic"` já é o default do próprio pacote
-flake-file e produz `outputs = inputs: inputs.flake-parts.lib.mkFlake
+`modules/flake/inputs.nix` habilita o mecanismo: importa
+`inputs.flake-file.flakeModules.default` e declara os inputs fundamentais do
+flake (`nixpkgs`, `flake-file`, `flake-parts`, `import-tree` e Home Manager).
+Integrações adicionais declaram seus próprios inputs junto do consumidor:
+`den/flake-module.nix`, `tooling/formatter.nix` e `tooling/pre-commit.nix`.
+Não setar
+`flake-file.outputs` manualmente além do que já está lá — o preset
+`"dendritic"` produz `outputs = inputs: inputs.flake-parts.lib.mkFlake
 { inherit inputs; } (inputs.import-tree ./modules);` sem intervenção.
 
 Depois de adicionar/mudar um `flake-file.inputs`, rodar
@@ -147,7 +130,14 @@ editar o `flake.nix` diretamente — ele tem cabeçalho `DO-NOT-EDIT`.
 
 ## Convenções de pasta
 
-- `apps/` — software que o usuário **abre e interage diretamente**
+- `flake/` — inputs fundamentais e formato dos outputs do flake:
+  a importação do flake-file e o output dendrítico. Não contém políticas de
+  host/user nem ferramentas de qualidade.
+- `den/` — o input e módulo do framework em `flake-module.nix`; `schema/`
+  contém defaults de entidades e as opções adicionais de host/user.
+- `tooling/` — formatter, análise estática e hooks usados no desenvolvimento
+  do repositório.
+- `applications/` — software que o usuário **abre e interage diretamente**
   (browsers, editor, terminal, jogos, ferramentas de dev). Critério: se a
   pessoa consegue nomear "o programa" ao descrever o que o arquivo faz, é
   app.
@@ -156,10 +146,10 @@ editar o `flake.nix` diretamente — ele tem cabeçalho `DO-NOT-EDIT`.
   `hardware.*`, `networking.*` sem app associado — bluetooth, wifi,
   auto-cpufreq). Critério: a capacidade continuaria fazendo sentido
   mesmo sem nenhum app do repo usá-la.
-  - `apps/peripherals/` (logiops, solaar) fica em `apps/` e não em
-    `features/` apesar de ser "driver de hardware", porque cada um só
-    faz sentido combinado com um periférico específico que o usuário
-    escolheu ter — não é uma capacidade genérica da máquina.
+  - `applications/hardware/peripherals/` (logiops, solaar) fica em
+    `applications/` e não em `features/` apesar de ser "driver de hardware",
+    porque cada um só faz sentido combinado com um periférico específico que
+    o usuário escolheu ter — não é uma capacidade genérica da máquina.
 - `identities/` — bundles puros (`includes = [...]`) que combinam
   apps+features num papel de host/user. Não tem lógica própria além de
   composição condicional via `host.isX`/`user.isX`.
@@ -170,42 +160,30 @@ editar o `flake.nix` diretamente — ele tem cabeçalho `DO-NOT-EDIT`.
   `.homeManager = ...` — o Nix funde as definições automaticamente. Não
   criar um novo aspect por arquivo aqui; é intencionalmente tudo
   `essential`, só picotado pra achar coisa rápido.
-- `hosts/standard-host.nix` — esqueleto reusável (`essential`,
-  `security`, `kernel`) pra todo host físico. `hosts/<nome>/default.nix`
-  inclui esse aspect e soma o que for específico daquele host
-  (bootloader, `secrets`, desktop environment, `_hardware.nix` gerado
-  por `nixos-generate-config`, nunca editado à mão).
-- `users/standard-user.nix` — mesma ideia, lado home-manager
-  (`define-user`, `primary-user`, shell). Cada `users/<nome>.nix` inclui
-  esse aspect e soma só os apps/gostos pessoais daquele usuário.
+- `den.schema.host.includes` é a fonte única do baseline de todo host:
+  `essential`, `security`, `kernel`, `kernel-tuning` e `flatpak`. Cada
+  `hosts/<nome>/default.nix` soma apenas o que é específico daquele host
+  (bootloader, `secrets`, desktop environment e `_hardware.nix` gerado por
+  `nixos-generate-config`, nunca editado à mão).
+- `den.schema.user.includes` é a fonte única do baseline de todo usuário:
+  `define-user`, `primary-user` e `(user-shell "fish")`. Cada
+  `users/<nome>.nix` soma apenas os apps e gostos pessoais daquele usuário.
 
-## Padrão de identity flags
+## Includes globais e stacks mistas
 
-`host.isLaptop` e `user.isGaming` são options declaradas via
-`den.schema.host.imports` / `den.schema.user.imports` (ver
-`modules/system/schema/host-schema.nix` e `user-schema.nix`) — não são
-freeform. Note a assimetria: `isLaptop` é propriedade do **host**
-(a máquina), `isGaming` é propriedade do **user** (quem usa a máquina).
-Setados em `modules/hosts/<nome>/default.nix`, na forma:
+`den.schema.host.includes` aplica diretamente `essential`, `security`,
+`kernel`, `kernel-tuning` e `flatpak` a todo host. Flatpak permanece um aspect
+separado em `system/flatpak`: ele pertence ao host porque habilita serviço,
+atualizações e portais XDG, mas não faz parte do baseline `essential`. Os
+aspects de aplicações apenas contribuem pacotes para
+`services.flatpak.packages`. `den.schema.user.includes` aplica diretamente
+as batteries de criação, privilégios e shell a todo usuário.
 
-```nix
-den.hosts.x86_64-linux.<host> = {
-  isLaptop = false;
-  users.<user> = { isGaming = true; };
-};
-```
-
-A lógica de "o que cada flag ativa" mora em `modules/identities/default.nix`
-(`den.aspects.identities`), usando `lib.optionals (host.isLaptop or false)`
-e `lib.optionals (user.isGaming or false)`.
-
-`identities` é incluído tanto no aspect do **host** quanto no aspect do
-**user** correspondente. Isso é intencional, não duplicação por engano:
-aspects de identity como `gaming` misturam classes `nixos` (steam,
-gamescope, graphics...) e `homeManager` (mangohud...), e cada classe só
-é resolvida no contexto certo (host para `nixos`, user para
-`homeManager`). Incluir `identities` nos dois lados garante que ambas as
-classes sejam alcançadas.
+`gaming-stack` agrega a coleção completa de jogos, emuladores, launchers,
+compatibilidade, desempenho, controles e mods. Ela mistura aspects das classes
+`nixos` e `homeManager`. O usuário é seu dono: `flp` inclui a stack uma única
+vez e `gaming-stack.provides.to-hosts.includes` entrega as fatias NixOS dos
+mesmos componentes aos hosts relacionados.
 
 ## Padrão oficial: host↔user mutual providers
 
@@ -276,9 +254,10 @@ faltava `provides.to-users.homeManager` só na fatia do
 `provides.to-hosts.nixos`), `solaar` (dono user, faltava
 `provides.to-hosts.nixos`), `git` (dono user, faltava
 `provides.to-hosts.nixos` — caso original que motivou essa auditoria,
-ver `apps/dev/git/github-token.nix`). `fish.nixos.programs.fish.enable`
+ver `applications/development/version-control/github-token.nix`).
+`fish.nixos.programs.fish.enable`
 identificado como provavelmente redundante com a battery
-`(user-shell "fish")` já incluída em `standard-user` — não corrigido
+`(user-shell "fish")` já incluída em `den.schema.user.includes` — não corrigido
 ainda, pendente de confirmação (ver `HANDOFF.md`).
 
 **Não é bug do Den.** O erro `attribute 'sops' missing` que motivou
@@ -356,7 +335,7 @@ Padrão dendrítico geral (não é input, é a metodologia): https://github.com/
 
 ## Ferramentas do dia a dia (fish functions)
 
-Definidas em `modules/apps/fish/functions.nix`:
+Definidas em `modules/applications/shell/fish/functions.nix`:
 - `write-flake` — regenera `flake.nix` (`nix run .#write-flake`) e já
   stage o resultado (`git add -A` + mostra o diff cacheado de
   `flake.nix`), pra revisar antes de commitar.

@@ -1,6 +1,101 @@
 # HANDOFF
 
-Last updated: 2026-08-26 21:12 UTC
+Last updated: 2026-08-30 20:51 UTC
+
+## Current State
+
+O aspect intermediário `standard-host` foi removido. O baseline agora aparece
+diretamente em `den.schema.host.includes`: `essential`, `security`, `kernel`,
+`kernel-tuning` e `flatpak`. Flatpak foi movido de `applications/system` para
+`system/flatpak` e continua separado de `essential`, preservando controle para
+condicioná-lo ou removê-lo futuramente. Ele habilita portais XDG e um fallback
+genérico de backend, portanto hosts sem KDE também avaliam corretamente.
+
+O baseline de usuário também foi achatado em
+`den.schema.user.includes`: `define-user`, `primary-user` e
+`(user-shell "fish")`. O aspect intermediário `standard-user` foi removido;
+cada arquivo em `users/` agora contém apenas escolhas próprias do usuário.
+
+`modules/flake-parts` foi desmembrado por responsabilidade. O bootstrap fica
+em `modules/flake/inputs.nix` e reúne os inputs fundamentais do flake; não
+há input estável adicional, apenas o nixpkgs unstable principal. Integração,
+defaults e schemas do Den ficam em `modules/den/`: `flake-module.nix` integra
+o framework e `schema/` reúne `entity-defaults`, `host-options` e
+`user-options`; formatter e pre-commit ficam em `modules/tooling/`. Os inputs
+`den`, `treefmt-nix` e `git-hooks` são
+declarados junto de seus consumidores, e os dois inputs de tooling seguem o
+`nixpkgs` principal.
+
+O agregador de jogos foi renomeado para `gaming-stack` e reúne Steam, Sober,
+Prism Launcher, Azahar, Eden, ProtonUp-Qt, Gamescope, controles, MangoHud e
+r2modman. Ele é dono-user e incluído apenas em `flp`; suas fatias NixOS são
+entregues aos hosts relacionados por `provides.to-hosts.includes`.
+
+Validação: `flake.nix` foi regenerado, `flake.lock` atualizado e
+`nix flake check` passou para `desktop` e `template`, incluindo os checks de
+formatação e sincronização do arquivo gerado. `git-hooks` e `treefmt-nix` agora
+seguem o `nixpkgs` raiz. O ref `latest` declarado pelo `nix-flatpak` continua
+apontando para uma revisão de janeiro de 2026, anterior à revisão de julho
+usada antes.
+
+Os commits foram separados por responsabilidade seguindo Conventional Commits
+em português. O hook local de Statix ainda aponta para uma configuração gerada
+anterior; a configuração versionada foi corrigida para receber somente arquivos
+staged e o Statix foi validado manualmente, excluindo `_hardware.nix` gerado.
+
+## Top 3 Next Actions
+
+- Aplicar com `nh os switch .` e conferir Flatpak/Sober no desktop.
+- Decidir se o `nix-flatpak` deve manter `?ref=latest` ou voltar ao branch
+  padrão, que atualmente resolve uma revisão mais recente.
+- Revisar os commits e enviá-los ao remoto quando solicitado.
+
+## Blockers
+
+Nenhum blocker conhecido. Nenhum segredo foi adicionado a arquivos rastreados.
+
+---
+
+## Current State
+
+Investigação do Den concluída contra o commit pinado
+`e8e8de1e32646456cfc613f152175a7a548508ec` e o `narHash` efetivo do
+flake. O mutual routing já integra o pipeline nessa revisão; a battery
+`mutual-provider` é apenas um shim inerte, portanto não foi adicionada.
+
+`standard-host` e `standard-user` agora são defaults por tipo de entidade via
+`den.schema.host.includes` e `den.schema.user.includes`. As inclusões repetidas
+foram removidas dos hosts e do user `flp`. `provides.to-users = [ essential ]`
+foi mantido: ele continua necessário para entregar a fatia `homeManager` do
+aspect ao user e não gerou conflito de definições.
+
+O host `nitro` continua desabilitado e recebeu comentário WIP porque o diretório
+não contém `_hardware.nix`; habilitá-lo agora seria inseguro. Embora o RStudio
+pinado não esteja disponível no cache `rstats-on-nix`, o usuário confirmou que
+o substituter e sua chave devem permanecer configurados globalmente.
+
+Validação: `nh os build . --hostname desktop --dry -- --no-write-lock-file`
+passou com 15 derivações. `nix flake check --no-write-lock-file` avaliou os
+outputs, mas o check de formatação falhou em mudanças não relacionadas de
+`tmux.nix` e `applications/gaming/default.nix`.
+
+## Top 3 Next Actions
+
+- Decidir se `programs.nh.flake` deve apontar para `/home/flp/nixos-config`
+  (checkout local) mantendo o auto-upgrade no GitHub.
+- Confirmar que `den.schema.host.kernel` deve continuar obrigatório, sem
+  `default`.
+- Aprovar o plano de commits e separar as mudanças com `jj` quando o backend
+  Git voltar a permitir snapshots.
+
+## Blockers
+
+As decisões sobre a origem do flake do `nh` e sobre `kernel` exigem confirmação
+do usuário. Neste ambiente, `jj` não consegue gravar objetos em `.git/objects`;
+por isso nenhum commit foi criado. Nenhum segredo foi adicionado a arquivos
+rastreados.
+
+---
 
 ## Current State
 
