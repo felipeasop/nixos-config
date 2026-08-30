@@ -3,17 +3,19 @@
     includes = with den.aspects; [
       # Development
       dev
-      codex
       fish
+      codex
+
+      # Desktop
       desktop-stack
       gaming
 
+      # Browsers
       firefox
       librewolf
       zen-browser
 
-      discord
-      zapzap
+      # Utilities
       gimp
       libreoffice
       spotify
