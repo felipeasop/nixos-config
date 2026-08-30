@@ -8,7 +8,6 @@
 
       # Desktop
       desktop-stack
-      gaming
 
       # Browsers
       firefox
@@ -18,11 +17,17 @@
       # Utilities
       gimp
       libreoffice
+
+      # Gaming
+      gaming-stack
+
+      # Misc
+      discord
+      zapzap
       spotify
       obsidian
-      r2modman
-      prismlauncher
 
+      # Mouse
       solaar
       solaar-m650l # traz solaar junto (dependência declarada no próprio aspect)
     ];

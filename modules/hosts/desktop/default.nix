@@ -11,7 +11,6 @@
 
       grub
       amd-graphics
-      gaming
 
       secrets
       (ssh-identity-for { user = "flp"; })
