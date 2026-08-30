@@ -13,12 +13,10 @@
   den.aspects.template = {
     includes = with den.aspects; [
       den.provides.hostname
-      standard-host
       grub
       # kde
       cli
       fish
-      # flatpak
       { nixos = import ./_hardware.nix; }
     ];
   };

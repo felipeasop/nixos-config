@@ -1,8 +1,7 @@
 { den, ... }: {
   den.aspects.flp = {
     includes = with den.aspects; [
-      standard-user
-
+      # Development
       dev
       codex
       fish
