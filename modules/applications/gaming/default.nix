@@ -10,6 +10,7 @@ let
     gamescope
     controllers
     mangohud
+    gamemode
 
     # Plataformas e launchers
     steam
