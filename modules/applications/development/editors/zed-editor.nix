@@ -5,6 +5,7 @@
         enable = true;
 
         extensions = [
+          "everforest-theme"
           "nix"
           "toml"
         ];
@@ -21,10 +22,10 @@
           ui_font_size = 14;
 
           theme = {
-            # O Noctalia atualiza a definição deste tema com a paleta ativa
-            # (Everforest por padrão), sem precisar alterar settings.json.
+            # Fallback independente do Noctalia: a extensão usa a mesma
+            # identidade Everforest configurada como paleta comunitária.
             mode = "dark";
-            dark = "Noctalia Dark";
+            dark = "Everforest Dark Soft";
           };
         };
       };
