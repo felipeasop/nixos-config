@@ -1,8 +1,118 @@
 # HANDOFF
 
-Last updated: 2026-08-30 20:51 UTC
+Last updated: 2026-09-10 03:00 UTC
 
 ## Current State
+
+O prompt `pure` do Fish foi substituído pelo Starship, instalado e inicializado
+declarativamente pelo Home Manager. O aspecto independente `starship` é
+incluído pelo perfil `flp` e mantém o greeting com Tux. O prompt compacto usa
+a paleta Everforest e mostra diretório, estado Git, ambiente Nix/direnv,
+duração de comandos, jobs e códigos de saída; a fonte JetBrainsMono Nerd Font
+já configurada fornece os símbolos. Validação: `nix flake check --no-build
+--no-write-lock-file` passou para `desktop` e `template`, e a configuração
+Starship resultante foi avaliada em JSON. Nenhum segredo foi adicionado.
+
+O timeout de comandos do Starship é de 2 s para acomodar a ativação inicial do
+`direnv` em ambientes Nix. A migração do nixpkgs atual também substituiu a
+opção removida `services.journald.extraConfig` por
+`services.journald.settings.Journal.SystemMaxUse`; a avaliação integral voltou
+a passar. O `config.kdl` do Niri, incluindo os binds do helper de workspace,
+passa em `niri validate`. A sessão Niri iniciada antes de uma reinicialização
+do SDDM ficou ativa no systemd mas inativa no logind; isso bloqueia uma nova
+sessão até encerrar a unidade residual, não é um erro da configuração KDL.
+O Ghostty residual também pertence àquela sessão Niri: como o desktop entry
+usa instância única, novos lançamentos são encaminhados ao processo antigo e
+não aparecem na sessão Plasma. Pure/Starship só são carregados depois que o
+terminal inicia e não podem causar a falha gráfica.
+O Zed seleciona declarativamente `Noctalia Dark`; o template comunitário do
+Noctalia escreve apenas `~/.config/zed/themes/noctalia.json` e atualiza as
+cores dessa definição a partir da paleta Everforest, sem precisar modificar o
+`settings.json` gerenciado pelo Home Manager. A avaliação integral passou
+depois do ajuste. O `init.lua` do Neovim continua referenciado localmente por
+`./init.lua`, sem acoplamento à estrutura do repositório.
+
+Auditoria de avaliação concluída. Foram migrados os aliases obsoletos do
+LibreOffice (`libreoffice-qt-stable`) e do Neovim (`initLua`), o Solaar passou
+para o módulo NixOS oficial `programs.solaar.userService`, e o Flatpak fornece
+`xdg.portal.config.common.default = lib.mkDefault "*"` para hosts mínimos. O
+pacote duplicado do Solaar no Home Manager e a assertion associada foram
+removidos, pois o módulo NixOS oficial já instala o mesmo pacote globalmente. O
+helper `write-flake` do Fish não depende mais da variável removida
+`NIXOS_CONFIG_DIR`: o próprio módulo deriva o checkout de
+`home.homeDirectory`.
+
+Validação concluída com `nix flake check --no-write-lock-file`, build integral
+dos hosts `desktop` e `template`, e `nh os test` no desktop. A ativação
+temporária terminou com sucesso; não há unidades systemd falhas, o Home Manager
+terminou com status zero e o serviço oficial do Solaar está habilitado e ativo.
+Os únicos avisos do CLI que permanecem são informativos: árvore Git suja até os
+commits e `unknown flake output 'denful'` apenas no `nix flake check`, pois a
+versão oficial pinada do Den declara esse output para namespaces. Não há
+evaluation warnings em `nh os build/test`.
+
+A barra superior do Noctalia na sessão Niri foi reorganizada por função:
+launcher à esquerda, `taskbar` ao centro e estado/ações imediatas à
+direita. O widget nativo agrupa ícones por workspace, mantém o rótulo da área,
+colapsa múltiplas janelas do mesmo app e marca a janela ativa; trabalha apenas
+com o monitor da própria barra. Ele é referenciado diretamente, sem alias
+customizado nem `type` redundante. Wallpaper, clipboard, bluetooth, brilho e
+menu de sessão saíram da faixa permanente e continuam acessíveis pelos painéis
+e atalhos. A sintaxe Nix e `git diff --check` passaram para os módulos da
+barra. Nenhum segredo foi adicionado a arquivos rastreados.
+
+O aspect opcional `mango` instala declarativamente a árvore completa
+`~/.config/mango/` pelo Home Manager. `config.conf` só importa os fragmentos
+`environment`, `input`, `layout`, `animations`, `rules`, `outputs` e `binds`,
+mantendo a transcrição do Niri organizada fora do Nix. O módulo `config.nix`
+cuida apenas do deployment; `default.nix` fica com descrição e o enable NixOS
+roteado por `provides.to-hosts`. Os casos sem suporte direto ficaram comentados
+como `SEM EQUIVALENTE` ou `PLACEHOLDER`, incluindo screenshots, overlay de
+atalhos, workspaces dinâmicos e inserção de janela em workspace novo. O aspect
+ainda não foi incluído no `desktop-stack`, portanto não troca a sessão atual.
+`nix-instantiate --parse` e `git diff --check` passaram para os módulos. O
+`nixfmt` e o binário `mango` não estão no PATH; o Git não permite criar
+`.git/index.lock`, por isso os novos arquivos não puderam ser adicionados ao
+índice neste ambiente. Noctalia continua condicionado a
+`XDG_CURRENT_DESKTOP=niri`, então seus binds no Mango são placeholders até
+estender essa integração. Nenhum segredo foi adicionado a arquivos rastreados.
+
+O Niri ganhou o helper declarativo `niri-move-window-to-new-workspace`, que
+move apenas a janela focada para um workspace novo imediatamente acima ou
+abaixo do atual. Quando há várias janelas, o helper extrai a focada para o
+workspace vazio final do monitor e reposiciona esse workspace; quando ela é a
+única de um workspace dinâmico, move diretamente o próprio workspace para
+evitar que a remoção automática do vazio anule visualmente a operação.
+Workspaces nomeados seguem pelo fluxo de extração, pois persistem vazios. Os
+binds cobrem J/K, setas e roda com `Mod+Ctrl+Alt`, e execuções concorrentes são
+serializadas. Uma cópia temporária do índice passou em `nix flake check
+--no-build --no-write-lock-file`.
+
+Os três arquivos propostos para o aspect Bash continuam adicionados no índice,
+mas apagados da árvore de trabalho; a configuração atualmente avaliada não os
+inclui nem referencia. Essa inconsistência do índice não quebra o flake, mas
+faz o walker do formatter avisar sobre arquivos ausentes até que se decida
+restaurá-los ou remover as adições do índice.
+
+O aspect `discord` usa agora o módulo Home Manager do Nixcord para instalar
+somente Vesktop com um Vencord construído declarativamente. O cliente Discord
+oficial está desabilitado. O GoLiveBypass entra como `userPlugin` a partir de
+um input `flake = false` pinado e já fica habilitado com roteamento apenas do
+gateway, saídas brasileiras excluídas e regiões automáticas. `WebScreenShare`
+está ativo em 1080p/60 fps, junto de `WebScreenShareFixes`. As configurações
+do cliente agora pertencem corretamente a `programs.nixcord.vesktop.settings`:
+tray, aceleração, tamanho livre da janela, spellcheck PT-BR/EN-US e seleção
+granular de áudio via PipeWire. O conjunto de plugins cobre correções do
+cliente web, streaming, mídia, navegação, privacidade e estabilidade sem
+automatizar interações sociais.
+
+Validação: o Vencord 1.15.3 com GoLiveBypass e o Vesktop 1.6.7 foram construídos
+com sucesso. O JSON declarativo gerado foi inspecionado e contém os plugins
+e suas opções esperadas; os bundles finais contêm tanto o renderer quanto a
+parte nativa do GoLiveBypass e os dois hosts de gateway. `nix flake check
+--no-build --no-write-lock-file` passou após a ampliação da configuração. O
+executável não pôde ser aberto dentro do sandbox gráfico do Codex; o teste real
+de login, chamada e transmissão depende da sessão do usuário após o switch.
 
 O aspect intermediário `standard-host` foi removido. O baseline agora aparece
 diretamente em `den.schema.host.includes`: `essential`, `security`, `kernel`,
@@ -45,14 +155,19 @@ staged e o Statix foi validado manualmente, excluindo `_hardware.nix` gerado.
 
 ## Top 3 Next Actions
 
-- Aplicar com `nh os switch .` e conferir Flatpak/Sober no desktop.
-- Decidir se o `nix-flatpak` deve manter `?ref=latest` ou voltar ao branch
-  padrão, que atualmente resolve uma revisão mais recente.
-- Revisar os commits e enviá-los ao remoto quando solicitado.
+- Resolver a inconsistência dos arquivos de Bash apagados na árvore de trabalho
+  mas ainda adicionados ao índice.
+- Adicionar ao índice os novos módulos do Mango antes de validá-lo, pois flakes
+  ignoram arquivos não rastreados; depois testar `mango -c` na sessão adequada.
+- Separar e aprovar o plano de commits; depois aplicar permanentemente com
+  `nh os switch .` e testar Vesktop, Niri e Noctalia na sessão gráfica.
 
 ## Blockers
 
-Nenhum blocker conhecido. Nenhum segredo foi adicionado a arquivos rastreados.
+Nenhum blocker de avaliação, build ou ativação temporária. A árvore está em
+`detached HEAD`, possui mudanças parcialmente staged e arquivos novos do Mango
+ainda não rastreados; organizar o índice é necessário antes dos commits. Nenhum
+segredo foi adicionado a arquivos rastreados.
 
 ---
 

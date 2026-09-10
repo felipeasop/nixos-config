@@ -324,6 +324,8 @@ novo for adicionado ou removido.
 | `home-manager` | `nix-community/home-manager` | https://nix-community.github.io/home-manager |
 | `treefmt-nix` | `numtide/treefmt-nix` | https://github.com/numtide/treefmt-nix |
 | `git-hooks` | `cachix/git-hooks.nix` | https://github.com/cachix/git-hooks.nix |
+| `nixcord` | `4evy/nixcord` | https://github.com/4evy/nixcord |
+| `go-live-bypass` | `bezumiya/GoLiveBypass` | https://github.com/bezumiya/GoLiveBypass |
 | `niri` | `sodiboo/niri-flake` | https://github.com/sodiboo/niri-flake (doc completa em `docs.md` do repo) |
 | `noctalia` | `noctalia-dev/noctalia` | https://github.com/noctalia-dev — **conferir** se a URL declarada bate com o repo real (`noctalia-shell` aparece como nome em outras referências da comunidade) |
 | `nix-flatpak` | `gmodena/nix-flatpak` | https://github.com/gmodena/nix-flatpak |
