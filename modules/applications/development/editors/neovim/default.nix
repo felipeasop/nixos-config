@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{
   den.aspects.neovim = {
     homeManager = { pkgs, ... }: {
       programs.neovim = {
@@ -7,7 +7,7 @@
         viAlias = true;
         vimAlias = true;
 
-        extraLuaConfig = builtins.readFile "${inputs.self}/modules/applications/development/editors/neovim/init.lua";
+        initLua = builtins.readFile ./init.lua;
 
         plugins = with pkgs.vimPlugins; [
           plenary-nvim
@@ -17,7 +17,6 @@
           gitsigns-nvim
           nvim-autopairs
           nvim-lspconfig
-          catppuccin-nvim
         ];
       };
     };
