@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ inputs, lib, ... }: {
   flake-file.inputs.nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
   den.aspects.flatpak = {
@@ -7,7 +7,7 @@
 
       xdg.portal = {
         enable = true;
-        config.common.default = "*";
+        config.common.default = lib.mkDefault "*";
       };
 
       services.flatpak = {
