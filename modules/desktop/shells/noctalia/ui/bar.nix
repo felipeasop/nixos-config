@@ -40,22 +40,17 @@
 
           start = [
             "launcher"
-            "wallpaper"
-            "workspaces"
           ];
-          center = [ "clock" ];
+          center = [ "taskbar" ];
           end = [
             "media"
+            "clock"
             "tray"
             "notifications"
-            "clipboard"
             "network"
-            "bluetooth"
             "volume"
-            "brightness"
             "battery"
             "control-center"
-            "session"
           ];
 
           dead_zone = {

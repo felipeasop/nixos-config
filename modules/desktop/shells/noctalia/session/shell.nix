@@ -23,7 +23,6 @@
         popup_borders = true;
         popup_shadows = true;
 
-        middle_click_opens_widget_settings = true;
         niri_overview_type_to_launch_enabled = true;
 
         offline_mode = false;

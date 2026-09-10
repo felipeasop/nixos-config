@@ -58,6 +58,20 @@
           title_scroll = "none";
         };
 
+        taskbar = {
+          group_by_workspace = true;
+          workspace_group_content = "icons";
+          group_single_icon_per_app = true;
+          show_workspace_label = true;
+          workspace_label_placement = "corner";
+          hide_empty_workspaces = false;
+          workspace_group_capsule = true;
+          icon_scale = 1.0;
+          show_active_indicator = true;
+          show_all_outputs = false;
+          only_active_workspace = false;
+        };
+
         keyboard_layout = {
           type = "keyboard_layout";
           hide_when_single_layout = false;

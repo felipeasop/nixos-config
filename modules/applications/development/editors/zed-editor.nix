@@ -21,7 +21,10 @@
           ui_font_size = 14;
 
           theme = {
-            mode = "system";
+            # O Noctalia atualiza a definição deste tema com a paleta ativa
+            # (Everforest por padrão), sem precisar alterar settings.json.
+            mode = "dark";
+            dark = "Noctalia Dark";
           };
         };
       };
