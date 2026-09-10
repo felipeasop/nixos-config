@@ -27,10 +27,8 @@
         hw = "hwinfo --short";
         tb = "nc termbin.com 9999";
         jctl = "journalctl -p 3 -xb";
-        gs = "git status";
 
         rollback = "sudo nixos-rebuild switch --rollback";
-        cleanup = "sudo nix-collect-garbage -d";
         gens = "nix-env --list-generations --profile /nix/var/nix/profiles/system";
       };
     };

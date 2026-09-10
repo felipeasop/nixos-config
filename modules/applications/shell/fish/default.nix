@@ -12,6 +12,7 @@
         hwinfo
         netcat
         fzf
+        wget
       ];
     };
   };

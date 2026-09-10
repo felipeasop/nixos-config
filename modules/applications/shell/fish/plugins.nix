@@ -3,10 +3,6 @@
     homeManager = { pkgs, ... }: {
       programs.fish.plugins = [
         {
-          name = "pure";
-          src = pkgs.fishPlugins.pure.src;
-        }
-        {
           name = "autopair";
           src = pkgs.fishPlugins.autopair.src;
         }
