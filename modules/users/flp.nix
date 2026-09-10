@@ -4,10 +4,12 @@
       # Development
       dev
       fish
+      starship
       codex
 
       # Desktop
-      desktop-stack
+      niri-stack
+      mango-stack
 
       # Browsers
       firefox
@@ -29,7 +31,6 @@
 
       # Mouse
       solaar
-      solaar-m650l # traz solaar junto (dependência declarada no próprio aspect)
     ];
   };
 }
