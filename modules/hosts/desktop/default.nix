@@ -12,6 +12,8 @@
       grub
       amd-graphics
 
+      solaar-m650l
+
       secrets
       (ssh-identity-for { user = "flp"; })
 

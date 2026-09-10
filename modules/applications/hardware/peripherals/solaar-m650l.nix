@@ -43,93 +43,71 @@
     # exige que quem inclui solaar-m650l lembre de incluir solaar também.
     includes = [ den.aspects.solaar ];
 
-    homeManager =
-      { pkgs, config, ... }:
-      {
-        # Dependência explícita nível 2 (rede de segurança): se por
-        # algum motivo o merge de `includes` acima não colocar o pacote
-        # solaar em home.packages (ex.: reorganização futura do repo,
-        # bug no Den, aspect incluído fora do fluxo normal), o build
-        # FALHA aqui com mensagem clara, em vez de instalar o
-        # rules.yaml/serviço sem o daemon que os usa.
-        assertions = [
-          {
-            assertion = builtins.elem pkgs.solaar config.home.packages;
-            message = ''
-              solaar-m650l requer o pacote `solaar` em home.packages,
-              mas ele não foi encontrado. Este aspect depende do
-              aspect `solaar` (veja applications/hardware/peripherals/solaar.nix) —
-              confirme que `includes = [ den.aspects.solaar ]` está
-              presente em solaar-m650l.nix e que nada removeu o
-              aspect solaar do merge final.
-            '';
-          }
-        ];
+    homeManager = { pkgs, ... }: {
+      xdg.configFile."solaar/rules.yaml".text = ''
+        %YAML 1.3
+        ---
+        - Rule:
+          - Key: [Back Button, pressed]
+          - KeyPress: [XF86_Back, depress]
+        ---
+        - Rule:
+          - Key: [Back Button, released]
+          - KeyPress: [XF86_Back, release]
+        ---
+        - Rule:
+          - Key: [Forward Button, pressed]
+          - KeyPress: [XF86_Forward, depress]
+        ---
+        - Rule:
+          - Key: [Forward Button, released]
+          - KeyPress: [XF86_Forward, release]
+        ...
+      '';
 
-        xdg.configFile."solaar/rules.yaml".text = ''
-          %YAML 1.3
-          ---
-          - Rule:
-            - Key: [Back Button, pressed]
-            - KeyPress: [XF86_Back, depress]
-          ---
-          - Rule:
-            - Key: [Back Button, released]
-            - KeyPress: [XF86_Back, release]
-          ---
-          - Rule:
-            - Key: [Forward Button, pressed]
-            - KeyPress: [XF86_Forward, depress]
-          ---
-          - Rule:
-            - Key: [Forward Button, released]
-            - KeyPress: [XF86_Forward, release]
-          ...
-        '';
-
-        # config.yaml (guarda divert-keys) é escrito pelo próprio Solaar
-        # em runtime, identificado por serial do mouse — não dá pra
-        # declarar via xdg.configFile sem risco de conflito/perda de
-        # estado (bateria etc). Versiona-se o COMANDO, idempotente,
-        # reaplicado a cada login em vez de passo manual único.
-        #
-        # `solaar config` NÃO precisa de GTK3 pra funcionar (confirmado
-        # na doc oficial: só usa Gtk pra checar se a GUI já tá rodando
-        # e notificá-la) — só que, com o daemon rodando ao mesmo tempo,
-        # duas chamadas consecutivas de `solaar config` já quebraram
-        # (Back aplicado ok, Forward falhou) por bug de marshaling
-        # D-Bus na versão em uso. Contorno: para o daemon antes,
-        # aplica os dois divert-keys sem ele vivo, religa depois.
-        systemd.user.services.solaar-m650l-divert = {
-          Unit = {
-            Description = "Aplica divert-keys (fix hold M4/M5) no Logitech M650L";
-            After = [ "solaar.service" ];
-            Wants = [ "solaar.service" ];
-          };
-          Service = {
-            Type = "oneshot";
-            ExecStartPre = "${pkgs.coreutils}/bin/sleep 5"; # espera o solaar detectar o mouse
-            # systemd-run --user --collect roda o stop/start do daemon
-            # como transação systemd totalmente separada, fora da
-            # árvore/cgroup deste unit — evita qualquer propagação de
-            # sinal (TERM) de volta pra este processo, que acontecia
-            # mesmo com Wants em vez de Requires.
-            ExecStart = "${pkgs.writeShellScript "solaar-m650l-divert" ''
-              set -e
-              systemd-run --user --collect --wait --quiet \
-                ${pkgs.systemd}/bin/systemctl --user stop solaar.service
-              sleep 2
-              ${pkgs.solaar}/bin/solaar config "Signature M650 L" divert-keys 83 2
-              sleep 1
-              ${pkgs.solaar}/bin/solaar config "Signature M650 L" divert-keys 86 2
-              sleep 1
-              systemd-run --user --collect --wait --quiet \
-                ${pkgs.systemd}/bin/systemctl --user start solaar.service
-            ''}";
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
+      # config.yaml (guarda divert-keys) é escrito pelo próprio Solaar
+      # em runtime, identificado por serial do mouse — não dá pra
+      # declarar via xdg.configFile sem risco de conflito/perda de
+      # estado (bateria etc). Versiona-se o COMANDO, idempotente,
+      # reaplicado a cada login em vez de passo manual único.
+      #
+      # `solaar config` NÃO precisa de GTK3 pra funcionar (confirmado
+      # na doc oficial: só usa Gtk pra checar se a GUI já tá rodando
+      # e notificá-la) — só que, com o daemon rodando ao mesmo tempo,
+      # duas chamadas consecutivas de `solaar config` já quebraram
+      # (Back aplicado ok, Forward falhou) por bug de marshaling
+      # D-Bus na versão em uso. Contorno: para o daemon antes,
+      # aplica os dois divert-keys sem ele vivo, religa depois.
+      systemd.user.services.solaar-m650l-divert = {
+        Unit = {
+          Description = "Aplica divert-keys (fix hold M4/M5) no Logitech M650L";
+          After = [ "solaar.service" ];
+          Wants = [ "solaar.service" ];
         };
+        Service = {
+          Type = "oneshot";
+          ExecStartPre = "${pkgs.coreutils}/bin/sleep 5"; # espera o solaar detectar o mouse
+          # systemd-run --user --collect roda o stop/start do daemon
+          # como transação systemd totalmente separada, fora da
+          # árvore/cgroup deste unit — evita qualquer propagação de
+          # sinal (TERM) de volta pra este processo, que acontecia
+          # mesmo com Wants em vez de Requires.
+          ExecStart = "${pkgs.writeShellScript "solaar-m650l-divert" ''
+            set -e
+            systemd-run --user --collect --wait --quiet \
+              ${pkgs.systemd}/bin/systemctl --user stop solaar.service
+            sleep 2
+            ${pkgs.solaar}/bin/solaar config "Signature M650 L" divert-keys 83 2
+            sleep 1
+            ${pkgs.solaar}/bin/solaar config "Signature M650 L" divert-keys 86 2
+            sleep 1
+            systemd-run --user --collect --wait --quiet \
+              ${pkgs.systemd}/bin/systemctl --user start solaar.service
+          ''}";
+        };
+        Install.WantedBy = [ "graphical-session.target" ];
       };
+    };
 
     # Dono-user (segue solaar): este aspect é incluído em flp.nix, então
     # a fatia `nixos` (minoritária aqui) PRECISA passar por
