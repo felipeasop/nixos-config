@@ -5,11 +5,6 @@ result-*
 # direnv
 .direnv/
 
-# arquivos de hardware gerados por nixos-generate-config
-# (mantenha versionado o _hardware.nix de cada host; isso aqui é
-# só pra sobras temporárias que a ferramenta às vezes deixa por perto)
-hardware-configuration.nix.bak
-
 # symlink gerado automaticamente pelo git-hooks.nix, aponta pro
 # /nix/store local -- não é portável entre máquinas/clones
 .pre-commit-config.yaml

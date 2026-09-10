@@ -1,8 +1,36 @@
 # HANDOFF
 
-Last updated: 2026-09-10 03:00 UTC
+Last updated: 2026-09-10 22:58 UTC
 
 ## Current State
+
+O Helium foi avaliado, mas removido a pedido do usuário: ele não está
+disponível no `nixpkgs` fixado e o flake externo acrescentaria um input e uma
+dependência de empacotamento que não fazem parte do escopo atual. O input foi
+retirado de `flake.nix` e `flake.lock`, e o perfil `flp` não o inclui mais.
+Nenhum segredo foi adicionado.
+
+O GameMode foi desacoplado do Steam e agora é um aspect próprio da
+`gaming-stack`, usando diretamente o módulo NixOS
+`programs.gamemode.enable`. Azahar continua usando sua integração nativa, que
+já funcionava. O pacote do Eden ganhou somente um wrapper de empacotamento que
+expõe o output `lib` do GameMode em `LD_LIBRARY_PATH`; isso corrige o erro
+registrado por ele ao carregar `libgamemode.so`, sem gerenciar seus arquivos
+INI. A tentativa de centralizar opções gráficas num gerenciador próprio de INI
+foi rejeitada e removida: Azahar e Eden não têm módulos Home Manager nativos
+para essas preferências, e controlar o INI inteiro o tornaria somente-leitura.
+Uma cópia temporária limpa passou em `nix flake check --no-build
+--no-write-lock-file`, e a ativação Home Manager completa, incluindo o wrapper
+do Eden, foi construída com sucesso. Nenhum segredo foi adicionado.
+
+O flake agora expõe `devShells.default` para corresponder ao `use flake` do
+`.envrc`. O output reutiliza diretamente `config.pre-commit.devShell`, já
+produzido por `git-hooks.nix`; assim, os hooks, seus pacotes e o wrapper do
+treefmt continuam definidos uma única vez. A avaliação direcionada confirmou o
+output como `nix-shell`. O texto `impure` ainda pode aparecer no Starship porque
+`nix develop` normalmente herda o ambiente do terminal; ele não indica
+`nix build --impure` nem falta de reprodutibilidade dos inputs. Nenhum segredo
+foi adicionado.
 
 O prompt `pure` do Fish foi substituído pelo Starship, instalado e inicializado
 declarativamente pelo Home Manager. O aspecto independente `starship` é
@@ -155,19 +183,20 @@ staged e o Statix foi validado manualmente, excluindo `_hardware.nix` gerado.
 
 ## Top 3 Next Actions
 
+- Adicionar `modules/applications/gaming/gamemode.nix` ao Git e aplicar a
+  configuração para testar GameMode no Azahar e no Eden; o índice somente-leitura
+  impediu o staging nesta sessão.
 - Resolver a inconsistência dos arquivos de Bash apagados na árvore de trabalho
   mas ainda adicionados ao índice.
 - Adicionar ao índice os novos módulos do Mango antes de validá-lo, pois flakes
   ignoram arquivos não rastreados; depois testar `mango -c` na sessão adequada.
-- Separar e aprovar o plano de commits; depois aplicar permanentemente com
-  `nh os switch .` e testar Vesktop, Niri e Noctalia na sessão gráfica.
 
 ## Blockers
 
-Nenhum blocker de avaliação, build ou ativação temporária. A árvore está em
-`detached HEAD`, possui mudanças parcialmente staged e arquivos novos do Mango
-ainda não rastreados; organizar o índice é necessário antes dos commits. Nenhum
-segredo foi adicionado a arquivos rastreados.
+Nenhum blocker de avaliação ou build. A árvore está em `detached HEAD`, o
+índice Git está somente-leitura e possui mudanças parcialmente staged; além
+disso, a configuração ainda não foi aplicada ao sistema real. Nenhum segredo
+foi adicionado a arquivos rastreados.
 
 ---
 
