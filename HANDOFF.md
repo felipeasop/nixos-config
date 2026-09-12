@@ -1,6 +1,30 @@
 # HANDOFF
 
-Last updated: 2026-09-10 22:58 UTC
+Last updated: 2026-09-12 18:12 UTC
+
+## Agent instructions refactor
+
+`AGENTS.md` foi reescrito em inglês e reduzido de 376 para 183 linhas. Regras
+duráveis foram preservadas e consolidadas; inventários de inputs, relatos de
+auditoria e documentação operacional duplicada foram removidos. A validação
+agora deve começar pelo menor output significativo afetado e escalar para o
+toplevel do host quando a mudança atingir composição, providers ou inputs.
+As funções temporárias `nix-update-lock` e `nh-safe-switch` foram removidas a
+pedido do usuário. `write-flake` permanece, mas agora adiciona somente
+`flake.nix` ao índice em vez de usar `git add -A`.
+
+## Próximas ações
+
+- Revisar o plano dry-run antes de cada ativação.
+- Decidir separadamente se Vencord deve ser servido por builder remoto ou por
+  um cache próprio no futuro.
+- Separar e aprovar os commits das mudanças pendentes, incluindo `flake.lock`.
+
+## Blockers
+
+Nenhum blocker de avaliação. Vencord/Vesktop continuam sem substituto
+comprovado nas duas revisões comparadas; portanto o dry-run deve ser revisado
+antes de qualquer switch.
 
 ## Current State
 
