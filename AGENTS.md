@@ -14,6 +14,10 @@ take precedence.
 - Make the smallest coherent change that satisfies the request.
 - Keep the system declarative and reproducible from tracked files.
 - Reuse existing aspects, options, packages, and helpers before adding new ones.
+- When evaluating architectural alternatives, recommend the best target
+  architecture impartially. Do not favor the current architecture or let
+  migration effort influence the recommendation; consider migration friction
+  only when planning how to implement the chosen architecture.
 - Put durable repository rules here. Put current state, investigations, and next
   actions in `HANDOFF.md`.
 - Update `HANDOFF.md` after significant decisions or unfinished work, not for
@@ -31,8 +35,21 @@ take precedence.
 - Preserve the top-level `flake-parts.lib.mkFlake` plus `import-tree` pipeline.
   Do not replace it with a raw `evalModules` setup.
 - The active module classes are `nixos` and `homeManager`.
-- An entity is a host or user. An aspect is a composable unit that may contribute
-  modules to either class. Batteries are reusable Den-provided patterns.
+- Home Manager instantiation depends on whether the host runs NixOS:
+  - NixOS hosts give the host-declared user `classes = [ "homeManager" ]`
+    (see `modules/hosts/desktop/default.nix`). Den then imports the Home
+    Manager NixOS module and forwards that user's `homeManager` content into
+    `home-manager.users.<name>` automatically, so `nh os switch` rebuilds
+    system and home together in one generation.
+  - Hosts without a NixOS system (e.g. a future Fedora host) use standalone
+    `den.homes` outputs instead, activated separately via `nh home switch` /
+    the `home-manager` CLI.
+  - The user aspect itself (e.g. `flp`) stays identical either way; only the
+    per-host `classes`/`den.homes` declaration changes which activation path
+    consumes it.
+- An entity is a host, user, or standalone home. An aspect is a composable unit
+  that may contribute modules to either class. Batteries are reusable
+  Den-provided patterns.
 - Use documented Den APIs. Do not invent `_module.args`, overwrite
   `config.den.aspects`, or use `specialArgs`/`extraSpecialArgs` to pass values
   between repository modules. Read shared values such as `inputs` and `self`
@@ -47,12 +64,23 @@ take precedence.
   that contribution with `provides.to-users` or a named user provider.
 - A user-owned aspect that contributes NixOS configuration MUST route that
   contribution with `provides.to-hosts` or a named host provider.
+- A standalone home named `<user>@<host>` resolves the user aspect plus its
+  named `provides.<host>` provider. Host `provides.to-users` contributions are
+  not inherited automatically; reuse them from that named user provider.
+- A host-declared user with `classes = [ "homeManager" ]` (NixOS/Darwin
+  integration) DOES inherit that host's `provides.to-users` contributions
+  automatically. Do not add a named `provides.<host>` provider for a
+  host-integrated user; that pattern exists only to compensate for standalone
+  homes.
 - A mixed-class aspect without the matching provider is incomplete: its
   minority-class contribution may be silently unreachable.
 - `den.schema.host.includes` is the single host baseline and currently contains
   `essential`, `security`, `kernel`, `kernel-tuning`, and `flatpak`.
 - `den.schema.user.includes` is the single user baseline and currently contains
   `define-user`, `primary-user`, and `(user-shell "fish")`.
+- `den.schema.home.includes` is the standalone-home baseline and currently
+  contains `define-user`, `essential` (including `nh`), and
+  `(user-shell "fish")`.
 - `system/essential/` is intentionally one aspect split across files. Extend
   `den.aspects.essential`; do not create one aspect per file there.
 - `gaming-stack` is user-owned and routes its NixOS contributions to related
@@ -133,8 +161,8 @@ proportion to the change.
   --no-write-lock-file`.
 - Package changes: dry-run the affected package output first, then build that
   package only if the plan complies with the binary-substitute policy.
-- Home Manager-only changes: evaluate or dry-run the affected user's activation
-  package through the relevant host configuration.
+- Home Manager-only changes: evaluate or dry-run the affected standalone
+  `homeConfigurations.<user@host>.activationPackage`.
 - NixOS, routing, shared-input, or mixed-class changes: evaluate the affected
   host's `config.system.build.toplevel`; test every host whose graph can change.
 - Before realization, use `--dry-run`, `--no-link`, and

@@ -21,11 +21,5 @@
 
       { nixos = import ./_hardware.nix; }
     ];
-
-    # O schema resolve a fatia NixOS de `essential` no host; esta rota entrega
-    # sua fatia Home Manager ao usuário (incluindo home.stateVersion).
-    provides.to-users.includes = with den.aspects; [
-      essential
-    ];
   };
 }

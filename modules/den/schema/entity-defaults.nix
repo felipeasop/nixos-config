@@ -1,7 +1,6 @@
-{ den, lib, ... }: {
+{ den, ... }: {
   den.schema = {
     user = {
-      classes = lib.mkDefault [ "homeManager" ];
       includes =
         with den.provides;
         with den.aspects;
@@ -11,6 +10,15 @@
           (user-shell "fish")
         ];
     };
+
+    home.includes =
+      with den.provides;
+      with den.aspects;
+      [
+        define-user
+        essential
+        (user-shell "fish")
+      ];
 
     host.includes = with den.aspects; [
       essential
