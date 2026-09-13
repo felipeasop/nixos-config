@@ -2,6 +2,7 @@
 let
   components = with den.aspects; [
     # Emuladores
+    melonds
     azahar
     eden
 
