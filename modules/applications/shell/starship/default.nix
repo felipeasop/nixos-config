@@ -6,11 +6,9 @@
         enableBashIntegration = true;
         enableFishIntegration = true;
 
-        settings = {
+        settings = fromTOML (builtins.readFile ./nerd-font-symbols.toml) // {
           add_newline = false;
-          scan_timeout = 30;
-          # O direnv pode avaliar um ambiente Nix na primeira entrada no
-          # diretório; 500 ms gera aviso mesmo quando a avaliação termina.
+          scan_timeout = 500;
           command_timeout = 2000;
           palette = "everforest";
 

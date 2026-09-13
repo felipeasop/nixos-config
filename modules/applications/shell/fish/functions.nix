@@ -10,7 +10,7 @@
           function write-flake
               cd ${lib.escapeShellArg nixosConfigDir}; or return 1
               nix run .#write-flake
-              and git add -A
+              and git add flake.nix
               and git diff --cached --stat flake.nix
           end
 
