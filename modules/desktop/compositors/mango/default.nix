@@ -1,4 +1,9 @@
 {
+  flake-file.inputs.mango = {
+    url = "github:mangowm/mango";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   den.aspects.mango = {
     description = "MangoWM: compositor Wayland de tags configurado por ~/.config/mango/config.conf.";
 
