@@ -1,6 +1,6 @@
 {
   den.aspects.zed-editor = {
-    homeManager = { pkgs, ... }: {
+    homeManager = { lib, pkgs, ... }: {
       programs.zed-editor = {
         enable = true;
 
@@ -16,17 +16,15 @@
         ];
 
         userSettings = {
+          node = {
+            path = lib.getExe pkgs.nodejs;
+            npm_path = lib.getExe' pkgs.nodejs "npm";
+          };
+
           buffer_font_family = "JetBrainsMono Nerd Font";
           ui_font_family = "JetBrainsMono Nerd Font";
           buffer_font_size = 14;
           ui_font_size = 14;
-
-          theme = {
-            # Fallback independente do Noctalia: a extensão usa a mesma
-            # identidade Everforest configurada como paleta comunitária.
-            mode = "dark";
-            dark = "Everforest Dark Soft";
-          };
         };
       };
     };
