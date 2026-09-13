@@ -28,9 +28,6 @@
       zapzap
       spotify
       obsidian
-
-      # Mouse
-      solaar
     ];
   };
 }
