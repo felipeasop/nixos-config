@@ -6,7 +6,6 @@
         time_format = "{:%H:%M}";
         date_format = "%A, %x";
 
-        ui_scale = 1.0; # ou use accessibility.ui_scale abaixo
         corner_radius_scale = 1.0;
 
         clipboard_enabled = true;

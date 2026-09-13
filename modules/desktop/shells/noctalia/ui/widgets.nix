@@ -75,7 +75,8 @@
         keyboard_layout = {
           type = "keyboard_layout";
           hide_when_single_layout = false;
-          cycle_command = "";
+          # `left` pode receber `exec <comando>` para trocar o layout.
+          actions = { };
         };
 
         lock_keys = {

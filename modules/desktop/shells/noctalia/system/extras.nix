@@ -150,7 +150,7 @@
         };
 
         plugins = {
-          auto_update = true;
+          auto_update = "all";
           enabled = [ ]; # nomes de plugins ativos, ex: [ "zen-browser" ]
           source = [
             {
@@ -184,8 +184,8 @@
           cpu_usage_activity_threshold = 50.0;
           cpu_usage_critical_threshold = 90.0;
           disk_poll_seconds = 10.0;
-          disk_pct_activity_threshold = 80.0;
-          disk_pct_critical_threshold = 95.0;
+          disk_used_pct_activity_threshold = 80.0;
+          disk_used_pct_critical_threshold = 95.0;
           gpu_poll_seconds = 5.0;
           gpu_temp_activity_threshold = 60.0;
           gpu_temp_critical_threshold = 85.0;

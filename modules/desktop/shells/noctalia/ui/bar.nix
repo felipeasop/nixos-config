@@ -53,13 +53,7 @@
             "control-center"
           ];
 
-          dead_zone = {
-            command = "";
-            middle_command = "";
-            right_command = ""; # "" = abre o Control Center por padrão
-            scroll_up_command = "";
-            scroll_down_command = "";
-          };
+          dead_zone.actions = { };
         };
       };
     };
