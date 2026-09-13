@@ -1,6 +1,132 @@
 # HANDOFF
 
-Last updated: 2026-09-12 18:12 UTC
+Last updated: 2026-09-13 18:15 UTC
+
+## Solaar M650L e avisos de configuração
+
+O `solaar-m650l` já era encaminhado pelo host ao Home Manager, mas a parte
+genérica do Solaar não alcançava a classe NixOS; por isso
+`programs.solaar.enable` avaliava como `false`, a unidade `solaar.service` não
+existia e `solaar-m650l-divert` falhava com `5/NOTINSTALLED`. O periférico agora
+é inteiramente propriedade do host: `solaar-m650l` inclui `solaar`, ambos
+contribuem diretamente para NixOS, e somente a parte Home Manager é encaminhada
+ao usuário integrado. Os comandos `systemd-run` usam caminhos absolutos. A
+avaliação confirma `programs.solaar.enable`, `userService.enable` e a unidade
+`systemd.user.services.solaar` ativos. O toplevel de `desktop` foi construído
+com sucesso, sem ativação e sem compilação de software distribuído.
+
+Após a primeira ativação, o receptor Bolt já conectado permaneceu com os modos
+antigos (`root:root 0600`), então o CLI retornou `No supported device found`.
+Foi adicionada uma regra `hidraw` específica da Logitech para o grupo `input`.
+O oneshot agora espera o receptor ficar acessível, repete em caso de ausência,
+permanece ativo após sucesso e usa `trap` para religar o daemon mesmo se uma
+etapa falhar. O ambiente dos serviços expõe o typelib/binário do `libnotify`
+sem sobrescrever ou recompilar o pacote Solaar. É necessário reconectar o
+receptor uma vez (ou reiniciar) após aplicar esta geração para que o kernel
+reemita o evento udev do dispositivo que já estava conectado.
+
+As dez advertências do validador Noctalia foram eliminadas migrando bindings
+para `actions`, usando `plugins.auto_update = "all"`, removendo o `ui_scale`
+duplicado/inválido em `shell` e adotando `disk_used_pct_*`. A validação isolada
+agora retorna apenas `Config is valid`. O acesso depreciado a `pkgs.system` no
+Mango foi substituído por `pkgs.stdenv.hostPlatform.system`; o aviso de
+avaliação desapareceu. `scan_timeout` do Starship passou de 50 para 500 ms.
+Nenhum segredo foi adicionado ou alterado.
+
+## Home Manager integrado no desktop (NixOS)
+
+Revertida a decisão da entrada anterior ("Home Manager standalone") após
+consulta externa que recomendou arquitetura híbrida: NixOS integra Home
+Manager como módulo; hosts sem NixOS (ex.: futuro host Fedora) permanecem
+standalone via `den.homes`. Motivo: `nh os switch .` sozinho volta a cobrir
+sistema e home numa única geração no `desktop`, eliminando o risco de
+atualizar só metade (o problema original que motivou explorar submodule vs.
+standalone).
+
+`modules/hosts/desktop/default.nix`: `users.flp` ganhou
+`classes = [ "homeManager" ]`; a declaração `den.homes.x86_64-linux."flp@desktop"`
+e o provider nomeado `den.aspects.flp.provides.desktop.includes = [
+kde.provides.to-users security.provides.to-users ]` foram removidos — com
+integração via `classes`, `provides.to-users` de `kde` e `security` já é
+herdado automaticamente pelo host, então o provider nomeado ficaria
+redundante.
+
+O aspect `flp` (`modules/users/flp.nix`) não foi alterado — continua portátil,
+igual ao esperado pela arquitetura: só a declaração por host determina se o
+usuário roda integrado ou standalone. `den.schema.home.includes` continua
+valendo como baseline para qualquer home futura em modo standalone (ex.:
+Fedora); não é usado hoje já que `desktop` passou a ser integrado.
+
+`AGENTS.md` foi atualizado (seção "Architecture invariants" e "Aspect
+ownership and routing") para não contradizer essa decisão.
+
+`nix flake check --no-build --no-write-lock-file` passou após a reintegração.
+O aspect Niri não importa mais seu módulo Home Manager diretamente, pois o
+módulo NixOS do Niri já o compartilha com Home Manager e a duplicação tornava a
+configuração inválida. Antes de ativar, ainda avaliar o plano com `nh os build
+.`; nenhum segredo foi adicionado ou alterado.
+
+O Mango usa o módulo oficial Home Manager e a configuração completa oficial do
+input (`assets/config.conf`). As diretivas `bind`, `bindl`, `mousebind`,
+`axisbind`, `gesturebind`, `switchbind` e `keymode` são removidas da base e
+declaradas vazias, deixando apenas os bindings para preenchimento manual.
+
+O template inativo `modules/hosts/template/standalone-home.nix.example` mostra
+como declarar uma home standalone para uma distribuição genérica sem criar um
+host NixOS nem uma segunda ativação para o `desktop`.
+
+## Home Manager standalone
+
+Home Manager agora é exposto separadamente como
+`homeConfigurations."flp@desktop"`. Os hosts NixOS mantêm usuários na classe
+leve `user` e não importam mais o módulo NixOS do Home Manager. O baseline da
+home passou para `den.schema.home`; as contribuições Home Manager de KDE e
+segurança são reutilizadas no provider nomeado da home. Host, usuário, home e
+routing relacionado partem de um único conjunto de nomes no módulo do host; o
+aspect `flp` permanece portável. O aspecto Niri importa seu módulo Home Manager
+diretamente e seleciona `pkgs.niri`, sem depender da integração NixOS. O
+baseline standalone também instala `nh`.
+
+`pkgs.rstudio` deixou de ser usado porque o revision atual exigia compilar o
+RStudio e sua toolchain localmente. O aspect agora empacota o tarball oficial
+installer-less `2026.04.0+526` com hash fixo e um FHS runtime mínimo. O Electron
+bundled não depende da exceção `permittedInsecurePackages`; `rstudio --version`
+retornou `2026.04.0+526` no smoke test.
+
+O Mango agora usa o módulo oficial `wayland.windowManager.mango` do input
+`mangowm/mango`, com suas opções completas disponíveis. Os bindings não são
+traduzidos do Niri nem emitidos: `settings.bind = [ ]`; os demais ajustes locais
+seguem em `extraConfig`.
+
+`nix flake check --no-build --no-write-lock-file` passou. A activation package
+standalone e os toplevels de `desktop` e `template` foram construídos com
+sucesso, sem ativação e sem compilação local de software distribuído. Para
+ativar a migração, executar primeiro `nh os switch .` e depois
+`nh home switch . -b hm-bak`, somente quando solicitado. Os comandos normais
+dependem da autodetecção por usuário e hostname; seletores explícitos ficam
+reservados para hosts remotos ou diagnósticos. Um futuro alvo Fedora deve ser
+uma home separada com `targets.genericLinux.enable`; nenhum hostname Fedora foi
+presumido nesta mudança. Não há blockers e nenhum segredo foi adicionado.
+
+## Pre-commit and shell prompt
+
+Os hooks Deadnix e Statix agora usam wrappers mínimos e rodam em todos os
+commits. Quando não há arquivo Nix staged, eles terminam com sucesso e aparecem
+como `Passed`; quando há arquivos Nix, analisam somente esses arquivos. O
+wrapper do Statix processa cada alvo separadamente porque `statix check` aceita
+apenas um alvo por execução. Os três hooks passaram tanto com um arquivo
+Markdown quanto com dois arquivos Nix.
+
+O módulo `nix_shell` do Starship não mostra mais `$state`. O prompt mantém o
+nome do dev shell, mas deixa de exibir `impure`, que nesse contexto era apenas
+o valor de `IN_NIX_SHELL` usado por `nix develop`/nix-direnv e não o uso de
+`nix build --impure`. `nix flake check --no-build --no-write-lock-file` passou
+para os dois hosts. O dry-run do dev shell planejou somente quatro derivações
+locais de configuração/wrappers, e nenhuma compilação de software.
+
+Próximas ações: revisar e aprovar o plano de commits; corrigir por amend a
+mensagem sem corpo do commit `10232a8`; depois ativar a configuração apenas se
+solicitado. Nenhum blocker técnico e nenhum segredo adicionado.
 
 ## Agent instructions refactor
 
