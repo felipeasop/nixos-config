@@ -9,6 +9,7 @@
       git
       jujutsu
       lazygit
+      arduino
       neovim
       zed-editor
       rstudio
