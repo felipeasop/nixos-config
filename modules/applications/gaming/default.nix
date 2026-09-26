@@ -2,14 +2,16 @@
 let
   components = with den.aspects; [
     # Emuladores
-    melonds
     azahar
     eden
+    melonds
 
-    # Compatibilidade, desempenho e controles
+    # Compatibilidade e modding
     proton
+    r2modman
+
+    # Desempenho e monitoramento
     gamescope
-    controllers
     mangohud
     gamemode
 
@@ -18,8 +20,8 @@ let
     sober # Roblox
     prismlauncher # Minecraft
 
-    # Mods
-    r2modman
+    # Controles
+    controllers
   ];
 in
 {
