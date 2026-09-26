@@ -19,6 +19,7 @@
       # Utilities
       gimp
       libreoffice
+      yazi
 
       # Gaming
       gaming-stack

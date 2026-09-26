@@ -22,6 +22,7 @@
 
     host.includes = with den.aspects; [
       essential
+      unrar
       security
       kernel
       kernel-tuning
