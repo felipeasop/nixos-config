@@ -35,15 +35,12 @@
           vesktop = {
             enable = true;
             useSystemVencord = true;
-
-            # Configurações do cliente, gravadas em
-            # ~/.config/vesktop/settings.json pelo próprio Nixcord.
             settings = {
               discordBranch = "stable";
               tray = true;
               minimizeToTray = true;
               clickTrayToShowHide = true;
-              hardwareAcceleration = true;
+              hardwareAcceleration = false;
               disableMinSize = true;
               customTitleBar = false;
               arRPC = true;
@@ -52,9 +49,6 @@
                 "en-US"
               ];
 
-              # O Vesktop usa PipeWire/venmic no Linux. A seleção granular
-              # permite escolher fontes por aplicação sem expor dispositivos
-              # de entrada como microfones no seletor de áudio da transmissão.
               audio = {
                 granularSelect = true;
                 ignoreDevices = true;
@@ -78,7 +72,7 @@
           };
 
           config.plugins = {
-            # Transmissão no cliente Chromium/Vesktop.
+            # Transmissão no cliente
             webScreenShare = {
               enable = true;
               resolution = "1080";
@@ -91,13 +85,13 @@
             biggerStreamPreview.enable = true;
             streamerModeOnStream.enable = true;
 
-            # Recursos de desktop ausentes ou incompletos no cliente web.
+            # Recursos de desktop ausentes ou incompletos no cliente web
             webContextMenus.enable = true;
             webKeybinds.enable = true;
             pictureInPicture.enable = true;
             voiceMessages.enable = true;
 
-            # Correções de conteúdo e navegação.
+            # Correções de conteúdo e navegação
             fixYoutubeEmbeds.enable = true;
             fixSpotifyEmbeds.enable = true;
             validReply.enable = true;
@@ -108,7 +102,7 @@
             unsuppressEmbeds.enable = true;
             unindent.enable = true;
 
-            # Melhorias previsíveis de interface e mídia.
+            # Interface e mídia
             betterGifAltText.enable = true;
             betterSettings.enable = true;
             betterSessions.enable = true;
@@ -118,15 +112,13 @@
             replyTimestamp.enable = true;
             viewIcons.enable = true;
 
-            # Estabilidade, desempenho e privacidade.
+            # QOL
             clearUrls.enable = true;
             crashHandler.enable = true;
             noOnboardingDelay.enable = true;
             noTrack.enable = true;
             noTypingAnimation.enable = true;
             youtubeAdblock.enable = true;
-
-            # Integração explicitamente útil para quem usa Spotify.
             spotifyControls.enable = true;
           };
         };
