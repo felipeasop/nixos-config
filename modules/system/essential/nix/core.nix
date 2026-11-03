@@ -8,15 +8,18 @@
         ...
       }:
       {
-        home.stateVersion = "26.05";
-        home.packages = [ pkgs.nh ];
+        home = {
+          stateVersion = if osConfig != null then osConfig.system.stateVersion else "26.05";
+          packages = [ pkgs.nh ];
+        };
 
-        # Usado por comandos avulsos, como `nix run nixpkgs#<pacote>`.
+        # Só comandos legados sem flake (nix-shell -p, nix-env); nix run é coberto por unfree-packages.nix.
         xdg.configFile."nixpkgs/config.nix".text = ''
           { allowUnfree = true; }
         '';
       }
       // lib.optionalAttrs (osConfig == null) {
+        # Só pra home standalone (sem NixOS por trás)
         nixpkgs.config.allowUnfree = true;
       };
     nixos = {
