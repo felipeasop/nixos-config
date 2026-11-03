@@ -15,17 +15,12 @@ in
       den.provides.hostname
       systemd-boot
       laptop
-      lxqt
-      firefox
 
-      # VA-API só pro firefox deste host — não toca no aspect compartilhado
-      # nem afeta o desktop (GPU AMD, driver diferente).
-      {
-        homeManager.programs.firefox.profiles.default.settings = {
-          "media.ffmpeg.vaapi.enabled" = true;
-          "media.hardware-video-decoding.force-enabled" = true;
-        };
-      }
+      # DEs / WMs
+      lxqt
+      niri-stack
+      firefox
+      intel-graphics
 
       { nixos = import ./_hardware.nix; }
     ];
@@ -34,15 +29,6 @@ in
       { lib, pkgs, ... }:
       {
         hardware.enableRedistributableFirmware = true;
-
-        # Driver i965 (não iHD): Haswell é gen7.5, iHD só cobre Broadwell+.
-        hardware.graphics = {
-          enable = true;
-          extraPackages = [
-            pkgs.intel-vaapi-driver
-            pkgs.libvdpau-va-gl
-          ];
-        };
 
         # Conta já existe manualmente (uid 1001) — fixa pra não ambiguar dono de /home/flp.
         users.users.flp.uid = lib.mkDefault 1001;
