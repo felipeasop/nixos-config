@@ -8,19 +8,14 @@
       tmux
 
       # Terminal emulator
-      foot
       ghostty
 
-      # Version control
-      git
+      # Version control (git fica fora: sua fatia nixos exige secrets, nem todo host tem)
       jujutsu
       lazygit
 
       # Editors / IDEs
-      arduino
-      neovim
       zed-editor
-      rstudio
     ];
   };
 }
