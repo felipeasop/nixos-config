@@ -8,7 +8,7 @@
       tmux
 
       # Terminal emulator
-      ghostty
+      alacritty
 
       # Version control (git fica fora: sua fatia nixos exige secrets, nem todo host tem)
       jujutsu

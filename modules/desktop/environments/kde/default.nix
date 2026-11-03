@@ -50,12 +50,12 @@
           }
         ];
 
-        hotkeys.commands."launch-ghostty" = {
-          name = "Launch Ghostty";
+        hotkeys.commands."launch-alacritty" = {
+          name = "Launch Alacritty";
           key = "Meta+Return";
-          command = "ghostty";
+          command = "alacritty";
         };
-        shortcuts."services/plasma-manager-commands.desktop"."launch-ghostty" = "Meta+Return";
+        shortcuts."services/plasma-manager-commands.desktop"."launch-alacritty" = "Meta+Return";
       };
     };
   };
