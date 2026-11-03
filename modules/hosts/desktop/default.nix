@@ -13,23 +13,21 @@ in
   den.aspects.${hostName} = {
     includes = with den.aspects; [
       den.provides.hostname
-
       grub
       amd-graphics
-
-      solaar-m650l
-
       secrets
       (ssh-identity-for { user = userName; })
 
+      solaar-m650l
+
       kde
+      desktop-apps
 
       { nixos = import ./_hardware.nix; }
     ];
 
-    provides.to-users.includes = with den.aspects; [
-      essential
-      solaar-m650l
-    ];
+    # host-aspects (flp.nix) só projeta o que está no includes escrito à mão;
+    # essential chega via den.schema.host.includes, invisível pra battery.
+    provides.to-users.includes = with den.aspects; [ essential ];
   };
 }
