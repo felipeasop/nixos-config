@@ -12,6 +12,12 @@ take precedence.
 ## Working principles
 
 - Make the smallest coherent change that satisfies the request.
+- Default to zero comments. Add one only when the WHY is genuinely
+  non-obvious (a hidden constraint, a workaround for a specific bug,
+  something that would surprise a reader) — one or two short lines, never a
+  multi-line block or a restatement of what the code already says. Put
+  investigation, rationale, and alternatives considered in chat/commit
+  messages, not in the file.
 - Keep the system declarative and reproducible from tracked files.
 - Reuse existing aspects, options, packages, and helpers before adding new ones.
 - When evaluating architectural alternatives, recommend the best target
