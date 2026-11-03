@@ -10,282 +10,174 @@ _: {
       programs.nm-applet.enable = true;
     };
 
-    # Auto-roteado pro usuário, igual ao kde — não precisa de provides.to-users.includes duplicado.
-    provides.to-users.homeManager =
-      { pkgs, ... }:
-      {
-        home.packages = [ pkgs.xcape ];
+    # Auto-roteado pro usuário
+    provides.to-users.homeManager = { pkgs, ... }: {
+      home.packages = [ pkgs.xcape ];
 
-        # Declarado aqui = imutável; editar pela GUI do LXQt não persiste.
-        xdg.configFile = {
-          "lxqt/panel.conf".text = ''
-            [General]
-            __userfile__=true
-            plugins=mainmenu, desktopswitch, taskbar, mount, tray, volume, worldclock
-
-            [mainmenu]
-            alignment=Left
-
-            [desktopswitch]
-            alignment=Left
-
-            [mount]
-            alignment=Right
-
-            [taskbar]
-            alignment=Left
-
-            [tray]
-            alignment=Right
-
-            [volume]
-            alignment=Right
-
-            [worldclock]
-            alignment=Right
-          '';
-
-          "lxqt/globalkeyshortcuts.conf".text = ''
-            [General]
-            AllowGrabBaseKeypad=true
-            AllowGrabBaseSpecial=false
-            AllowGrabLocks=false
-            AllowGrabMiscKeypad=true
-            AllowGrabMiscSpecial=true
-            MultipleActionsBehaviour=first
-            WindowSize=@Invalid()
-
-            [Alt%2BF1.1]
-            Comment=Show/hide main menu
-            Enabled=true
-            path=/panel/fancymenu/show_hide
-
-            [Alt%2BF2.2]
-            Comment=Show/hide runner dialog
-            Enabled=true
-            path=/runner/show_hide_dialog
-
-            [Control%2BAlt%2BD.3]
-            Comment=Show desktop
-            Enabled=true
-            path=/panel/showdesktop/show_hide
-
-            [Control%2BAlt%2BE.4]
-            Comment=PCManFM-Qt
-            Enabled=true
-            Exec=pcmanfm-qt
-
-            [Control%2BAlt%2BI.5]
-            Comment=Web Browser
-            Enabled=true
-            Exec=xdg-open, about:blank
-
-            [Control%2BAlt%2BL.6]
-            Comment=Lockscreen
-            Enabled=true
-            Exec=xdg-screensaver, lock
-
-            [Control%2BAlt%2BT.7]
-            Comment=QTerminal
-            Enabled=true
-            Exec=qterminal
-
-            [Control%2BF1.8]
-            Comment=Switch to desktop 1
-            Enabled=true
-            path=/panel/desktopswitch/desktop_1
-
-            [Control%2BF10.9]
-            Comment=Switch to desktop 10
-            Enabled=true
-            path=/panel/desktopswitch/desktop_10
-
-            [Control%2BF11.10]
-            Comment=Switch to desktop 11
-            Enabled=true
-            path=/panel/desktopswitch/desktop_11
-
-            [Control%2BF12.11]
-            Comment=Switch to desktop 12
-            Enabled=true
-            path=/panel/desktopswitch/desktop_12
-
-            [Control%2BF2.12]
-            Comment=Switch to desktop 2
-            Enabled=true
-            path=/panel/desktopswitch/desktop_2
-
-            [Control%2BF3.13]
-            Comment=Switch to desktop 3
-            Enabled=true
-            path=/panel/desktopswitch/desktop_3
-
-            [Control%2BF4.14]
-            Comment=Switch to desktop 4
-            Enabled=true
-            path=/panel/desktopswitch/desktop_4
-
-            [Control%2BF5.15]
-            Comment=Switch to desktop 5
-            Enabled=true
-            path=/panel/desktopswitch/desktop_5
-
-            [Control%2BF6.16]
-            Comment=Switch to desktop 6
-            Enabled=true
-            path=/panel/desktopswitch/desktop_6
-
-            [Control%2BF7.17]
-            Comment=Switch to desktop 7
-            Enabled=true
-            path=/panel/desktopswitch/desktop_7
-
-            [Control%2BF8.18]
-            Comment=Switch to desktop 8
-            Enabled=true
-            path=/panel/desktopswitch/desktop_8
-
-            [Control%2BF9.19]
-            Comment=Switch to desktop 9
-            Enabled=true
-            path=/panel/desktopswitch/desktop_9
-
-            [Meta%2B0.20]
-            Comment=Activate task 10
-            Enabled=true
-            path=/panel/taskbar/task_10
-
-            [Meta%2B1.21]
-            Comment=Activate task 1
-            Enabled=true
-            path=/panel/taskbar/task_1
-
-            [Meta%2B2.22]
-            Comment=Activate task 2
-            Enabled=true
-            path=/panel/taskbar/task_2
-
-            [Meta%2B3.23]
-            Comment=Activate task 3
-            Enabled=true
-            path=/panel/taskbar/task_3
-
-            [Meta%2B4.24]
-            Comment=Activate task 4
-            Enabled=true
-            path=/panel/taskbar/task_4
-
-            [Meta%2B5.25]
-            Comment=Activate task 5
-            Enabled=true
-            path=/panel/taskbar/task_5
-
-            [Meta%2B6.26]
-            Comment=Activate task 6
-            Enabled=true
-            path=/panel/taskbar/task_6
-
-            [Meta%2B7.27]
-            Comment=Activate task 7
-            Enabled=true
-            path=/panel/taskbar/task_7
-
-            [Meta%2B8.28]
-            Comment=Activate task 8
-            Enabled=true
-            path=/panel/taskbar/task_8
-
-            [Meta%2B9.29]
-            Comment=Activate task 9
-            Enabled=true
-            path=/panel/taskbar/task_9
-
-            [Print.30]
-            Comment=Screenshot
-            Enabled=true
-            Exec=screengrab, -f
-
-            [Shift%2BControl%2BF6.31]
-            Comment=☀ ↓
-            Enabled=true
-            Exec=lxqt-config-brightness, -d
-
-            [Shift%2BControl%2BF7.32]
-            Comment=☀ ↑
-            Enabled=true
-            Exec=lxqt-config-brightness, -i
-
-            [XF86AudioLowerVolume.33]
-            Comment=Decrease sound volume
-            Enabled=true
-            path=/panel/volume/down
-
-            [XF86AudioMute.34]
-            Comment=Mute/unmute sound volume
-            Enabled=true
-            path=/panel/volume/mute
-
-            [XF86AudioRaiseVolume.35]
-            Comment=Increase sound volume
-            Enabled=true
-            path=/panel/volume/up
-
-            [XF86Display.36]
-            Comment=Launch Monitor
-            Enabled=true
-            Exec=lxqt-config-monitor
-
-            [XF86Eject.37]
-            Comment=Eject removable media
-            Enabled=true
-            path=/panel/mount/eject
-
-            [XF86MonBrightnessDown.38]
-            Comment=☀ ↓
-            Enabled=true
-            Exec=lxqt-config-brightness, -d
-
-            [XF86MonBrightnessUp.39]
-            Comment=☀ ↑
-            Enabled=true
-            Exec=lxqt-config-brightness, -i
-
-            [XF86PowerOff.40]
-            Comment=Power off key action
-            Enabled=true
-            path=/powermanager/keypoweroff
-
-            [XF86Sleep.41]
-            Comment=Hibernate key action
-            Enabled=true
-            path=/powermanager/keyhibernate
-
-            [XF86Suspend.42]
-            Comment=Suspend key action
-            Enabled=true
-            path=/powermanager/keysuspend
-
-            [Meta%2BReturn.43]
-            Comment=Ghostty
-            Enabled=true
-            Exec=ghostty
-
-            [XF86LaunchA.44]
-            Comment=App launcher (Super sozinho, via xcape)
-            Enabled=true
-            path=/runner/show_hide_dialog
-          '';
-        };
-
-        # xcape finge um tap de Super_L como XF86LaunchA (F13 falha: sem keycode no layout br-abnt2).
-        systemd.user.services.xcape-super = {
-          Unit.Description = "Super sozinho (tap) abre o runner do LXQt, via xcape";
-          Install.WantedBy = [ "graphical-session.target" ];
-          Service = {
-            ExecStart = "${pkgs.xcape}/bin/xcape -e 'Super_L=XF86LaunchA'";
-            Restart = "on-failure";
-          };
+      # Mesma paleta escura (Adwaita-dark) pros dois toolkits — leve, sem
+      # pacote de tema pesado, familiar por já ser o padrão do GNOME/GTK.
+      gtk = {
+        enable = true;
+        theme = {
+          name = "Adwaita-dark";
+          package = pkgs.gnome-themes-extra;
         };
       };
+      qt = {
+        enable = true;
+        platformTheme.name = "gtk3";
+        style.name = "adwaita-dark";
+      };
+
+      # Declarado aqui = imutável; editar pela GUI do LXQt não persiste.
+      xdg.configFile = {
+        "lxqt/panel.conf".text = ''
+          [General]
+          __userfile__=true
+          theme=KDE-Plasma
+          plugins=mainmenu, desktopswitch, taskbar, mount, tray, volume, worldclock
+
+          [mainmenu]
+          alignment=Left
+
+          [desktopswitch]
+          alignment=Left
+
+          [mount]
+          alignment=Right
+
+          [taskbar]
+          alignment=Left
+
+          [tray]
+          alignment=Right
+
+          [volume]
+          alignment=Right
+
+          [worldclock]
+          alignment=Right
+        '';
+
+        # Enxuto: só o essencial (terminal/browser/arquivos/lock/workspaces/
+        # mídia/energia), espelhando os binds que já existem no niri. Fora
+        # disso Openbox já cobre Alt+Tab nativamente.
+        "lxqt/globalkeyshortcuts.conf".text = ''
+          [General]
+          AllowGrabBaseKeypad=true
+          AllowGrabBaseSpecial=false
+          AllowGrabLocks=false
+          AllowGrabMiscKeypad=true
+          AllowGrabMiscSpecial=true
+          MultipleActionsBehaviour=first
+          WindowSize=@Invalid()
+
+          [Meta%2BReturn.1]
+          Comment=Terminal (Alacritty)
+          Enabled=true
+          Exec=alacritty
+
+          [Meta%2BB.2]
+          Comment=Browser (Firefox)
+          Enabled=true
+          Exec=firefox
+
+          [Meta%2BE.3]
+          Comment=File manager (PCManFM-Qt)
+          Enabled=true
+          Exec=pcmanfm-qt
+
+          [Meta%2BAlt%2BL.4]
+          Comment=Lock screen
+          Enabled=true
+          Exec=xdg-screensaver, lock
+
+          [Alt%2BF2.5]
+          Comment=App launcher (runner)
+          Enabled=true
+          path=/runner/show_hide_dialog
+
+          [XF86LaunchA.6]
+          Comment=App launcher (Super sozinho, via xcape)
+          Enabled=true
+          path=/runner/show_hide_dialog
+
+          [Meta%2B1.7]
+          Comment=Workspace 1
+          Enabled=true
+          path=/panel/desktopswitch/desktop_1
+
+          [Meta%2B2.8]
+          Comment=Workspace 2
+          Enabled=true
+          path=/panel/desktopswitch/desktop_2
+
+          [Meta%2B3.9]
+          Comment=Workspace 3
+          Enabled=true
+          path=/panel/desktopswitch/desktop_3
+
+          [Meta%2B4.10]
+          Comment=Workspace 4
+          Enabled=true
+          path=/panel/desktopswitch/desktop_4
+
+          [Print.11]
+          Comment=Screenshot
+          Enabled=true
+          Exec=screengrab, -f
+
+          [XF86AudioLowerVolume.12]
+          Comment=Decrease sound volume
+          Enabled=true
+          path=/panel/volume/down
+
+          [XF86AudioMute.13]
+          Comment=Mute/unmute sound volume
+          Enabled=true
+          path=/panel/volume/mute
+
+          [XF86AudioRaiseVolume.14]
+          Comment=Increase sound volume
+          Enabled=true
+          path=/panel/volume/up
+
+          [XF86MonBrightnessDown.15]
+          Comment=☀ ↓
+          Enabled=true
+          Exec=lxqt-config-brightness, -d
+
+          [XF86MonBrightnessUp.16]
+          Comment=☀ ↑
+          Enabled=true
+          Exec=lxqt-config-brightness, -i
+
+          [XF86PowerOff.17]
+          Comment=Power off key action
+          Enabled=true
+          path=/powermanager/keypoweroff
+
+          [XF86Sleep.18]
+          Comment=Hibernate key action
+          Enabled=true
+          path=/powermanager/keyhibernate
+
+          [XF86Suspend.19]
+          Comment=Suspend key action
+          Enabled=true
+          path=/powermanager/keysuspend
+        '';
+      };
+
+      # xcape finge um tap de Super_L como XF86LaunchA (F13 falha: sem keycode no layout br-abnt2).
+      systemd.user.services.xcape-super = {
+        Unit.Description = "Super sozinho (tap) abre o runner do LXQt, via xcape";
+        Install.WantedBy = [ "graphical-session.target" ];
+        Service = {
+          ExecStart = "${pkgs.xcape}/bin/xcape -e 'Super_L=XF86LaunchA'";
+          Restart = "on-failure";
+        };
+      };
+    };
   };
 }
