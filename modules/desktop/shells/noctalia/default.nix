@@ -1,13 +1,11 @@
 { inputs, ... }: {
-  flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia";
+  flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
   den.aspects.noctalia = {
     homeManager = { pkgs, ... }: {
       imports = [ inputs.noctalia.homeModules.default ];
 
-      # O Noctalia resolve ícones pelo index.theme de cada diretório XDG.
-      # Sem este índice no perfil do usuário, ícones disponíveis apenas em
-      # resoluções grandes (como o 512x512 do Zed) recebem fallback genérico.
+      # Sem isso os ícones que só estão disponíveis em resoluções grandes usam fallback genérico
       home.packages = [ pkgs.hicolor-icon-theme ];
 
       programs.noctalia = {
@@ -15,8 +13,7 @@
         systemd.enable = true;
       };
 
-      # Os prefixos `|` tornam estas condições alternativas: o serviço só
-      # inicia nas sessões em que o Noctalia é a shell escolhida.
+      # Prefixo `|` = condições alternativas; só inicia quando Noctalia é a shell ativa.
       systemd.user.services.noctalia.Unit.ConditionEnvironment = [
         "|XDG_CURRENT_DESKTOP=niri"
         "|XDG_CURRENT_DESKTOP=mango"
