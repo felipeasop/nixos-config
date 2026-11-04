@@ -5,7 +5,7 @@
         enable = true;
         clean = {
           enable = true;
-          extraArgs = "--keep-since 5d --keep 3 --nogc-roots --all";
+          extraArgs = "--keep-since 7d --keep 3 --keep-one";
           dates = "weekly";
         };
       };

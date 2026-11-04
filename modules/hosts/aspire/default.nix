@@ -48,8 +48,6 @@ in
           max-jobs = lib.mkForce 1;
           cores = lib.mkForce 2;
         };
-
-        programs.nh.clean.extraArgs = lib.mkForce "--keep-since 14d --keep 2 --nogc-roots --all";
       };
 
     # host-aspects (flp.nix) só projeta o que está no includes escrito à mão;
