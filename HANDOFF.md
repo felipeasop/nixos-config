@@ -1,6 +1,58 @@
 # HANDOFF
 
-Last updated: 2026-09-13 18:15 UTC
+Last updated: 2026-11-04 03:51 UTC
+
+## Reconciliação com o remote
+
+As mudanças locais que nunca foram enviadas (commits de 29/09 e alterações não
+commitadas) foram reaplicadas sobre `origin/main` como commits novos. O que o
+remote já tinha substituído ficou de fora: foot, ghostty, neovim, Proton VPN e
+o lock antigo. O Mango continua existindo de propósito. Os estados anteriores
+estão nas branches `backup/pre-pull-2026-11-03`, `backup/wt-codex-2026-11-03`
+e `backup/assistant-main-before-restore-2026-11-03`, e no `stash@{2}`.
+
+Próximas ações:
+
+1. Revisar os commits locais e fazer o `git push`.
+2. Rodar `nh os switch` e relogar, para que o `NH_FLAKE` do Home Manager
+   entre em vigor.
+3. Depois de validar, apagar as branches `backup/*` e os stashes antigos.
+
+## Nix e nh
+
+O `nh clean all` roda semanalmente com `--keep-since 7d --keep 3 --keep-one`
+em todos os hosts; o override do aspire foi removido. Os argumentos `--all` e
+`--nogc-roots` não existem no nh 4.4.2 e saíram. A otimização do store passou
+a ser semanal. O `NH_FLAKE` vem do Home Manager e aponta para
+`~/nixos-config`; antes apontava para `${self}`, a cópia congelada no store.
+
+## Zed
+
+No Nix, o Zed usa tokens semânticos e formata com nixfmt ao salvar. O nil baixa
+os inputs do flake sozinho, e o nixd lê o nixpkgs e as opções NixOS e Home
+Manager do host atual a partir de `~/nixos-config`.
+
+## KDE Plasma
+
+O Plasma tem quatro desktops: Meta+1…4 troca de desktop, Meta+Ctrl+1…4 move a
+janela, e os atalhos Meta+N do gerenciador de tarefas estão desativados. Cada
+login começa com uma sessão vazia.
+
+## Orange Data Mining e brModelo
+
+`orange` e `brmodelo` são aspects próprios em `development/tools/` e não são
+incluídos em nenhum grupo nem perfil. `brmodelo` usa o pacote do nixpkgs. O
+`SQLPower/power-architect` só existe como código-fonte, então não foi
+empacotado; Astah UML segue sem módulo.
+
+O Orange 3.40.0 é gerenciado pelo Pixi: `pixi.toml` declara Orange e Python
+3.12, e `pixi.lock` fixa as dependências do conda-forge. O launcher roda dentro
+de um FHS runtime e copia os manifests para `$XDG_DATA_HOME/orange-data-mining`.
+O ambiente Conda é baixado pelo Pixi no primeiro uso, fora do Nix Store. O
+launcher usa `--no-config --locked`. O ambiente ainda não foi testado.
+
+Nenhuma ativação foi executada e nenhum segredo foi adicionado aos arquivos
+rastreados.
 
 ## Solaar M650L e avisos de configuração
 
