@@ -9,6 +9,18 @@ take precedence.
 2. Inspect `git status` and relevant diffs before editing.
 3. Preserve unrelated user changes in a dirty worktree.
 
+## Approval and uncertainty
+
+- Investigating and reading need no approval. Before editing files, running
+  state-changing commands, or committing, present the plan and wait for the
+  user's explicit approval. Approval covers only what was presented.
+- Before any operation that can discard work (`reset`, `checkout --`, `stash`,
+  `rebase`, merge, deleting files or branches), create a backup branch and list
+  what exists only locally.
+- When in doubt, ask the user instead of guessing. Base decisions on
+  authoritative sources (upstream docs, module source, `--help`) and cite them;
+  never present unverified claims as fact.
+
 ## Working principles
 
 - Make the smallest coherent change that satisfies the request.
@@ -28,12 +40,13 @@ take precedence.
   architecture impartially. Do not favor the current architecture or let
   migration effort influence the recommendation; consider migration friction
   only when planning how to implement the chosen architecture.
-- Put durable repository rules here. Put current state, investigations, and next
-  actions in `HANDOFF.md`.
+- Put durable repository rules here. Put current state and next actions in
+  `HANDOFF.md`; put investigations and rationale in commit messages.
 - Update `HANDOFF.md` after significant decisions or unfinished work, not for
-  trivial or documentation-only changes. Include the UTC timestamp, current
-  state, up to three next actions, blockers, and confirmation that no secrets
-  were added to tracked files.
+  trivial or documentation-only changes. Rewrite the whole file instead of
+  appending: keep only the UTC timestamp, current state, up to three next
+  actions, blockers, and confirmation that no secrets were added to tracked
+  files. Keep it under about 60 lines; history belongs in git.
 
 ## Architecture invariants
 
