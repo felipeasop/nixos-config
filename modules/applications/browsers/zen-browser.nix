@@ -34,26 +34,15 @@
         };
 
         profiles.default = {
-          # Betterfox preset: prefs de privacidade, telemetria e
-          # performance (yokoffing/Betterfox zen/user.js) que o Zen não
-          # aplica por padrão. Cada pref usa mkDefault, então qualquer
-          # entrada em `settings` abaixo tem prioridade e sobrescreve.
-          # Desativar o preset reverte as prefs que ele aplicou.
           presets.betterfox.enable = true;
 
           settings = {
             "zen.view.compact.enable-at-startup" = true;
             "zen.workspaces.continue-where-left-off" = true;
-
-            # Restaurar abas/janelas da sessão anterior. Sem mkDefault de
-            # propósito: o preset betterfox desativa isso por padrão
-            # (privacidade), então aqui precisa ter prioridade sobre o preset.
+            # Sem mkDefault: precisa vencer o preset betterfox, que desativa isso.
             "browser.startup.page" = 3;
           };
 
-          # Search: Startpage não é engine nativa, é fornecida pela extensão,
-          # o `default` é só o fallback nativo, depois que a extensão instalar,
-          # defina Startpage como padrão manualmente em about:preferences#search.
           search = {
             force = true;
             default = "ddg";
@@ -63,7 +52,6 @@
             };
           };
 
-          # Só "Faculdade" tem container; o resto usa o contexto padrão.
           containersForce = true;
           containers.Faculdade = {
             color = "orange";
@@ -97,8 +85,6 @@
               container = 1;
             };
           };
-
-          # Sem pins ou bookmarks declarados
         };
       };
     };

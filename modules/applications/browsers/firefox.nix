@@ -22,16 +22,14 @@
 
         profiles.default = {
           settings = {
-            # Restaurar abas/janelas da sessão anterior ao abrir
             "browser.startup.page" = 3;
 
-            # Privacidade
             "privacy.donottrackheader.enabled" = true;
             "privacy.trackingprotection.enabled" = true;
             "privacy.trackingprotection.socialtracking.enabled" = true;
             "privacy.fingerprintingProtection" = true;
-            "privacy.resistFingerprinting" = false; # true quebra sites
-            "network.cookie.cookieBehavior" = 1; # bloqueia cookies de terceiros
+            "privacy.resistFingerprinting" = false;
+            "network.cookie.cookieBehavior" = 1;
             "browser.contentblocking.category" = "strict";
             "dom.security.https_only_mode" = true;
             "beacon.enabled" = false;
