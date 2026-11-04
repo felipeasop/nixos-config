@@ -12,6 +12,10 @@ take precedence.
 ## Working principles
 
 - Make the smallest coherent change that satisfies the request.
+- When removing or replacing something, remove it fully: delete now-unused
+  inputs, options, packages, and helper bindings in the same change instead of
+  leaving dead references, commented-out blocks, or half-migrated scaffolding
+  behind. A patch that fixes the request but leaves debris is incomplete.
 - Default to zero comments. Add one only when the WHY is genuinely
   non-obvious (a hidden constraint, a workaround for a specific bug,
   something that would surprise a reader) — one or two short lines, never a
@@ -146,6 +150,11 @@ take precedence.
 - Prefer, in order: an existing trusted substitute; an official fixed-output
   binary distribution; a proven cached revision; a remote builder/cache; or
   temporarily excluding the consumer after user approval.
+- When a flake input would compile locally, first check whether upstream
+  maintains an always-cached branch (e.g. a `cachix` branch its CI only
+  advances after confirming the cache push, as `noctalia` does). If none
+  exists, test release tags newest-first with `--option max-jobs 0` and pin
+  the first one with full cache coverage.
 - Never claim a revision is cached without checking its exact derivation.
 - Local derivations that only compose configuration, generate metadata, or wrap
   existing binaries are expected. They may not invoke a software toolchain to
