@@ -13,28 +13,21 @@
             "flp"
           ];
 
-          # Caches binários. IMPORTANTE: `substituters` aqui SUBSTITUI a lista
-          # padrão (que inclui https://cache.nixos.org/), não soma a ela. Por
-          # isso listamos o cache oficial explicitamente, junto dos extras.
           substituters = [
             "https://cache.nixos.org/"
-            "https://chaotic-nyx.cachix.org"
+            "https://nyx-cache.chaotic.cx/"
             "https://nix-community.cachix.org"
             "https://noctalia.cachix.org"
-            "https://rstats-on-nix.cachix.org"
           ];
           trusted-public-keys = [
             "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-            "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+            "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
             "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-            "rstats-on-nix.cachix.org-1:vdiiVgocg6WeJrODIqdprZRUrhi1JzhBnXv7aWI6+F0="
           ];
 
-          # Usa todos os núcleos disponíveis tanto pra rodar builds em paralelo
-          # quanto pra compilar cada derivação (make -jN, etc).
           max-jobs = "auto";
-          cores = 0; # 0 = usa todos os cores da máquina
+          cores = 0; # Usa todos os nucleos
 
           accept-flake-config = true;
         };
