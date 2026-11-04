@@ -1,0 +1,13 @@
+[workspace]
+name = "orange-data-mining"
+version = "0.1.0"
+description = "Ambiente reprodutível do Orange Data Mining para Linux"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+orange3 = "==3.40.0"
+python = "3.12.*"
+
+[tasks]
+open = "python -m Orange.canvas"
