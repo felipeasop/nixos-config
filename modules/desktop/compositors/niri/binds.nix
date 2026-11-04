@@ -18,7 +18,7 @@
         };
         "Mod+Shift+B" = {
           hotkey-overlay.title = "Open Browser (Private)";
-          action.spawn-sh = "librewolf -private-window || zen-browser -private-window || zen-beta -private-window || zen-twilight -private-window";
+          action.spawn-sh = "zen-browser -private-window || zen-beta -private-window || zen-twilight -private-window";
         };
         "Mod+Alt+L" = {
           hotkey-overlay.title = "Lock Screen";
