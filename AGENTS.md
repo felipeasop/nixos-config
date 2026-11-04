@@ -221,10 +221,19 @@ rebuilding unrelated software.
 
 - Review `git status`, unstaged diffs, and staged diffs before committing.
 - Stage explicit paths for each logical change; do not mix unrelated work.
-- Use Portuguese Conventional Commits:
-  `type(scope): resumo no imperativo`.
-- Each commit needs a short subject and a Portuguese body explaining purpose and
-  user/system impact.
+- Use the nixpkgs/kernel style in Portuguese, enforced by the
+  `commit-msg-style` hook:
+
+  ```text
+  escopo: resumo no imperativo
+
+  Corpo explicando o porquê e o impacto no sistema ou no usuário.
+  ```
+
+  The scope is the lowercase aspect, module, or area changed (`nh`,
+  `zed-editor`, `hosts/aspire`, `flake`, `agents`); join several with `, `.
+  The subject has at most 72 characters and no final period. The body is
+  required.
 - Separate distinct responsibilities into independent commits.
 - Before the first commit, present the complete commit plan with messages and
   paths, then wait for user approval.
