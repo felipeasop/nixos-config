@@ -44,6 +44,32 @@
           '';
         }
       );
+
+      commitMsgStyle = lib.getExe (
+        pkgs.writeShellApplication {
+          name = "commit-msg-style";
+          text = ''
+            fail() {
+              printf 'commit-msg: %s\n' "$1" >&2
+              printf 'Modelo: "escopo: resumo no imperativo", linha vazia, corpo.\n' >&2
+              exit 1
+            }
+
+            msg=$(grep -v '^#' "$1" || true)
+            subject=$(head -n 1 <<<"$msg")
+
+            case "$subject" in
+              "Merge "* | "Revert "* | "fixup! "* | "squash! "*) exit 0 ;;
+            esac
+
+            scope='[a-z0-9][a-z0-9._/+-]*'
+            [[ $subject =~ ^$scope(,\ $scope)*:\ [^[:space:]] ]] || fail "assunto fora do formato"
+            (( ''${#subject} <= 72 )) || fail "assunto com mais de 72 caracteres"
+            [[ -z $(sed -n 2p <<<"$msg") ]] || fail "a segunda linha deve ficar vazia"
+            [[ -n $(tail -n +3 <<<"$msg" | tr -d '[:space:]') ]] || fail "corpo obrigatório"
+          '';
+        }
+      );
     in
     {
       devShells.default = config.pre-commit.devShell;
@@ -69,6 +95,12 @@
             # (cabeçalho "DO NOT MODIFY")
             # Excluído por padrão de nome, cobre qualquer host
             excludes = [ "_hardware\\.nix$" ];
+          };
+          commit-msg-style = {
+            enable = true;
+            name = "commit-msg-style";
+            entry = commitMsgStyle;
+            stages = [ "commit-msg" ];
           };
         };
       };
