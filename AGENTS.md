@@ -221,8 +221,8 @@ rebuilding unrelated software.
 
 - Review `git status`, unstaged diffs, and staged diffs before committing.
 - Stage explicit paths for each logical change; do not mix unrelated work.
-- Use the nixpkgs/kernel style in Portuguese, enforced by the
-  `commit-msg-style` hook:
+- Use the `subsystem: summary` style shared by nixpkgs, the Linux kernel, and
+  Git, written in Portuguese and enforced by the `commit-msg-style` hook:
 
   ```text
   escopo: resumo no imperativo
@@ -244,5 +244,9 @@ rebuilding unrelated software.
 - Den principles: https://den.denful.dev/explanation/core-principles/
 - Den batteries: https://den.denful.dev/reference/batteries/
 - Den mutual providers: https://den.denful.dev/guides/mutual/
+- Commit style:
+  https://github.com/NixOS/nixpkgs/blob/master/CONTRIBUTING.md#commit-conventions,
+  https://docs.kernel.org/process/submitting-patches.html#the-canonical-patch-format,
+  https://git-scm.com/docs/SubmittingPatches#summary-section
 - Operational commands: `README.md`
 - Current repository state: `HANDOFF.md`
