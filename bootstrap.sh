@@ -25,21 +25,21 @@ fi
 
 untracked=$(git status --porcelain --ignored=no modules/hosts/"$host" | grep '^??' || true)
 if [[ -n $untracked ]]; then
-  echo "Aviso: há arquivos NÃO rastreados em modules/hosts/$host/ — flakes os ignoram:"
+  echo "Aviso: há arquivos NÃO rastreados em modules/hosts/$host/:"
   echo "$untracked"
   echo "Rode 'git add' nos arquivos novos antes de continuar."
   exit 1
 fi
 
-echo "==> Checando o flake (sem build, sem travar o lockfile)"
+echo "==> Checando o flake"
 nix "${nixflags[@]}" flake check --no-build --no-write-lock-file
 
-echo "==> Buildando o toplevel de '$host' (sem ativar ainda)"
+echo "==> Buildando o toplevel de '$host'"
 # Build antes de switch inspirado no github.com/pedro-pereira-dev/nixfiles.
 sudo nixos-rebuild build --flake ".#$host" "${rebuildflags[@]}"
 
 echo
-echo "Build pronto em ./result. Revise antes de ativar."
+echo "Build pronto em ./result"
 read -rp "Ativar agora com 'switch'? [s/N] " resp
 if [[ $resp =~ ^[sSyY]$ ]]; then
   sudo nixos-rebuild switch --flake ".#$host" "${rebuildflags[@]}"
