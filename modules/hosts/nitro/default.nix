@@ -15,6 +15,7 @@
       (ssh-identity-for { user = "flp"; })
 
       kde
+      niri-stack
 
       nvidia
       laptop

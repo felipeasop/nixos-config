@@ -21,6 +21,7 @@ in
       solaar-m650l
 
       kde
+      niri-stack
       desktop-apps
 
       { nixos = import ./_hardware.nix; }

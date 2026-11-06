@@ -3,8 +3,6 @@
   # (ex. aspire) simplesmente não incluem isto.
   den.aspects.desktop-apps = {
     includes = with den.aspects; [
-      niri-stack
-
       gaming-stack
 
       zen-browser
