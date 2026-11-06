@@ -1,7 +1,10 @@
 {
   den.aspects.essential = {
-    nixos = {
-      services.xserver.enable = true;
+    nixos = { pkgs, ... }: {
+      services.xserver = {
+        enable = true;
+        excludePackages = [ pkgs.xterm ];
+      };
       # services.printing.enable = true;
     };
   };
