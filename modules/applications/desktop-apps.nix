@@ -15,8 +15,6 @@
       obsidian
       gimp
 
-      git
-
       orange
       # arduino
       # rstudio

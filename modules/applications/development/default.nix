@@ -10,7 +10,8 @@
       # Terminal emulator
       alacritty
 
-      # Version control (git fica fora: sua fatia nixos exige secrets, nem todo host tem)
+      # Version control
+      git
       jujutsu
       lazygit
 

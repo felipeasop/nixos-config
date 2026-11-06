@@ -25,14 +25,11 @@ in
       { nixos = import ./_hardware.nix; }
     ];
 
-    nixos = { lib, pkgs, ... }: {
+    nixos = { lib, ... }: {
       hardware.enableRedistributableFirmware = true;
 
       # Conta já existe manualmente (uid 1001) — fixa pra não ambiguar dono de /home/flp.
       users.users.flp.uid = lib.mkDefault 1001;
-
-      # git cru: o aspect git exige secrets, que o aspire não tem ainda.
-      environment.systemPackages = [ pkgs.git ];
 
       swapDevices = [
         {

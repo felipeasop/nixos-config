@@ -1,13 +1,6 @@
 {
   den.aspects.git = {
-    homeManager = {
-      programs.git = {
-        enable = true;
-        settings.user = {
-          name = "felipeasop";
-          email = "flpasop27@gmail.com";
-        };
-      };
-    };
+    nixos.programs.git.enable = true;
+    homeManager.programs.git.enable = true;
   };
 }
