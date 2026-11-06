@@ -3,7 +3,10 @@
 Base do sistema: Nix, boot, kernel.
 
 - **bootloader/** — GRUB, systemd-boot.
-- **kernel/** — Cachy ou latest (escolher um).
-- **essential/** — rede, áudio, fontes, locale, SSH, zram, configs do Nix.
-- **den.nix** — framework de aspects/hosts.
-- **schema/** — schemas obrigatórios.
+- **kernel/** — Cachy ou latest (escolher um) e ajustes de sysctl.
+- **essential/** — rede, locale, SSH, zram, journald, fstrim e configs do Nix;
+  vale para qualquer máquina, inclusive sem tela.
+- **flatpak/** — Flatpak declarativo.
+
+Áudio fica em `modules/features/`; X11 e o tema (Stylix) ficam no aspect
+`graphical`, em `modules/desktop/integration/`.
