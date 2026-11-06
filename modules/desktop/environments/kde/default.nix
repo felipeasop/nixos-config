@@ -8,11 +8,15 @@
   };
 
   den.aspects.kde = {
-    nixos = {
+    nixos = { pkgs, ... }: {
       services = {
         displayManager.sddm.enable = true;
         desktopManager.plasma6.enable = true;
       };
+
+      programs.kde-pim.enable = false;
+
+      environment.plasma6.excludePackages = with pkgs.kdePackages; [ discover ];
 
       # SDDM (tela de login) lê o ícone via accountsservice.
       system.activationScripts.userAvatar.text = ''
@@ -78,7 +82,6 @@
           theme = "breeze-dark";
           colorScheme = "BreezeDark";
         };
-
         input.mice = [
           {
             name = "Logitech USB Receiver Mouse";
