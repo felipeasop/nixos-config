@@ -16,35 +16,24 @@
           ---
           - Rule:
             - Key: [Back Button, pressed]
-            - KeyPress: [XF86_Back, depress]
+            - MouseClick: [back, depress]
           ---
           - Rule:
             - Key: [Back Button, released]
-            - KeyPress: [XF86_Back, release]
+            - MouseClick: [back, release]
           ---
           - Rule:
             - Key: [Forward Button, pressed]
-            - KeyPress: [XF86_Forward, depress]
+            - MouseClick: [forward, depress]
           ---
           - Rule:
             - Key: [Forward Button, released]
-            - KeyPress: [XF86_Forward, release]
+            - MouseClick: [forward, release]
           ...
         '';
 
-        # config.yaml (guarda divert-keys) é escrito pelo próprio Solaar
-        # em runtime, identificado por serial do mouse — não dá pra
-        # declarar via xdg.configFile sem risco de conflito/perda de
-        # estado (bateria etc). Versiona-se o COMANDO, idempotente,
-        # reaplicado a cada login em vez de passo manual único.
-        #
-        # `solaar config` NÃO precisa de GTK3 pra funcionar (confirmado
-        # na doc oficial: só usa Gtk pra checar se a GUI já tá rodando
-        # e notificá-la) — só que, com o daemon rodando ao mesmo tempo,
-        # duas chamadas consecutivas de `solaar config` já quebraram
-        # (Back aplicado ok, Forward falhou) por bug de marshaling
-        # D-Bus na versão em uso. Contorno: para o daemon antes,
-        # aplica os dois divert-keys sem ele vivo, religa depois.
+        # O Solaar reaplica o divert-keys salvo no config.yaml a cada conexão; isto só o
+        # grava na primeira vez, com o daemon parado, pois chamadas com ele ativo falhavam via D-Bus.
         systemd.user.services.solaar-m650l-divert = {
           Unit = {
             Description = "Aplica divert-keys (fix hold M4/M5) no Logitech M650L";
@@ -56,14 +45,14 @@
             RemainAfterExit = true;
             Restart = "on-failure";
             RestartSec = 15;
-            ExecStartPre = "${pkgs.coreutils}/bin/sleep 5"; # espera o solaar detectar o mouse
-            # systemd-run --user --collect roda o stop/start do daemon
-            # como transação systemd totalmente separada, fora da
-            # árvore/cgroup deste unit — evita qualquer propagação de
-            # sinal (TERM) de volta pra este processo, que acontecia
-            # mesmo com Wants em vez de Requires.
+            ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
             ExecStart = "${pkgs.writeShellScript "solaar-m650l-divert" ''
               set -e
+
+              config="''${XDG_CONFIG_HOME:-$HOME/.config}/solaar/config.yaml"
+              if ${pkgs.gnugrep}/bin/grep -qE 'divert-keys: \{[^}]*83: 1[^}]*86: 1' "$config" 2>/dev/null; then
+                exit 0
+              fi
 
               export GI_TYPELIB_PATH=${lib.escapeShellArg notifyTypelibPath}
               export LD_LIBRARY_PATH=${lib.escapeShellArg notifyLibraryPath}
@@ -90,6 +79,7 @@
                 exit 1
               fi
 
+              # systemd-run isola o stop/start do cgroup deste unit, evitando receber o TERM do solaar.
               restart_solaar() {
                 ${pkgs.systemd}/bin/systemd-run --user --collect --wait --quiet \
                   ${pkgs.systemd}/bin/systemctl --user start solaar.service || true
@@ -108,49 +98,6 @@
             ''}";
           };
           Install.WantedBy = [ "graphical-session.target" ];
-        };
-      };
-
-    # O dispositivo pertence ao host. Sua configuração NixOS é consumida
-    # diretamente; a parte Home Manager acima é encaminhada pelo host ao
-    # usuário integrado por `provides.to-users`.
-    nixos =
-      { pkgs, ... }:
-      let
-        remapScript = pkgs.writeText "m650l-mouse-remap.py" (builtins.readFile ./m650l-mouse-remap.py);
-        pythonEnv = pkgs.python3.withPackages (ps: [ ps.evdev ]);
-      in
-      {
-        # Precisa rodar como serviço de SISTEMA (não user), porque
-        # /dev/uinput e a leitura exclusiva (grab) de /dev/input/eventX
-        # normalmente exigem acesso que o systemd.user não garante por
-        # padrão sem regra udev extra. Serviço de sistema + usuário fixo
-        # evita esse problema de permissão.
-        systemd.services.m650l-mouse-remap = {
-          description = "Traduz KEY_BACK/KEY_FORWARD (solaar-keyboard) em BTN_SIDE/BTN_EXTRA (mouse virtual) — fix M4/M5 em jogos";
-          after = [ "graphical-session.target" ];
-          wantedBy = [ "multi-user.target" ];
-
-          serviceConfig = {
-            Type = "simple";
-            User = "flp";
-            SupplementaryGroups = [ "input" ];
-            ExecStart = "${pythonEnv}/bin/python3 ${remapScript}";
-            Restart = "on-failure";
-            RestartSec = 5;
-          };
-        };
-
-        # Garante que o usuário flp tem acesso a /dev/uinput (criar o
-        # device de mouse virtual) e /dev/input/event* (grab do
-        # solaar-keyboard) sem precisar rodar como root.
-        services.udev.extraRules = ''
-          KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
-          SUBSYSTEM=="hidraw", ATTRS{idVendor}=="046d", MODE="0660", GROUP="input", TAG+="uaccess"
-        '';
-        users = {
-          groups.input = { };
-          users.flp.extraGroups = [ "input" ];
         };
       };
   };
