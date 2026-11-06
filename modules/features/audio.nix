@@ -1,5 +1,5 @@
 {
-  den.aspects.essential = {
+  den.aspects.audio = {
     nixos = {
       security.rtkit.enable = true;
       services = {

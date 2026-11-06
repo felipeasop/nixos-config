@@ -1,5 +1,5 @@
 {
-  den.aspects.essential = {
+  den.aspects.graphical = {
     nixos = { pkgs, ... }: {
       fonts = {
         packages = with pkgs; [

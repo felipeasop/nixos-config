@@ -1,5 +1,5 @@
 {
-  den.aspects.essential = {
+  den.aspects.graphical = {
     nixos = { pkgs, ... }: {
       services.xserver = {
         enable = true;

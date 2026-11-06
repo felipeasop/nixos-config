@@ -21,6 +21,8 @@
 
     host.includes = with den.aspects; [
       essential
+      audio
+      graphical
       git
       unrar
       security
