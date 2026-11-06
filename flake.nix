@@ -28,10 +28,7 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nixcord = {
       url = "github:4evy/nixcord";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        nixpkgs-nixcord.follows = "nixpkgs";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
