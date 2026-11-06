@@ -4,6 +4,7 @@
       niri
       noctalia
       xdg
+      dolphin
     ];
   };
 }

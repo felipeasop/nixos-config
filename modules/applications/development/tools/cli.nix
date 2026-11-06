@@ -1,19 +1,22 @@
 {
   den.aspects.cli = {
-    nixos = { pkgs, ... }: {
-      environment.systemPackages = with pkgs; [
+    homeManager = { pkgs, ... }: {
+      programs = {
+        bat.enable = true;
+        btop.enable = true;
+        fzf.enable = true;
+      };
+
+      home.packages = with pkgs; [
         # básicos
         micro
         tree
         ripgrep # grep
         fd # find
-        fzf
-        bat # cat
         eza # ls
 
         # monitoramento
         htop
-        btop
 
         # rede
         curl
@@ -33,7 +36,6 @@
         file
         which
 
-        # fastfetch
         fastfetch
       ];
     };

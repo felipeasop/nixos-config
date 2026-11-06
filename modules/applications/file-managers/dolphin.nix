@@ -1,5 +1,5 @@
 {
   den.aspects.dolphin = {
-    nixos = { pkgs, ... }: { environment.systemPackages = [ pkgs.dolphin ]; };
+    homeManager = { pkgs, ... }: { home.packages = [ pkgs.kdePackages.dolphin ]; };
   };
 }
