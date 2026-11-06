@@ -1,252 +1,164 @@
 # AGENTS.md
 
-Instructions for agents working in this repository. User and system instructions
-take precedence.
-
 ## Start of session
 
 1. Read `README.md`, then `HANDOFF.md`.
-2. Inspect `git status` and relevant diffs before editing.
-3. Preserve unrelated user changes in a dirty worktree.
+2. Inspect `git status` and relevant diffs before editing; preserve unrelated
+   user changes.
 
 ## Approval and uncertainty
 
-- Investigating and reading need no approval. Before editing files, running
-  state-changing commands, or committing, present the plan and wait for the
-  user's explicit approval. Approval covers only what was presented.
-- Before any operation that can discard work (`reset`, `checkout --`, `stash`,
+- Reading and investigating need no approval. Before editing files, running
+  state-changing commands, or committing, present the plan and wait for
+  explicit approval; it covers only what was presented.
+- Before anything that can discard work (`reset`, `checkout --`, `stash`,
   `rebase`, merge, deleting files or branches), create a backup branch and list
   what exists only locally.
-- When in doubt, ask the user instead of guessing. Base decisions on
-  authoritative sources (upstream docs, module source, `--help`) and cite them;
-  never present unverified claims as fact.
+- When in doubt, ask. Base decisions on authoritative sources (upstream docs,
+  module source, `--help`) and cite them; never present unverified claims as
+  fact.
 
 ## Working principles
 
-- Make the smallest coherent change that satisfies the request.
-- When removing or replacing something, remove it fully: delete now-unused
-  inputs, options, packages, and helper bindings in the same change instead of
-  leaving dead references, commented-out blocks, or half-migrated scaffolding
-  behind. A patch that fixes the request but leaves debris is incomplete.
-- Default to zero comments. Add one only when the WHY is genuinely
-  non-obvious (a hidden constraint, a workaround for a specific bug,
-  something that would surprise a reader) — one or two short lines, never a
-  multi-line block or a restatement of what the code already says. Put
-  investigation, rationale, and alternatives considered in chat/commit
-  messages, not in the file.
-- Keep the system declarative and reproducible from tracked files.
-- Reuse existing aspects, options, packages, and helpers before adding new ones.
-- When evaluating architectural alternatives, recommend the best target
-  architecture impartially. Do not favor the current architecture or let
-  migration effort influence the recommendation; consider migration friction
-  only when planning how to implement the chosen architecture.
-- Put durable repository rules here. Put current state and next actions in
-  `HANDOFF.md`; put investigations and rationale in commit messages.
-- Update `HANDOFF.md` after significant decisions or unfinished work, not for
-  trivial or documentation-only changes. Rewrite the whole file instead of
-  appending: keep only the UTC timestamp, current state, up to three next
-  actions, blockers, and confirmation that no secrets were added to tracked
-  files. Keep it under about 60 lines; history belongs in git.
+- Make the smallest coherent change. When removing or replacing something,
+  also remove the inputs, options, packages, and bindings it leaves unused; no
+  commented-out blocks or half-migrated scaffolding.
+- Default to zero comments. Add one or two short lines only for a non-obvious
+  WHY (hidden constraint, bug workaround). Rationale goes in commit messages.
+- Layout is owned by `nix fmt` (nixfmt in strict mode, also run by the
+  pre-commit hook). Run `nix fmt -- <changed .nix files>` and never
+  hand-format against its output.
+- Keep the system declarative and reproducible from tracked files. Reuse
+  existing aspects, options, packages, and helpers before adding new ones.
+- Recommend the best target architecture impartially; consider migration
+  effort only when planning the implementation.
+- Durable rules go here; current state goes in `HANDOFF.md`. After significant
+  decisions or unfinished work, rewrite `HANDOFF.md` whole: UTC timestamp,
+  current state, up to three next actions, blockers, and confirmation that no
+  secrets were added. Keep it under ~60 lines.
 
 ## Architecture invariants
 
-- This repository follows the dendritic pattern implemented by Den on top of
-  flake-parts.
-- Every `.nix` file under `modules/` is imported automatically by `import-tree`.
-  Directory names organize the repository but do not wire imports. Relative
-  paths and colocated assets still make file location relevant.
-- Preserve the top-level `flake-parts.lib.mkFlake` plus `import-tree` pipeline.
-  Do not replace it with a raw `evalModules` setup.
-- The active module classes are `nixos` and `homeManager`.
-- Home Manager instantiation depends on whether the host runs NixOS:
-  - NixOS hosts give the host-declared user `classes = [ "homeManager" ]`
-    (see `modules/hosts/desktop/default.nix`). Den then imports the Home
-    Manager NixOS module and forwards that user's `homeManager` content into
-    `home-manager.users.<name>` automatically, so `nh os switch` rebuilds
-    system and home together in one generation.
-  - Hosts without a NixOS system (e.g. a future Fedora host) use standalone
-    `den.homes` outputs instead, activated separately via `nh home switch` /
-    the `home-manager` CLI.
-  - The user aspect itself (e.g. `flp`) stays identical either way; only the
-    per-host `classes`/`den.homes` declaration changes which activation path
-    consumes it.
-- An entity is a host, user, or standalone home. An aspect is a composable unit
-  that may contribute modules to either class. Batteries are reusable
-  Den-provided patterns.
+- Dendritic pattern via Den on flake-parts. Every `.nix` file under `modules/`
+  is auto-imported by `import-tree`; directories organize but do not wire
+  imports (relative paths and colocated assets still depend on location).
+- Preserve the `flake-parts.lib.mkFlake` + `import-tree` pipeline; no raw
+  `evalModules`.
+- Module classes: `nixos` and `homeManager`. NixOS hosts declare the user with
+  `classes = [ "homeManager" ]`, so `nh os switch` builds system and home in
+  one generation. Hosts without NixOS use standalone `den.homes` (`nh home
+  switch`). The user aspect is the same either way.
 - Use documented Den APIs. Do not invent `_module.args`, overwrite
-  `config.den.aspects`, or use `specialArgs`/`extraSpecialArgs` to pass values
-  between repository modules. Read shared values such as `inputs` and `self`
-  from the top-level module configuration.
-- Check Den batteries before implementing custom infrastructure already covered
-  upstream.
+  `config.den.aspects`, or pass values with `specialArgs`/`extraSpecialArgs`;
+  read `inputs` and `self` from the top-level module. Check Den batteries before
+  building custom infrastructure.
 
 ## Aspect ownership and routing
 
-- The entity that includes an aspect owns it.
-- A host-owned aspect that contributes Home Manager configuration MUST route
-  that contribution with `provides.to-users` or a named user provider.
-- A user-owned aspect that contributes NixOS configuration MUST route that
-  contribution with `provides.to-hosts` or a named host provider.
-- A standalone home named `<user>@<host>` resolves the user aspect plus its
-  named `provides.<host>` provider. Host `provides.to-users` contributions are
-  not inherited automatically; reuse them from that named user provider.
-- A host-declared user with `classes = [ "homeManager" ]` (NixOS/Darwin
-  integration) DOES inherit that host's `provides.to-users` contributions
-  automatically. Do not add a named `provides.<host>` provider for a
-  host-integrated user; that pattern exists only to compensate for standalone
-  homes.
-- A mixed-class aspect without the matching provider is incomplete: its
-  minority-class contribution may be silently unreachable.
-- `den.schema.host.includes` is the single host baseline and currently contains
-  `essential`, `security`, `kernel`, `kernel-tuning`, and `flatpak`.
-- `den.schema.user.includes` is the single user baseline and currently contains
-  `define-user`, `primary-user`, and `(user-shell "fish")`.
-- `den.schema.home.includes` is the standalone-home baseline and currently
-  contains `define-user`, `essential` (including `nh`), and
-  `(user-shell "fish")`.
-- `system/essential/` is intentionally one aspect split across files. Extend
-  `den.aspects.essential`; do not create one aspect per file there.
-- `gaming-stack` is user-owned and routes its NixOS contributions to related
-  hosts through `provides.to-hosts`.
+- The entity that includes an aspect owns it. A host-owned aspect routes Home
+  Manager config with `provides.to-users` (or a named user provider); a
+  user-owned aspect routes NixOS config with `provides.to-hosts` (or a named
+  host provider). Without the matching provider, the minority-class
+  contribution may be silently unreachable.
+- A host-integrated user (`classes = [ "homeManager" ]`) inherits the host's
+  `provides.to-users` automatically; do not add a `provides.<host>` provider
+  for it. A standalone home `<user>@<host>` does not inherit them and resolves
+  the user aspect plus its `provides.<host>` provider.
+- Baselines live only in `den.schema.{host,user,home}.includes`
+  (`modules/den/schema/entity-defaults.nix`).
+- `system/essential/` is one aspect split across files: extend
+  `den.aspects.essential`, do not create per-file aspects.
 
 ## Generated flake
 
-- `flake.nix` is generated and MUST NOT be edited manually.
-- Declare core inputs in `modules/flake/inputs.nix`. Declare non-core inputs in
-  the module that consumes them through `flake-file.inputs`.
-- Do not manually replace the dendritic `flake-file.outputs` preset.
+- `flake.nix` is generated; never edit it. Core inputs go in
+  `modules/flake/inputs.nix`; other inputs go in the consuming module via
+  `flake-file.inputs`. Keep the dendritic `flake-file.outputs` preset.
 - After changing `flake-file.inputs`, run `nix run .#write-flake`, review the
-  generated diff, and stage only the generated paths required by the change.
-- Never edit `flake.lock` manually. Update it with `nix flake update` or
-  `nix flake update <input>` and review the diff.
-- Files referenced by a flake must be tracked or staged because flakes ignore
-  untracked source files.
+  diff, and stage only the generated paths required.
+- Never edit `flake.lock` by hand; use `nix flake update [<input>]`, review the
+  diff, and keep lock updates separate from activation.
+- Flakes ignore untracked files: track or stage everything a flake references.
 
 ## Directory responsibilities
 
-- `modules/flake/`: fundamental flake inputs and output generation.
-- `modules/den/`: Den integration, entity schema, and repository-specific entity
-  options.
-- `modules/tooling/`: formatter, static analysis, development shell, and hooks.
-- `modules/applications/`: software directly selected and used by a person.
-- `modules/features/`: system or hardware capabilities that remain meaningful
-  independently of a particular application.
-- `modules/applications/hardware/peripherals/`: software coupled to a selected
-  peripheral, even when it controls hardware.
-- `modules/hosts/`: host-specific boot, hardware, secrets, and desktop choices.
-  Never manually edit generated `_hardware.nix` files.
-- `modules/users/`: user-specific applications and preferences beyond the shared
-  baseline.
+- `modules/flake/`: core inputs and output generation.
+- `modules/den/`: Den integration, entity schema, entity options.
+- `modules/tooling/`: formatter, static analysis, dev shell, hooks.
+- `modules/applications/`: software a person selects and uses;
+  `applications/hardware/peripherals/` for software tied to a peripheral.
+- `modules/features/`: system or hardware capabilities independent of an app.
+- `modules/hosts/`: host boot, hardware, and desktop choices. Never edit
+  generated `_hardware.nix`.
+- `modules/users/`: per-user apps and preferences beyond the baseline.
 
-## Packages, inputs, and exceptions
+## Packages and inputs
 
-- Keep application-specific policy in the consuming application aspect, not in
-  the global `essential` aspect.
-- Scope insecure-package exceptions to the smallest package set and consumer.
-  Record the consumer and reason beside the exception.
-- Do not pin an older release merely to hide an insecurity marker or override a
-  dependency's major version without validating compatibility.
-- Use `inputs.<name>.inputs.nixpkgs.follows = "nixpkgs"` when sharing nixpkgs is
-  compatible with that input. Do not force `follows` when an upstream cache was
-  built against its own nixpkgs pin, because doing so changes derivation hashes
-  and can cause cache misses.
-- Declaring `nix.settings.substituters` replaces the default list. Always retain
-  `https://cache.nixos.org/` alongside trusted additional caches.
+- Keep application policy in the consuming aspect, not in `essential`.
+- Scope insecure-package exceptions to the smallest package set and consumer,
+  with the consumer and reason beside it. Do not pin old releases to hide
+  insecurity markers or override major versions without validating.
+- Use `inputs.<name>.inputs.nixpkgs.follows = "nixpkgs"` only when compatible;
+  never when the input's cache was built against its own nixpkgs pin.
+- Setting `nix.settings.substituters` replaces the defaults; always keep
+  `https://cache.nixos.org/`. `nix-settings.nix` lists only general caches.
+- Keep everything an aspect needs in its own module, so deleting it leaves no
+  remnants. Its binary cache goes in the same file, as
+  `den.aspects.essential.nixos.nix.settings.{substituters,trusted-public-keys}`,
+  so it is registered on every host before the aspect is included. Never use
+  flake `nixConfig` or enable `accept-flake-config`; `bootstrap.sh` passes the
+  host's caches to the first build.
 
 ## Binary-substitute policy
 
-- MUST NOT compile software packages locally from source.
-- Keep substitution enabled and inspect the realization plan before building,
-  updating the running system, or activating Home Manager.
-- If a software package would be built locally, stop before realization and
-  report the package, derivation, relevant consumer, and caches consulted.
-- Prefer, in order: an existing trusted substitute; an official fixed-output
-  binary distribution; a proven cached revision; a remote builder/cache; or
-  temporarily excluding the consumer after user approval.
-- When a flake input would compile locally, first check whether upstream
-  maintains an always-cached branch (e.g. a `cachix` branch its CI only
-  advances after confirming the cache push, as `noctalia` does). If none
-  exists, test release tags newest-first with `--option max-jobs 0` and pin
-  the first one with full cache coverage.
+- MUST NOT compile software locally. Before building, switching, or activating
+  Home Manager, dry-run (`--dry-run --no-link --no-write-lock-file`) and
+  inspect the plan.
+- If software would be built locally, stop and report the package,
+  derivation, consumer, and caches consulted. Prefer, in order: a trusted
+  substitute; an official binary distribution; a proven cached revision; a
+  remote builder/cache; excluding the consumer after approval.
+- For a flake input that would compile, first look for an always-cached
+  upstream branch (e.g. `noctalia`'s `cachix`); otherwise test release tags
+  newest-first with `--option max-jobs 0` and pin the first fully cached one.
 - Never claim a revision is cached without checking its exact derivation.
-- Local derivations that only compose configuration, generate metadata, or wrap
-  existing binaries are expected. They may not invoke a software toolchain to
-  produce the distributed application.
-- NixOS activation is atomic. Do not attempt a partial switch that omits a
-  missing dependency from the evaluated closure.
-- Update locks separately from activation. Avoid combining an unreviewed input
-  update with `switch`.
+- Local derivations that only compose config, generate metadata, or wrap
+  binaries are fine; they may not run a toolchain to produce the application.
+- Activation is atomic; never omit a missing dependency to force a switch.
 
-## Validation strategy
+## Validation
 
-Validate the smallest meaningful target first, then validate integration in
-proportion to the change.
+Validate the smallest meaningful target, then integration in proportion to the
+change. A dry-run is a preflight, not proof of runtime correctness.
 
-- An aspect is a module contribution, not normally a standalone derivation. Do
-  not add artificial package outputs solely to make every aspect buildable.
-- Documentation-only changes: run formatting or link checks when relevant.
-- Nix syntax/module changes: run `nix flake check --no-build
-  --no-write-lock-file`.
-- Package changes: dry-run the affected package output first, then build that
-  package only if the plan complies with the binary-substitute policy.
-- Home Manager-only changes: evaluate or dry-run the affected standalone
-  `homeConfigurations.<user@host>.activationPackage`.
-- NixOS, routing, shared-input, or mixed-class changes: evaluate the affected
-  host's `config.system.build.toplevel`; test every host whose graph can change.
-- Before realization, use `--dry-run`, `--no-link`, and
-  `--no-write-lock-file` where supported. A dry-run is a preflight, not proof of
-  runtime correctness.
-- A targeted check does not replace final integration validation when the change
-  affects module composition, providers, overlays, package sets, or shared
-  inputs.
-- Do not run `switch`, `boot`, or other activation commands unless the user
-  requested system activation.
-
-Nix builds only changed derivations and reuses valid store paths and substitutes.
-A full system target therefore validates integration without necessarily
-rebuilding unrelated software.
+- Docs only: formatting or link checks when relevant.
+- Nix/module changes: `nix flake check --no-build --no-write-lock-file`.
+- Packages: dry-run the package output; build only if it complies with the
+  binary-substitute policy.
+- Home Manager-only: dry-run `homeConfigurations.<user@host>.activationPackage`.
+- NixOS, routing, shared inputs, mixed-class, overlays, package sets: evaluate
+  `config.system.build.toplevel` of every host whose graph can change.
+- Do not add package outputs just to make aspects buildable.
+- Do not run `switch`, `boot`, or other activation unless the user asks.
 
 ## Secrets
 
-- Secrets are managed with `sops-nix`; never place plaintext secrets in tracked
-  files or command output.
-- Host decryption uses `/etc/ssh/ssh_host_ed25519_key`.
-- Host-specific encrypted values live in `secrets/secrets.yaml` and recipients
-  are declared in `.sops.yaml`.
-- Follow `secrets/README.md` for provisioning or rotating hosts and identities.
-- Reuse `config.networking.hostName` instead of duplicating host identity in
-  secret paths or aspect parameters.
+- Never put plaintext secrets in tracked files or command output.
 
 ## Git and commits
 
-- Review `git status`, unstaged diffs, and staged diffs before committing.
-- Stage explicit paths for each logical change; do not mix unrelated work.
-- Use the `subsystem: summary` style shared by nixpkgs, the Linux kernel, and
-  Git, written in Portuguese and enforced by the `commit-msg-style` hook:
-
-  ```text
-  escopo: resumo no imperativo
-
-  Corpo explicando o porquê e o impacto no sistema ou no usuário.
-  ```
-
-  The scope is the lowercase aspect, module, or area changed (`nh`,
-  `zed-editor`, `hosts/aspire`, `flake`, `agents`); join several with `, `.
-  The subject has at most 72 characters and no final period. The body is
+- Review status, unstaged and staged diffs; stage explicit paths; one
+  responsibility per commit.
+- Messages in Portuguese, `escopo: resumo no imperativo` (checked by the
+  `commit-msg-style` hook). Scope is the lowercase aspect, module, or area
+  (`nh`, `hosts/aspire`, `agents`), several joined with `, `. Subject ≤ 72
+  characters, no final period. A body explaining why and the impact is
   required.
-- Separate distinct responsibilities into independent commits.
-- Before the first commit, present the complete commit plan with messages and
-  paths, then wait for user approval.
+- Before the first commit, present every message and its paths for approval.
 
-## Authoritative references
+## References
 
-- Dendritic pattern: https://github.com/mightyiam/dendritic
-- Den principles: https://den.denful.dev/explanation/core-principles/
-- Den batteries: https://den.denful.dev/reference/batteries/
-- Den mutual providers: https://den.denful.dev/guides/mutual/
-- Commit style:
-  https://github.com/NixOS/nixpkgs/blob/master/CONTRIBUTING.md#commit-conventions,
-  https://docs.kernel.org/process/submitting-patches.html#the-canonical-patch-format,
-  https://git-scm.com/docs/SubmittingPatches#summary-section
-- Operational commands: `README.md`
-- Current repository state: `HANDOFF.md`
+- Dendritic: https://github.com/mightyiam/dendritic
+- Den: https://den.denful.dev/explanation/core-principles/,
+  https://den.denful.dev/reference/batteries/,
+  https://den.denful.dev/guides/mutual/
