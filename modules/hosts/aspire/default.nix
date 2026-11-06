@@ -25,11 +25,8 @@ in
       { nixos = import ./_hardware.nix; }
     ];
 
-    nixos = { lib, ... }: {
+    nixos = {
       hardware.enableRedistributableFirmware = true;
-
-      # Conta já existe manualmente (uid 1001) — fixa pra não ambiguar dono de /home/flp.
-      users.users.flp.uid = lib.mkDefault 1001;
 
       swapDevices = [
         {
@@ -37,12 +34,6 @@ in
           size = 4096;
         }
       ];
-
-      # nix-settings.nix não usa mkDefault; precisa de mkForce pra sobrepor por host.
-      nix.settings = {
-        max-jobs = lib.mkForce 1;
-        cores = lib.mkForce 2;
-      };
     };
 
     # host-aspects (flp.nix) só projeta o que está no includes escrito à mão;
