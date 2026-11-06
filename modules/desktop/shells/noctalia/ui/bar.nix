@@ -38,9 +38,7 @@
           capsule_thickness = 0.76;
           capsule_group = [ ];
 
-          start = [
-            "launcher"
-          ];
+          start = [ "launcher" ];
           center = [ "taskbar" ];
           end = [
             "media"

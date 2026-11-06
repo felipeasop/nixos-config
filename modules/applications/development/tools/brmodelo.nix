@@ -1,7 +1,5 @@
 {
   den.aspects.brmodelo = {
-    homeManager = { pkgs, ... }: {
-      home.packages = [ pkgs.brmodelo ];
-    };
+    homeManager = { pkgs, ... }: { home.packages = [ pkgs.brmodelo ]; };
   };
 }

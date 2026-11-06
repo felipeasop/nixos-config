@@ -1,5 +1,4 @@
-{ inputs, lib, ... }:
-{
+{ inputs, lib, ... }: {
   den.aspects.mango.homeManager =
     { pkgs, ... }:
     let

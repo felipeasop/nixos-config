@@ -1,7 +1,5 @@
 {
   den.aspects.arduino = {
-    homeManager = { pkgs, ... }: {
-      home.packages = [ pkgs.arduino-ide ];
-    };
+    homeManager = { pkgs, ... }: { home.packages = [ pkgs.arduino-ide ]; };
   };
 }

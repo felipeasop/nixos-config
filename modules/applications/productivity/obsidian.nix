@@ -1,7 +1,5 @@
 {
   den.aspects.obsidian = {
-    homeManager = { pkgs, ... }: {
-      home.packages = [ pkgs.obsidian ];
-    };
+    homeManager = { pkgs, ... }: { home.packages = [ pkgs.obsidian ]; };
   };
 }

@@ -1,7 +1,5 @@
 {
   den.aspects.melonds = {
-    homeManager = { pkgs, ... }: {
-      home.packages = [ pkgs.melonds ];
-    };
+    homeManager = { pkgs, ... }: { home.packages = [ pkgs.melonds ]; };
   };
 }

@@ -1,7 +1,5 @@
 {
   den.aspects.proton-vpn = {
-    homeManager = { pkgs, ... }: {
-      home.packages = [ pkgs.protonvpn-gui ];
-    };
+    homeManager = { pkgs, ... }: { home.packages = [ pkgs.protonvpn-gui ]; };
   };
 }

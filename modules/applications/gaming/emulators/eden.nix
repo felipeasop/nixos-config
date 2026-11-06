@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   den.aspects.eden = {
     homeManager =
       { pkgs, ... }:
