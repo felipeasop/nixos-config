@@ -6,7 +6,7 @@ _: {
       Configurado via https://github.com/sodiboo/niri-flake.
     '';
 
-    homeManager = _: {
+    homeManager = { config, ... }: {
       programs.niri.settings = {
         prefer-no-csd = true;
         screenshot-path = null;
@@ -22,8 +22,8 @@ _: {
         };
 
         cursor = {
-          theme = "breeze_cursors";
-          size = 24;
+          theme = config.stylix.cursor.name;
+          inherit (config.stylix.cursor) size;
         };
 
         hotkey-overlay.skip-at-startup = true;

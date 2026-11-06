@@ -1,6 +1,9 @@
 _: {
   den.aspects.lxqt = {
-    nixos = {
+    nixos = { lib, ... }: {
+      # O alvo Qt do Stylix só tema apps Qt na plataforma qtct, não na lxqt.
+      stylix.targets.qt.platform = lib.mkForce "qtct";
+
       # LXQt/LightDM ainda usam o namespace xserver.* (não migraram como KDE/Cosmic).
       services = {
         xserver.displayManager.lightdm.enable = true;
@@ -13,21 +16,6 @@ _: {
     # Auto-roteado pro usuário
     provides.to-users.homeManager = { pkgs, ... }: {
       home.packages = [ pkgs.xcape ];
-
-      # Mesma paleta escura (Adwaita-dark) pros dois toolkits — leve, sem
-      # pacote de tema pesado, familiar por já ser o padrão do GNOME/GTK.
-      gtk = {
-        enable = true;
-        theme = {
-          name = "Adwaita-dark";
-          package = pkgs.gnome-themes-extra;
-        };
-      };
-      qt = {
-        enable = true;
-        platformTheme.name = "gtk3";
-        style.name = "adwaita-dark";
-      };
 
       # Declarado aqui = imutável; editar pela GUI do LXQt não persiste.
       xdg.configFile = {

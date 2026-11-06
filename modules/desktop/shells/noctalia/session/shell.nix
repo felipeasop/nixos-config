@@ -2,7 +2,6 @@
   den.aspects.noctalia = {
     homeManager = {
       programs.noctalia.settings.shell = {
-        font_family = "sans-serif";
         time_format = "{:%H:%M}";
         date_format = "%A, %x";
 

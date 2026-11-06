@@ -18,11 +18,12 @@
       {
         home.packages = [ nixfmt-strict ];
 
+        stylix.targets.zed.fonts.enable = false;
+
         programs.zed-editor = {
           enable = true;
 
           extensions = [
-            "everforest-theme"
             "nix"
             "toml"
           ];

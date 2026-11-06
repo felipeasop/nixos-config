@@ -1,15 +1,11 @@
-let
-  accent = "#a7c080";
-  accentDim = "#4e6924";
-  accentTranslucent = "#a7c08080";
-  inactive = "#232a2e";
-  urgent = "#e67e80";
-in
 {
   den.aspects.niri = {
-    homeManager = {
-      programs.niri.settings = {
-        layout = {
+    homeManager = { config, ... }: {
+      programs.niri.settings.layout =
+        let
+          c = config.lib.stylix.colors.withHashtag;
+        in
+        {
           gaps = 6;
           center-focused-column = "never";
 
@@ -27,24 +23,23 @@ in
 
           focus-ring = {
             width = 1.5;
-            active.color = accent;
-            inactive.color = inactive;
-            urgent.color = urgent;
+            active.color = c.base0B;
+            inactive.color = c.base00;
+            urgent.color = c.base08;
           };
 
           border.enable = false;
 
-          shadow.color = "#47525870";
+          shadow.color = "${c.base02}70";
 
           tab-indicator = {
-            active.color = accent;
-            inactive.color = accentDim;
-            urgent.color = urgent;
+            active.color = c.base0B;
+            inactive.color = "${c.base0B}60";
+            urgent.color = c.base08;
           };
 
-          insert-hint.display.color = accentTranslucent;
+          insert-hint.display.color = "${c.base0B}80";
         };
-      };
     };
   };
 }

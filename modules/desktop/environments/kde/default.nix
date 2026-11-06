@@ -77,11 +77,6 @@
 
         session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
 
-        # O seletor de arquivos do portal KDE lê o tema do kdeglobals, não do GTK.
-        workspace = {
-          theme = "breeze-dark";
-          colorScheme = "BreezeDark";
-        };
         input.mice = [
           {
             name = "Logitech USB Receiver Mouse";

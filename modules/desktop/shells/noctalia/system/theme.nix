@@ -1,38 +1,20 @@
 {
   den.aspects.noctalia = {
     homeManager = {
-      programs.noctalia.settings.theme = {
-        mode = "dark"; # dark | light | auto
-        source = "community"; # builtin | wallpaper | community | custom
-        builtin = "Gruvbox"; # Ayu, Catppuccin, Dracula, Eldritch, Gruvbox, Kanagawa, Noctalia, Nord, Rosé Pine, Tokyo-Night
-        pure_black_dark = false; # true = fundo #000 puro no modo dark (bom p/ OLED)
-        community_palette = "Everforest";
-        # wallpaper_scheme  = "m3-content";  # m3-tonal-spot, m3-content, m3-fruit-salad, m3-rainbow, m3-monochrome, vibrant, faithful, soft, dysfunctional, muted
-        # custom_palette    = "";            # nome do arquivo em ~/.config/noctalia/palettes/<nome>.json
+      # As opacidades ficam por componente em ui/*.nix.
+      stylix.targets.noctalia.opacity.enable = false;
 
+      programs.noctalia.settings.theme = {
+        pure_black_dark = false;
+
+        # O Stylix define a paleta; os templates cobrem só apps que ele não tema.
         templates = {
-          enable_builtin_templates = true;
+          enable_builtin_templates = false;
           enable_community_templates = true;
-          builtin_ids = [
-            "gtk3"
-            "gtk4"
-            "qt"
-            "kcolorscheme"
-            "btop"
-            "niri"
-            "ghostty"
-          ];
           community_ids = [
-            "zen-browser"
-            "neovim"
             "obsidian"
-            "zed"
-            "bat"
-            "discord"
-            "lazygit"
             "prismlauncher"
             "steam"
-            "yazi"
           ];
         };
       };
