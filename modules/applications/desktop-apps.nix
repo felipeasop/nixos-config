@@ -5,8 +5,10 @@
     includes = with den.aspects; [
       gaming-stack
 
+      # Browser
       zen-browser
 
+      # Misc
       discord
       spotify
       zapzap
@@ -15,6 +17,7 @@
 
       git
 
+      orange
       # arduino
       # rstudio
     ];
