@@ -1,6 +1,12 @@
 { inputs, ... }: {
   flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
+  # Fica no essential para o cache existir antes de o aspect ser incluído.
+  den.aspects.essential.nixos.nix.settings = {
+    substituters = [ "https://noctalia.cachix.org" ];
+    trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
+  };
+
   den.aspects.noctalia = {
     homeManager = { pkgs, ... }: {
       imports = [ inputs.noctalia.homeModules.default ];
