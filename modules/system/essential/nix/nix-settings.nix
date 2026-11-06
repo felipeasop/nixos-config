@@ -8,11 +8,6 @@
             "flakes"
           ];
 
-          trusted-users = [
-            "root"
-            "flp"
-          ];
-
           substituters = [
             "https://cache.nixos.org/"
             "https://nix-community.cachix.org"
