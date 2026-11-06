@@ -24,6 +24,7 @@
       audio
       graphical
       git
+      admin-tools
       unrar
       security
       kernel
