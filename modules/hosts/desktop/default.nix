@@ -15,8 +15,6 @@ in
       den.provides.hostname
       grub
       amd-graphics
-      secrets
-      (ssh-identity-for { user = userName; })
 
       solaar-m650l
 

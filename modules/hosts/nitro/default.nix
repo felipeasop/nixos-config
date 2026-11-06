@@ -11,8 +11,6 @@
       den.provides.hostname
 
       systemd-boot
-      secrets
-      (ssh-identity-for { user = "flp"; })
 
       kde
       niri-stack

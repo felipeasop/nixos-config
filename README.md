@@ -10,6 +10,5 @@ Meu setup pessoal utilizando Nix seguindo o [padrão dendrítico](https://github
 - [flake-file](https://github.com/denful/flake-file): inputs declarados junto aos módulos que os usam e geração do `flake.nix`
 - [home-manager](https://github.com/nix-community/home-manager): Configuração declarativa do ambiente dos usuários, integrada em hosts NixOS e standalone em outros sistemas
 - [treefmt](https://github.com/numtide/treefmt-nix) + [git-hooks.nix](https://github.com/cachix/git-hooks.nix): Formatação e análise estática automatizadas por hooks do Git
-- [sops-nix](https://github.com/Mic92/sops-nix): Gerenciamento declarativo de segredos cifrados
 - [nh](https://github.com/nix-community/nh): Interface para avaliar, testar e ativar configurações NixOS
 - [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx): Cache binário e kernel CachyOS
