@@ -11,8 +11,13 @@
       let
         flake = ''(builtins.getFlake "${config.home.homeDirectory}/nixos-config")'';
         host = "${flake}.nixosConfigurations.${osConfig.networking.hostName}";
+        nixfmt-strict = pkgs.writeShellScriptBin "nixfmt" ''
+          exec ${lib.getExe pkgs.nixfmt} --strict "$@"
+        '';
       in
       {
+        home.packages = [ nixfmt-strict ];
+
         programs.zed-editor = {
           enable = true;
 
@@ -25,7 +30,7 @@
           extraPackages = with pkgs; [
             nil
             nixd
-            nixfmt
+            nixfmt-strict
             claude-agent-acp
           ];
 
@@ -50,7 +55,10 @@
             languages.Nix = {
               semantic_tokens = "combined";
               format_on_save = "on";
-              formatter.external.command = "nixfmt";
+              formatter.external = {
+                command = "nixfmt";
+                arguments = [ "-" ];
+              };
             };
 
             lsp = {
