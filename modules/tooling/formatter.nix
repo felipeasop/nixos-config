@@ -11,7 +11,11 @@
       projectRootFile = "flake.nix";
 
       programs = {
-        nixfmt.enable = true;
+        nixfmt = {
+          enable = true;
+          strict = true;
+          excludes = [ "**/_hardware.nix" ];
+        };
         deadnix.enable = true;
         statix = {
           enable = true;
