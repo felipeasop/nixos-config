@@ -34,6 +34,13 @@ fi
 echo "==> Checando o flake"
 nix "${nixflags[@]}" flake check --no-build --no-write-lock-file
 
+# Numa instalação nova o nix.conf ainda não tem os caches do repo; usa os do próprio host.
+echo "==> Lendo os caches binários de '$host'"
+settings=".#nixosConfigurations.$host.config.nix.settings"
+substituters=$(nix "${nixflags[@]}" eval --raw "$settings.substituters" --apply toString)
+keys=$(nix "${nixflags[@]}" eval --raw "$settings.trusted-public-keys" --apply toString)
+rebuildflags+=(--option extra-substituters "$substituters" --option extra-trusted-public-keys "$keys")
+
 echo "==> Buildando o toplevel de '$host'"
 # Build antes de switch inspirado no github.com/pedro-pereira-dev/nixfiles.
 sudo nixos-rebuild build --flake ".#$host" "${rebuildflags[@]}"
@@ -48,5 +55,7 @@ if [[ $resp =~ ^[sSyY]$ ]]; then
   echo "Log salvo em: $log_file"
 else
   echo "Não foi feito build. Para ativar rode o seguinte comando:"
-  echo "sudo nixos-rebuild switch --flake .#$host --option experimental-features 'nix-command flakes'"
+  printf 'sudo nixos-rebuild switch --flake .#%s' "$host"
+  printf ' %q' "${rebuildflags[@]}"
+  echo
 fi
