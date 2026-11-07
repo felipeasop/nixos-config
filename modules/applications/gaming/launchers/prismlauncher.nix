@@ -1,5 +1,5 @@
 {
   den.aspects.prismlauncher = {
-    homeManager = { pkgs, ... }: { home.packages = [ pkgs.prismlauncher ]; };
+    homeManager.programs.prismlauncher.enable = true;
   };
 }

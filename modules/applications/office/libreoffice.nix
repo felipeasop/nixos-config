@@ -1,5 +1,10 @@
 {
   den.aspects.libreoffice = {
-    homeManager = { pkgs, ... }: { home.packages = [ pkgs.libreoffice-qt-stable ]; };
+    homeManager = { pkgs, ... }: {
+      programs.libreoffice = {
+        enable = true;
+        package = pkgs.libreoffice-qt-stable;
+      };
+    };
   };
 }

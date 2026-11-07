@@ -4,19 +4,19 @@
       programs = {
         bat.enable = true;
         btop.enable = true;
+        eza.enable = true;
+        fastfetch.enable = true;
+        fd.enable = true;
         fzf.enable = true;
+        htop.enable = true;
+        jq.enable = true;
+        micro.enable = true;
+        ripgrep.enable = true;
       };
 
       home.packages = with pkgs; [
         # básicos
-        micro
         tree
-        ripgrep # grep
-        fd # find
-        eza # ls
-
-        # monitoramento
-        htop
 
         # rede
         curl
@@ -28,15 +28,12 @@
         zip
 
         # dados
-        jq
         yq-go
 
         # utilidades
         killall
         file
         which
-
-        fastfetch
       ];
     };
   };

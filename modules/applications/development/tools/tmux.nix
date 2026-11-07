@@ -1,5 +1,5 @@
-_: {
+{
   den.aspects.tmux = {
-    homeManager = { pkgs, ... }: { home.packages = [ pkgs.tmux ]; };
+    homeManager.programs.tmux.enable = true;
   };
 }

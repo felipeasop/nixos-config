@@ -1,5 +1,5 @@
 {
   den.aspects.claude = {
-    homeManager = { pkgs, ... }: { home.packages = [ pkgs.claude-code ]; };
+    homeManager.programs.claude-code.enable = true;
   };
 }
