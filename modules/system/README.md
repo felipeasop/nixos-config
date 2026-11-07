@@ -8,5 +8,5 @@ Base do sistema: Nix, boot, kernel.
   vale para qualquer máquina, inclusive sem tela.
 - **flatpak/** — Flatpak declarativo.
 
-Áudio fica em `modules/features/`; X11 e o tema (Stylix) ficam no aspect
-`graphical`, em `modules/desktop/integration/`.
+Áudio fica em `modules/features/`; X11 e o tema (Stylix) chegam pelo aspect
+`graphical`, em `modules/desktop/session/` e `modules/desktop/theme/`.
