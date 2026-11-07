@@ -14,7 +14,6 @@
           community_ids = [
             "obsidian"
             "prismlauncher"
-            "steam"
           ];
         };
       };
