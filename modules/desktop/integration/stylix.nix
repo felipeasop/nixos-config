@@ -38,8 +38,50 @@
 
       # Overlays e o tema do GNOME Shell recompilam pacotes localmente.
       overlays.enable = false;
+
+      targets = {
+        console.enable = true;
+        fish.enable = true;
+        font-packages.enable = true;
+        fontconfig.enable = true;
+        grub.enable = true;
+        gtk.enable = true;
+        lightdm.enable = true;
+        nixos-icons.enable = true;
+        qt.enable = true;
+      };
     };
 
-    home-manager.sharedModules = [ { stylix.targets.gnome.enable = false; } ];
+    home-manager.sharedModules = [
+      {
+        stylix.targets = {
+          alacritty.enable = true;
+          bat.enable = true;
+          btop.enable = true;
+          firefox.enable = true;
+          fish.enable = true;
+          font-packages.enable = true;
+          fontconfig.enable = true;
+          fzf.enable = true;
+          gnome.enable = false;
+          gtk.enable = true;
+          kde.enable = true;
+          lazygit.enable = true;
+          mangohud.enable = true;
+          micro.enable = true;
+          niri.enable = true;
+          nixcord.enable = true;
+          noctalia.enable = true;
+          obsidian.enable = true;
+          qt.enable = true;
+          starship.enable = true;
+          tmux.enable = true;
+          x11.enable = true;
+          yazi.enable = true;
+          zed.enable = true;
+          zen-browser.enable = true;
+        };
+      }
+    ];
   };
 }
