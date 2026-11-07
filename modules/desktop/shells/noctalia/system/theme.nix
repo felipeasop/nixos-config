@@ -11,10 +11,7 @@
         templates = {
           enable_builtin_templates = false;
           enable_community_templates = true;
-          community_ids = [
-            "obsidian"
-            "prismlauncher"
-          ];
+          community_ids = [ "prismlauncher" ];
         };
       };
     };
