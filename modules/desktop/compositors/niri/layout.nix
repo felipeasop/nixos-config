@@ -1,6 +1,8 @@
 {
   den.aspects.niri = {
     homeManager = { config, ... }: {
+      stylix.targets.niri.enable = true;
+
       programs.niri.settings.layout =
         let
           c = config.lib.stylix.colors.withHashtag;
