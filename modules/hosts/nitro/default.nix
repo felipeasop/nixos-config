@@ -8,7 +8,7 @@
 
   den.aspects.nitro = {
     includes = with den.aspects; [
-      den.provides.hostname
+      den.batteries.hostname
 
       systemd-boot
 

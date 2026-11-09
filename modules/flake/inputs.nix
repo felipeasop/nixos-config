@@ -3,6 +3,7 @@
     inputs = {
       nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+      den.url = "github:denful/den";
       flake-file.url = "github:denful/flake-file";
       flake-parts.url = "github:hercules-ci/flake-parts";
       import-tree.url = "github:denful/import-tree";
@@ -16,5 +17,8 @@
     outputs = lib.mkDefault "dendritic";
   };
 
-  imports = [ inputs.flake-file.flakeModules.default ];
+  imports = [
+    inputs.flake-file.flakeModules.default
+    inputs.den.flakeModule
+  ];
 }

@@ -5,28 +5,26 @@ let
   userName = "flp";
 in
 {
-  den.hosts.${system}.${hostName} = {
-    kernel = "cachy";
-    users.${userName}.classes = [ "homeManager" ];
-  };
+  den = {
+    hosts.${system}.${hostName} = {
+      kernel = "cachy";
+      users.${userName}.classes = [ "homeManager" ];
+    };
 
-  den.aspects.${hostName} = {
-    includes = with den.aspects; [
-      den.provides.hostname
-      grub
-      amd-graphics
+    aspects.${hostName} = {
+      includes = with den.aspects; [
+        den.batteries.hostname
+        grub
+        amd-graphics
 
-      solaar-m650l
+        solaar-m650l
 
-      kde
-      niri-stack
-      desktop-apps
+        kde
+        niri-stack
+        desktop-apps
 
-      { nixos = import ./_hardware.nix; }
-    ];
-
-    # host-aspects (flp.nix) só projeta o que está no includes escrito à mão;
-    # essential chega via den.schema.host.includes, invisível pra battery.
-    provides.to-users.includes = with den.aspects; [ essential ];
+        { nixos = import ./_hardware.nix; }
+      ];
+    };
   };
 }
