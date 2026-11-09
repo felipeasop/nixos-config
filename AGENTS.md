@@ -22,11 +22,24 @@
 
 - Make the smallest coherent change. When removing or replacing something,
   also remove the inputs, options, packages, and bindings it leaves unused; no
-  commented-out blocks or half-migrated scaffolding.
+  half-migrated scaffolding or commented-out leftovers of removed code.
+  Commented options kept as reference (alternative values, examples of
+  settings that may be turned on later) are allowed.
 - Default to zero comments. Add one or two short lines only for a non-obvious
   WHY (hidden constraint, bug workaround). Rationale goes in commit messages.
-- Layout is owned by `nix fmt` (nixfmt in strict mode, also run by the
-  pre-commit hook). Run `nix fmt -- <changed .nix files>` and never
+- Group bindings that share a prefix: `x = { y = ...; z = ...; };`, never
+  `x.y = ...; x.z = ...;` in the same attrset.
+- In an aspect, each class is its own binding opening a block: `nixos = {`,
+  content, `};` (same for `homeManager`, also under `provides.*`), never
+  `nixos.programs.x = ...` or `den.aspects.x.nixos = ...`. A class written as
+  a function keeps its head on one line (`nixos = { pkgs, ... }: {`) and its
+  body expanded, unless the body starts with `let` or the formals need
+  several lines, which nixfmt always splits.
+- The `nix-style` pre-commit hook (ast-grep) enforces these rules; it only
+  reports, it does not fix.
+- Layout is owned by `nix fmt` (nixfmt in its default mode, as in nixpkgs,
+  also run by the pre-commit hook). It keeps the line breaks it is given, so
+  write the layout above and run `nix fmt -- <changed .nix files>`; never
   hand-format against its output.
 - Keep the system declarative and reproducible from tracked files. Reuse
   existing aspects, options, packages, and helpers before adding new ones.
@@ -51,7 +64,8 @@
 - Use documented Den APIs. Do not invent `_module.args`, overwrite
   `config.den.aspects`, or pass values with `specialArgs`/`extraSpecialArgs`;
   read `inputs` and `self` from the top-level module. Check Den batteries before
-  building custom infrastructure.
+  building custom infrastructure, and refer to them as `den.batteries.<name>`,
+  not through the aliases `den.provides` or `den._`.
 
 ## Aspect ownership and routing
 
@@ -64,9 +78,13 @@
   `provides.to-users` automatically; do not add a `provides.<host>` provider
   for it. A standalone home `<user>@<host>` does not inherit them and resolves
   the user aspect plus its `provides.<host>` provider.
-- Baselines live only in `den.schema.{host,user,home}.includes`
-  (`modules/den/schema/entity-defaults.nix`).
-- `system/essential/` is one aspect split across files: extend
+- Baselines live only in `modules/defaults.nix`:
+  `den.default.includes` for aspects that apply alike to hosts, users and
+  standalone homes, `den.schema.{host,user,home}.includes` for the rest.
+  Host-only aspects and aspects that take `{ host }` never go in
+  `den.default`: it also walks every user and home, so homes would receive
+  host config and `{ host }` functions run once per scope.
+- `modules/system/essential/` is one aspect split across files: extend
   `den.aspects.essential`, do not create per-file aspects.
 
 ## Generated flake
@@ -83,14 +101,33 @@
 ## Directory responsibilities
 
 - `modules/flake/`: core inputs and output generation.
-- `modules/den/`: Den integration, entity schema, entity options.
+- `modules/defaults.nix`: what every host, user and home includes by default.
+  Den itself is imported with the core inputs in `modules/flake/inputs.nix`;
+  entity options live with the aspect that reads them.
 - `modules/tooling/`: formatter, static analysis, dev shell, hooks.
 - `modules/applications/`: software a person selects and uses;
-  `applications/hardware/peripherals/` for software tied to a peripheral.
-- `modules/features/`: system or hardware capabilities independent of an app.
+  `modules/applications/peripherals/` for software tied to a peripheral.
+- `modules/features/`: system or hardware capabilities independent of an app,
+  including `graphical` and `stylix`.
+- `modules/system/`: base of every NixOS machine (essential, security,
+  kernel, bootloaders), even headless.
+- `modules/desktop/`: environments, compositors, shells, and the session
+  stacks that combine them.
 - `modules/hosts/`: host boot, hardware, and desktop choices. Never edit
   generated `_hardware.nix`.
 - `modules/users/`: per-user apps and preferences beyond the baseline.
+- Name each file after the aspect it defines. An aspect split across files
+  gets a directory named after it, with `default.nix` as the entry. The
+  directory gives the category and may be dropped from the file name
+  (`modules/system/kernel/cachy.nix` defines `cachy-kernel`).
+- Directory names are plural for a collection of interchangeable items of one
+  kind (`browsers/`, `compositors/`, `bootloaders/`) and singular for a domain
+  or area (`development/`, `gaming/`, `security/`).
+- A main directory may have a short `README.md` stating what it holds and
+  why; keep existing ones in sync with their contents.
+- In docs, write a directory as `name/` and a file as `name.nix`, in
+  backticks. Inside a README, paths are relative to its directory; anywhere
+  else, relative to the repository root (`modules/...`).
 
 ## Packages and inputs
 

@@ -1,40 +1,37 @@
 # HANDOFF
 
-Last updated: 2026-11-07 01:08 UTC
+Last updated: 2026-11-09 03:47 UTC
 
 ## Estado atual
 
-- `desktop`: KDE (sem KDE PIM e Discover) e Niri, `desktop-apps`, kernel
-  CachyOS e AMD.
+- `desktop`: KDE e Niri, `desktop-apps`, kernel CachyOS, AMD.
 - `aspire`: notebook leve com LXQt, Niri, Firefox e Intel.
-- `nitro`: rascunho desabilitado até existir o `_hardware.nix` real.
-- `template`: exemplo inativo de home standalone para distros sem NixOS.
-- Baseline de host: `essential`, `audio`, `graphical` (X11, inclui o aspect
-  `stylix`), `git`, `admin-tools`, `unrar`, `security`, `kernel`,
-  `kernel-tuning` e `flatpak`.
-- Stylix é o dono do tema (Everforest, fontes e cursor), em
-  `modules/desktop/theme/stylix.nix`, que lista os alvos ligados para
-  desligar por app. O Noctalia usa a paleta dele e só mantém o template do
-  Prism Launcher, que o Stylix não cobre. Overlays e o alvo GNOME estão
-  desligados porque recompilariam pacotes.
-- Apps com módulo no Home Manager usam `programs.<app>`; o Obsidian tem o
-  cofre `~/Documentos/Obsidian Vault` declarado para o Stylix temá-lo.
-- Caches binários ficam no arquivo do aspect que os usa, registrados no
-  `essential`; o `bootstrap.sh` os passa ao primeiro build de uma instalação.
-- Mango e Umbriel (`umbriel-stack`) existem como sessões disponíveis, sem
-  inclusão em host; o Orange entra pelo `desktop-apps` e não foi testado.
-- Não há gerenciamento de segredos; chaves SSH são criadas à mão.
+- `nitro`: rascunho desabilitado; `gpu/nvidia.nix` está vazio, a preencher.
+- Padrões em `modules/defaults.nix`: `den.default` (define-user, essential,
+  git) e `den.schema.{host,home}.includes`. Shell e `primary-user` ficam no
+  `users/flp.nix`. O Den é importado em `modules/flake/inputs.nix`.
+- Home standalone `flp` (Nix fora do NixOS) declarado em `users/flp.nix`.
+- Stylix em `features/stylix.nix` (hosts e homes); Noctalia só mantém o
+  template do Prism. nixfmt no modo padrão; o hook `nix-style` (ast-grep)
+  exige prefixos agrupados e classes em bloco próprio.
+- Pastas reorganizadas: regra de nomes no AGENTS.md; niri, noctalia, kde,
+  lxqt e zed-editor divididos por seção. Mango removido.
+- Nada commitado desde `9c13c02`; todo o trabalho está fora do stage.
+- Não há gerenciamento de segredos.
 
 ## Próximas ações
 
-1. Rodar `nh os switch ~/nixos-config` e conferir Obsidian (appearance.json
-   antigo vira `.hm-bak`), Prism, tmux, micro e os aliases do eza.
-2. Avaliar se `services.xserver` deve sair do `graphical` e ficar só no
-   LXQt, já que o desktop roda KDE e Niri em Wayland.
-3. Fazer push e apagar `backup/pre-reorganize-2026-11-06` depois de validar.
+1. Commitar pelo plano da conversa (flakes ignoram arquivos fora do git), rodar
+   `nh os switch ~/nixos-config`, conferir avatar no SDDM, Obsidian, Prism
+   (tema Matugen), eza e brilho; `direnv reload` para o hook novo.
+2. Avaliar `services.xserver` só no LXQt e o grupo `i2c` (uaccess já cobre).
+3. Decidir sobre o realce do Den no Zed (protótipo no scratchpad) e as cores
+   de destaque; apagar os branches `backup/*` depois de validar.
 
 ## Blockers
 
-Nenhum.
+Compilam localmente a cada atualização: xwayland (módulo do NixOS), vesktop e
+vencord (nixcord), claude-agent-acp (depende de claude-code, unfree) e pixi
+(fora do cache nesta revisão).
 
 Nenhum segredo foi adicionado aos arquivos rastreados.
