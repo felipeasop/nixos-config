@@ -1,6 +1,6 @@
 # Swap comprimido na RAM. Mais rápido que swap em disco e reduz a
-# pressão de I/O; a partição de swap em disco (sda2) continua existindo
-# como fallback caso o zram sature.
+# pressão de I/O; o swap em disco do host, se houver, fica como fallback
+# pela prioridade menor caso o zram sature.
 {
   den.aspects.essential = {
     nixos = {

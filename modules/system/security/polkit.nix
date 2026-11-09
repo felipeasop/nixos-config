@@ -1,4 +1,4 @@
-# O KDE já sobe seu próprio agente (plasma-polkit-agent) sozinho junto do plasma6.nix
+# O KDE já sobe seu próprio agente (plasma-polkit-agent) junto do Plasma (aspect kde)
 # Necessário para niri que não possui agente de polkit embutido
 # Sem isso a sessão niri fica sem diálogo de autenticação gráfico.
 {
