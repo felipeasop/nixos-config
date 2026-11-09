@@ -12,7 +12,7 @@
         clipboard_auto_paste = "auto";
         clipboard_confirm_clear_history = true;
 
-        launch_apps_as_systemd_services = true; # recomendado com systemd.enable abaixo
+        launch_apps_as_systemd_services = true; # recomendado com systemd.enable (default.nix)
         # launch_apps_custom_command = "";
 
         app_icon_colorize = false;

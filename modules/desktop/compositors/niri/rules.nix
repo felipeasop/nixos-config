@@ -1,4 +1,4 @@
-# Aspect niri — Window / Layer Rules (rules.kdl).
+# Aspect niri — regras de janela e de layer.
 {
   den.aspects.niri = {
     homeManager = {

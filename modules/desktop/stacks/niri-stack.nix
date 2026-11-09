@@ -1,9 +1,9 @@
 { den, ... }: {
-  den.aspects.umbriel-stack = {
+  den.aspects.niri-stack = {
     includes = with den.aspects; [
-      umbriel
+      niri
       noctalia
-      xdg
+      xdg-portals
       dolphin
     ];
   };

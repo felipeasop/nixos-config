@@ -1,6 +1,4 @@
-# Aspect niri — Output / Monitor Configuration (output.kdl).
-#
-# niri msg outputs
+# Aspect niri — monitores. Liste-os com `niri msg outputs`; exemplo:
 #
 # outputs."eDP-1" = {
 #   scale = 1.0;
