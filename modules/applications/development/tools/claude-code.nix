@@ -1,5 +1,7 @@
 {
-  den.aspects.claude = {
-    homeManager.programs.claude-code.enable = true;
+  den.aspects.claude-code = {
+    homeManager = {
+      programs.claude-code.enable = true;
+    };
   };
 }

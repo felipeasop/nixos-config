@@ -1,5 +1,3 @@
-_:
-
 {
   den.aspects.solaar = {
     nixos = { lib, pkgs, ... }: {

@@ -1,9 +1,13 @@
 {
-  den.aspects.steam.nixos.programs = {
-    steam = {
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = false;
+  den.aspects.steam = {
+    nixos = {
+      programs = {
+        steam = {
+          enable = true;
+          remotePlay.openFirewall = true;
+          dedicatedServer.openFirewall = false;
+        };
+      };
     };
   };
 }

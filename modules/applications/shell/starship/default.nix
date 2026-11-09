@@ -3,8 +3,6 @@
     homeManager = {
       programs.starship = {
         enable = true;
-        enableBashIntegration = true;
-        enableFishIntegration = true;
 
         settings = fromTOML (builtins.readFile ./nerd-font-symbols.toml) // {
           add_newline = false;

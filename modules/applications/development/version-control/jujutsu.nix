@@ -1,13 +1,7 @@
 {
   den.aspects.jujutsu = {
     homeManager = {
-      programs.jujutsu = {
-        enable = true;
-        settings.user = {
-          name = "felipeasop";
-          email = "flpasop27@gmail.com";
-        };
-      };
+      programs.jujutsu.enable = true;
     };
   };
 }

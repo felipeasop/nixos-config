@@ -1,5 +1,7 @@
 {
   den.aspects.spotify = {
-    homeManager = { pkgs, ... }: { home.packages = [ pkgs.spotify ]; };
+    homeManager = { pkgs, ... }: {
+      home.packages = [ pkgs.spotify ];
+    };
   };
 }

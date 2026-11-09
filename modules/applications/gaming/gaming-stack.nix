@@ -7,7 +7,7 @@ let
     melonds
 
     # Compatibilidade e modding
-    proton
+    protonup-qt
     r2modman
 
     # Desempenho e monitoramento

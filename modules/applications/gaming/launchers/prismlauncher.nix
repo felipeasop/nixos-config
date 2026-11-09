@@ -1,5 +1,7 @@
 {
   den.aspects.prismlauncher = {
-    homeManager.programs.prismlauncher.enable = true;
+    homeManager = {
+      programs.prismlauncher.enable = true;
+    };
   };
 }

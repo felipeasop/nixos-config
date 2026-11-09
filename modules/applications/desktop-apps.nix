@@ -16,8 +16,6 @@
       gimp
 
       orange
-      # arduino
-      # rstudio
     ];
   };
 }

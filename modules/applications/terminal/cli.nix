@@ -4,7 +4,11 @@
       programs = {
         bat.enable = true;
         btop.enable = true;
-        eza.enable = true;
+        eza = {
+          enable = true;
+          # Os aliases com eza ficam em fish/aliases.nix.
+          enableFishIntegration = false;
+        };
         fastfetch.enable = true;
         fd.enable = true;
         fzf.enable = true;
