@@ -5,7 +5,6 @@
         enabled = false;
         position = "bottom"; # top | bottom | left | right
         pinned = [ ]; # ex: [ "firefox" "org.kde.dolphin" "steam" ]
-        monitors = [ ]; # vazio = todos
 
         auto_hide = false;
         smart_auto_hide = false;
@@ -29,7 +28,7 @@
         margin_ends = 0;
 
         background_opacity = 0.88;
-        border = "outline";
+        border = "outline_variant";
         border_width = 0.0;
         radius = 16;
         concave_edge_corners = true;

@@ -52,6 +52,7 @@ let
     noctalia.enable = true;
     obsidian.enable = true;
     qt.enable = true;
+    rofi.enable = false;
     starship.enable = true;
     tmux.enable = true;
     x11.enable = true;

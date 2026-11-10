@@ -9,7 +9,7 @@
           position = "top"; # top | bottom | left | right
           thickness = 34;
           background_opacity = 1.0;
-          border = "outline";
+          border = "outline_variant";
           border_width = 0.0;
           radius = 12;
           # radius_top_left / radius_top_right / radius_bottom_left / radius_bottom_right = 12 individualmente se quiser assimetria
@@ -32,7 +32,7 @@
           contact_shadow = false;
 
           capsule = false;
-          capsule_fill = "surface_variant";
+          capsule_fill = "surface_container";
           capsule_opacity = 1.0;
           capsule_padding = 6.0;
           capsule_thickness = 0.76;

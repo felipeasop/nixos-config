@@ -20,13 +20,17 @@
     };
 
     provides.to-users = {
-      homeManager = {
+      homeManager = { lib, ... }: {
         imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
 
         programs.plasma = {
           enable = true;
           session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
         };
+
+        # O lado NixOS já tematiza o Qt pelo Plasma; no Home Manager o alvo
+        # só suporta qtct e avisaria com a plataforma kde herdada.
+        stylix.targets.qt.enable = lib.mkForce false;
       };
     };
   };

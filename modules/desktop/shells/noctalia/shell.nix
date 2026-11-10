@@ -15,7 +15,6 @@
         launch_apps_as_systemd_services = true; # recomendado com systemd.enable (default.nix)
         # launch_apps_custom_command = "";
 
-        app_icon_colorize = false;
         button_borders = true;
         input_borders = true;
         popup_borders = true;
