@@ -22,6 +22,7 @@
         graphical
         admin-tools
         unrar
+        multimedia
         security
         kernel
         kernel-tuning
