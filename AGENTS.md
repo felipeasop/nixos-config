@@ -193,6 +193,10 @@ change. A dry-run is a preflight, not proof of runtime correctness.
 
 - Review status, unstaged and staged diffs; stage explicit paths; one
   responsibility per commit.
+- Prefer fewer, cohesive commits: changes serving the same goal go together
+  (a fix and the check that prevents it from returning, a change and the
+  `AGENTS.md`, README or `HANDOFF.md` lines describing it). Split only
+  independent goals, never one file's hunks across commits of the same goal.
 - Messages in Portuguese, `escopo: resumo no imperativo` (checked by the
   `commit-msg-style` hook). Scope is the lowercase aspect, module, or area
   (`nh`, `hosts/aspire`, `agents`), several joined with `, `. Subject ≤ 72
