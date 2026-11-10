@@ -22,6 +22,9 @@
           };
         };
       };
+
+      # O fontDir que o flatpak liga faria o xwayland recompilar com esse caminho.
+      programs.xwayland.defaultFontPath = "";
     };
   };
 }

@@ -18,7 +18,9 @@
 
         vesktop = {
           enable = true;
-          useSystemVencord = true;
+          # Com o Vencord do sistema, vesktop e vencord compilam localmente; sem
+          # ele o vesktop vem do cache e baixa o Vencord em tempo de execução.
+          useSystemVencord = false;
           settings = {
             discordBranch = "stable";
             tray = true;
@@ -43,42 +45,47 @@
           };
         };
 
-        config.plugins = {
-          # Recursos de desktop ausentes ou incompletos no cliente web
-          webContextMenus.enable = true;
-          webKeybinds.enable = true;
-          pictureInPicture.enable = true;
-          voiceMessages.enable = true;
+        config = {
+          autoUpdate = true;
+          autoUpdateNotification = true;
 
-          # Correções de conteúdo e navegação
-          fixYoutubeEmbeds.enable = true;
-          fixSpotifyEmbeds.enable = true;
-          validReply.enable = true;
-          validUser.enable = true;
-          fullSearchContext.enable = true;
-          fullUserInChatbox.enable = true;
-          messageLinkEmbeds.enable = true;
-          unsuppressEmbeds.enable = true;
-          unindent.enable = true;
+          plugins = {
+            # Recursos de desktop ausentes ou incompletos no cliente web
+            webContextMenus.enable = true;
+            webKeybinds.enable = true;
+            pictureInPicture.enable = true;
+            voiceMessages.enable = true;
 
-          # Interface e mídia
-          betterGifAltText.enable = true;
-          betterSettings.enable = true;
-          betterSessions.enable = true;
-          copyFileContents.enable = true;
-          imageZoom.enable = true;
-          keepCurrentChannel.enable = true;
-          replyTimestamp.enable = true;
-          viewIcons.enable = true;
+            # Correções de conteúdo e navegação
+            fixYoutubeEmbeds.enable = true;
+            fixSpotifyEmbeds.enable = true;
+            validReply.enable = true;
+            validUser.enable = true;
+            fullSearchContext.enable = true;
+            fullUserInChatbox.enable = true;
+            messageLinkEmbeds.enable = true;
+            unsuppressEmbeds.enable = true;
+            unindent.enable = true;
 
-          # QOL
-          clearUrls.enable = true;
-          crashHandler.enable = true;
-          noOnboardingDelay.enable = true;
-          noTrack.enable = true;
-          noTypingAnimation.enable = true;
-          youtubeAdblock.enable = true;
-          spotifyControls.enable = true;
+            # Interface e mídia
+            betterGifAltText.enable = true;
+            betterSettings.enable = true;
+            betterSessions.enable = true;
+            copyFileContents.enable = true;
+            imageZoom.enable = true;
+            keepCurrentChannel.enable = true;
+            replyTimestamp.enable = true;
+            viewIcons.enable = true;
+
+            # QOL
+            clearUrls.enable = true;
+            crashHandler.enable = true;
+            noOnboardingDelay.enable = true;
+            noTrack.enable = true;
+            noTypingAnimation.enable = true;
+            youtubeAdblock.enable = true;
+            spotifyControls.enable = true;
+          };
         };
       };
     };

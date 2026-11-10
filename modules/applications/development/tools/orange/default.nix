@@ -3,7 +3,18 @@
     homeManager =
       { pkgs, ... }:
       let
-        inherit (pkgs) pixi;
+        # pkgs.pixi não compila desde que o cargo-setup-hook passou a exportar
+        # AWS_LC_SYS_USE_SYSTEM=1; usa o binário estático oficial.
+        pixi = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+          pname = "pixi";
+          version = "0.83.0";
+          src = pkgs.fetchurl {
+            url = "https://github.com/prefix-dev/pixi/releases/download/v${finalAttrs.version}/pixi-x86_64-unknown-linux-musl.tar.gz";
+            hash = "sha256-Bk83HmkqqjQArFgcidooQ8kUN/IMLZFVOVpdADfzNVE=";
+          };
+          sourceRoot = ".";
+          installPhase = "install -Dm755 pixi $out/bin/pixi";
+        });
         orangeIcon = pkgs.fetchurl {
           name = "orange-data-mining.ico";
           url = "https://raw.githubusercontent.com/biolab/orange3/3.40.0/Orange/canvas/icons/orange.ico";
