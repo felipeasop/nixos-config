@@ -26,7 +26,7 @@ in
           };
 
           lsp = {
-            nil.settings.nix.flake.autoArchive = true;
+            nil.settings.nix.flake.autoArchive = false;
             nixd.settings.nixpkgs.expr = "import ${flake config.home.homeDirectory}.inputs.nixpkgs { }";
           };
         };
