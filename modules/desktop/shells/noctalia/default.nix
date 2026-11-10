@@ -3,6 +3,9 @@
 { inputs, ... }: {
   flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
+  flake-duplicates.allowed."noctalia/nixpkgs" =
+    "o noctalia.cachix é gerado com o nixpkgs fixado pelo noctalia";
+
   den.aspects = {
     # Fica no essential para o cache existir antes de o aspect ser incluído.
     essential = {

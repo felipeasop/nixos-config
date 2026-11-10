@@ -1,6 +1,9 @@
 { inputs, ... }: {
   flake-file.inputs.umbriel.url = "github:noctalia-dev/umbriel/cachix";
 
+  flake-duplicates.allowed."umbriel/nixpkgs" =
+    "o umbriel.cachix é gerado com o nixpkgs fixado pelo umbriel";
+
   den.aspects = {
     # Fica no essential para o cache existir antes de o aspect ser incluído.
     essential = {

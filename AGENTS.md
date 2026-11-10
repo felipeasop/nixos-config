@@ -140,6 +140,10 @@
   insecurity markers or override major versions without validating.
 - Use `inputs.<name>.inputs.nixpkgs.follows = "nixpkgs"` only when compatible;
   never when the input's cache was built against its own nixpkgs pin.
+- A project locked more than once in `flake.lock` gets a `follows` to the
+  root input (with identical `drvPath`s of every host before and after) or an
+  entry in `flake-duplicates.allowed` with the reason, beside its
+  `flake-file.inputs`. The `flake-duplicates` pre-commit hook reports the rest.
 - Setting `nix.settings.substituters` replaces the defaults; always keep
   `https://cache.nixos.org/`. `nix-settings.nix` lists only general caches.
 - Keep everything an aspect needs in its own module, so deleting it leaves no

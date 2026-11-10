@@ -2,7 +2,14 @@
   flake-file.inputs = {
     nixcord = {
       url = "github:4evy/nixcord";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # Os demais só servem ao CI, devShells e packages do nixcord, que esta config não usa.
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixpkgs-ci.follows = "nixpkgs";
+        nixpkgs-packages.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
   };
 

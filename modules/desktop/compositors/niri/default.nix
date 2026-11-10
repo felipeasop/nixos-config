@@ -3,7 +3,17 @@
 { inputs, ... }: {
   flake-file.inputs.niri = {
     url = "github:sodiboo/niri-flake";
-    inputs.nixpkgs.follows = "nixpkgs";
+    # nixpkgs-stable só alimenta o closure de CI do niri-flake.
+    inputs = {
+      nixpkgs.follows = "nixpkgs";
+      nixpkgs-stable.follows = "nixpkgs";
+    };
+  };
+
+  flake-duplicates.allowed = {
+    "niri/niri-stable" = "o niri-flake empacota de propósito a versão estável e a unstable";
+    "niri/xwayland-satellite-stable" =
+      "o niri-flake empacota de propósito a versão estável e a unstable";
   };
 
   den.aspects.niri = {
