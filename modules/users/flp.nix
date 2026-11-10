@@ -4,7 +4,10 @@ let
     name = "felipeasop";
     email = "flpasop27@gmail.com";
   };
-  avatar = "${inputs.self}/assets/avatar/margarida.jpg";
+  avatar = builtins.path {
+    path = "${inputs.self}/assets/avatar/margarida.jpg";
+    name = "margarida.jpg";
+  };
 in
 {
   den = {

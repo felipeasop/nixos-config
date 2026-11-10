@@ -19,7 +19,10 @@
           transition_on_startup = false;
           per_monitor_directories = false;
 
-          directory = "${inputs.self}/assets/wallpaper";
+          directory = builtins.path {
+            path = "${inputs.self}/assets/wallpaper";
+            name = "wallpaper";
+          };
           # directory_light = "";
           # directory_dark  = "";
 
