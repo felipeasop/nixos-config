@@ -1,6 +1,6 @@
 # HANDOFF
 
-Last updated: 2026-11-09 03:47 UTC
+Last updated: 2026-11-10 00:11 UTC
 
 ## Estado atual
 
@@ -8,30 +8,31 @@ Last updated: 2026-11-09 03:47 UTC
 - `aspire`: notebook leve com LXQt, Niri, Firefox e Intel.
 - `nitro`: rascunho desabilitado; `gpu/nvidia.nix` está vazio, a preencher.
 - Padrões em `modules/defaults.nix`: `den.default` (define-user, essential,
-  git) e `den.schema.{host,home}.includes`. Shell e `primary-user` ficam no
-  `users/flp.nix`. O Den é importado em `modules/flake/inputs.nix`.
+  git) e `den.schema.{host,home}.includes`; baseline de host agora inclui
+  `multimedia` (bundle dos aspects `ffmpeg` e `vlc`).
 - Home standalone `flp` (Nix fora do NixOS) declarado em `users/flp.nix`.
-- Stylix em `features/stylix.nix` (hosts e homes); Noctalia só mantém o
-  template do Prism. nixfmt no modo padrão; o hook `nix-style` (ast-grep)
-  exige prefixos agrupados e classes em bloco próprio.
-- Pastas reorganizadas: regra de nomes no AGENTS.md; niri, noctalia, kde,
-  lxqt e zed-editor divididos por seção. Mango removido.
-- Nada commitado desde `9c13c02`; todo o trabalho está fora do stage.
+- nixpkgs em `f4a03c0` (commit `d9b50f7`); o pixi do nixpkgs não compila nessa
+  revisão. `/run/current-system` já aponta para `f4a03c0`, mas o perfil de
+  boot segue na geração 109 (`0bb2eed`).
+- Nesta sessão: avisos do Stylix (rofi, qt no KDE) e do Noctalia corrigidos;
+  `orange` usa o binário oficial do pixi 0.83.0; vesktop sem Vencord do
+  sistema (vem do cache, com autoUpdate do Vencord);
+  `xwayland.defaultFontPath = ""`; `multimedia`; regra `programs.*` no AGENTS.
+- Dry-run: `desktop` e `aspire` não compilam nada além de wrappers e config;
+  sem avisos de avaliação; config do Noctalia válida.
 - Não há gerenciamento de segredos.
 
 ## Próximas ações
 
-1. Commitar pelo plano da conversa (flakes ignoram arquivos fora do git), rodar
-   `nh os switch ~/nixos-config`, conferir avatar no SDDM, Obsidian, Prism
-   (tema Matugen), eza e brilho; `direnv reload` para o hook novo.
-2. Avaliar `services.xserver` só no LXQt e o grupo `i2c` (uaccess já cobre).
-3. Decidir sobre o realce do Den no Zed (protótipo no scratchpad) e as cores
-   de destaque; apagar os branches `backup/*` depois de validar.
+1. Rodar `nh os switch ~/nixos-config` (cria a entrada de boot);
+   conferir Orange, Vesktop (plugins do Vencord) e tema Qt no KDE.
+2. Quando o nixpkgs corrigir o pixi, voltar o `orange` para `pkgs.pixi`.
+3. Avaliar `services.xserver` só no LXQt e o grupo `i2c`; apagar os branches
+   `backup/*` depois de validar.
 
 ## Blockers
 
-Compilam localmente a cada atualização: xwayland (módulo do NixOS), vesktop e
-vencord (nixcord), claude-agent-acp (depende de claude-code, unfree) e pixi
-(fora do cache nesta revisão).
+claude-agent-acp (Zed) compila localmente a cada atualização: fora do
+cache.nixos.org apesar da licença Apache-2.0; manter, aceitar ou remover.
 
 Nenhum segredo foi adicionado aos arquivos rastreados.

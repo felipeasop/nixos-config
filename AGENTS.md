@@ -132,6 +132,9 @@
 ## Packages and inputs
 
 - Keep application policy in the consuming aspect, not in `essential`.
+- Install software through its `programs.<name>` or `services.<name>` module
+  (NixOS or Home Manager, matching the class) when one exists; use
+  `environment.systemPackages` or `home.packages` only when none does.
 - Scope insecure-package exceptions to the smallest package set and consumer,
   with the consumer and reason beside it. Do not pin old releases to hide
   insecurity markers or override major versions without validating.
