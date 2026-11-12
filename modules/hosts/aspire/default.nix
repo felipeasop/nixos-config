@@ -29,8 +29,9 @@ in
       nixos = { lib, ... }: {
         hardware.enableRedistributableFirmware = true;
 
-        # Recebe deploys do desktop (nixos-rebuild --target-host root@aspire)
-        # root só por chave, e só a do desktop.
+        # Recebe deploys do desktop, rodando lá:
+        # nh os switch ~/nixos-config -H aspire --target-host root@aspire.local
+        # Root só por chave, e só a do desktop. O primeiro switch é local.
         services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
         users.users.root.openssh.authorizedKeys.keyFiles = [ ../desktop/deploy.pub ];
 

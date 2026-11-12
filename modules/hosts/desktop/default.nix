@@ -26,7 +26,8 @@ in
         { nixos = import ./_hardware.nix; }
       ];
 
-      # Chave do host aspire fixada para o deploy (root@aspire.local, via avahi).
+      # Chave do host aspire fixada para o deploy (aspire.local, via avahi):
+      # nh os switch ~/nixos-config -H aspire --target-host root@aspire.local
       nixos = {
         programs.ssh.knownHosts.aspire = {
           hostNames = [ "aspire.local" ];

@@ -23,9 +23,9 @@ Last updated: 2026-11-12 01:30 UTC
   (labwc) avaliado como próxima etapa possível, ainda não feito.
 - Deploy remoto do aspire pelo desktop como root, como nos tutoriais do
   nix.dev: só o aspire aceita root por SSH (`prohibit-password`) e só com a
-  chave `hosts/desktop/deploy.pub`. Comando: `nixos-rebuild switch --flake
-  ~/nixos-config#aspire --target-host root@aspire.local`. Exige um switch local no
-  aspire antes. Em todos os hosts só valem chaves declaradas no Nix
+  chave `hosts/desktop/deploy.pub`. Comando: `nh os switch
+  ~/nixos-config -H aspire --target-host root@aspire.local`. Exige um switch
+  local no aspire antes. Em todos os hosts só valem chaves declaradas no Nix
   (`authorizedKeysInHomedir = false`). Nomes via avahi (`<host>.local`); a
   chave do host aspire fica fixada no desktop (`hosts/aspire/ssh_host_ed25519_key.pub`).
 - Não há gerenciamento de segredos.
