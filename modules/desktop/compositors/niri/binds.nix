@@ -9,7 +9,7 @@
 
           "Mod+Return" = {
             hotkey-overlay.title = "Open Terminal";
-            action.spawn = [ "alacritty" ];
+            action.spawn = [ "xdg-terminal-exec" ];
           };
           "Mod+D" = {
             hotkey-overlay.title = "Open App Launcher";
@@ -38,8 +38,7 @@
           "Mod+Shift+E" = {
             hotkey-overlay.title = "File Manager";
             action.spawn = [
-              "alacritty"
-              "-e"
+              "xdg-terminal-exec"
               "yazi"
             ];
           };
@@ -58,8 +57,7 @@
           "Mod+X" = {
             hotkey-overlay.title = "Open System Monitor";
             action.spawn = [
-              "alacritty"
-              "-e"
+              "xdg-terminal-exec"
               "btop"
             ];
           };

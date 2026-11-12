@@ -8,7 +8,7 @@
       tmux
 
       # Terminal emulator
-      alacritty
+      kitty
 
       # Version control
       git

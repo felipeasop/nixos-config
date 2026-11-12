@@ -1,6 +1,6 @@
 # HANDOFF
 
-Last updated: 2026-11-10 00:40 UTC
+Last updated: 2026-11-11 22:34 UTC
 
 ## Estado atual
 
@@ -18,6 +18,9 @@ Last updated: 2026-11-10 00:40 UTC
   binário oficial do pixi 0.83.0; vesktop sem Vencord do sistema (vem do
   cache, com autoUpdate do Vencord); `xwayland.defaultFontPath = ""`;
   `multimedia`; regra `programs.*` no AGENTS.
+- Terminal: kitty nos dois hosts (bundle `dev`), padrão via `xdg-terminal-exec`;
+  os atalhos do niri, KDE e LXQt chamam `xdg-terminal-exec`. LXQt Wayland
+  (labwc) avaliado como próxima etapa possível, ainda não feito.
 - Não há gerenciamento de segredos.
 
 ## Custo de atualização (máquina limitada)
@@ -40,7 +43,8 @@ Last updated: 2026-11-10 00:40 UTC
 ## Próximas ações
 
 1. Rodar `nh os switch ~/nixos-config` (cria a entrada de boot); conferir
-   Orange, Vesktop (plugins do Vencord), tema Qt no KDE, wallpaper e avatar;
+   Orange, Vesktop (plugins do Vencord), tema Qt no KDE, wallpaper, avatar e
+   kitty pelos atalhos;
    depois `nix-direnv-reload`.
 2. Quando o nixpkgs corrigir o pixi, voltar o `orange` para `pkgs.pixi`.
 3. Avaliar `services.xserver` só no LXQt e o grupo `i2c`; apagar os branches

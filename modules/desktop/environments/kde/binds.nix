@@ -28,13 +28,13 @@
               "activate task manager entry 10" = "none";
             };
 
-            "services/plasma-manager-commands.desktop"."launch-alacritty" = "Meta+Return";
+            "services/plasma-manager-commands.desktop"."launch-terminal" = "Meta+Return";
           };
 
-          hotkeys.commands."launch-alacritty" = {
-            name = "Launch Alacritty";
+          hotkeys.commands."launch-terminal" = {
+            name = "Launch Terminal";
             key = "Meta+Return";
-            command = "alacritty";
+            command = "xdg-terminal-exec";
           };
         };
       };

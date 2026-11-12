@@ -20,9 +20,9 @@
             WindowSize=@Invalid()
 
             [Meta%2BReturn.1]
-            Comment=Terminal (Alacritty)
+            Comment=Terminal (xdg-terminal-exec)
             Enabled=true
-            Exec=alacritty
+            Exec=xdg-terminal-exec
 
             [Meta%2BB.2]
             Comment=Browser (Firefox)

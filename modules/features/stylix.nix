@@ -34,7 +34,6 @@ let
   };
 
   homeTargets = {
-    alacritty.enable = true;
     bat.enable = true;
     btop.enable = true;
     firefox.enable = true;
@@ -45,6 +44,7 @@ let
     gnome.enable = false;
     gtk.enable = true;
     kde.enable = true;
+    kitty.enable = true;
     lazygit.enable = true;
     mangohud.enable = true;
     micro.enable = true;
