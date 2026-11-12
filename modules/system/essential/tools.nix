@@ -1,12 +1,16 @@
 {
-  den.aspects.admin-tools = {
+  den.aspects.essential = {
     nixos = { pkgs, ... }: {
+      programs.htop.enable = true;
+
       environment.systemPackages = with pkgs; [
-        htop
         psmisc
         file
         wget
         unzip
+        lsof
+        pciutils
+        usbutils
       ];
     };
   };

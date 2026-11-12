@@ -4,8 +4,6 @@ in
 {
   den.aspects.zed-editor = {
     homeManager = { config, pkgs, ... }: {
-      home.packages = [ pkgs.nixfmt ];
-
       programs.zed-editor = {
         extensions = [ "nix" ];
 

@@ -20,7 +20,6 @@
       host.includes = with den.aspects; [
         audio
         graphical
-        admin-tools
         unrar
         multimedia
         security

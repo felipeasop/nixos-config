@@ -2,11 +2,13 @@
   den.aspects.fish = {
     homeManager = {
       programs.fish.shellAliases = {
-        ls = "eza -al --color=always --group-directories-first --icons=always";
-        la = "eza -a --color=always --group-directories-first --icons=always";
-        ll = "eza -l --color=always --group-directories-first --icons=always";
-        lt = "eza -aT --color=always --group-directories-first --icons=always";
+        ls = "eza --group-directories-first --icons=auto";
+        la = "eza -a --group-directories-first --icons=auto";
+        ll = "eza -l --group-directories-first --icons=auto";
+        lt = "eza -aT --group-directories-first --icons=auto";
         "l." = "eza -a | grep -e '^\\.'";
+        tree = "eza --tree --group-directories-first --icons=auto";
+        cat = "bat --plain --paging=never";
 
         ".." = "cd ..";
         "..." = "cd ../..";

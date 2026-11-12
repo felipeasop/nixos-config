@@ -5,6 +5,7 @@
     aspects.essential = {
       homeManager =
         {
+          lib,
           pkgs,
           osConfig ? null,
           ...
@@ -12,7 +13,8 @@
         {
           home = {
             stateVersion = if osConfig != null then osConfig.system.stateVersion else "26.05";
-            packages = [ pkgs.nh ];
+            # Em host NixOS o nh já vem do programs.nh do sistema.
+            packages = lib.optional (osConfig == null) pkgs.nh;
           };
 
           # Só comandos legados sem flake (nix-shell -p, nix-env); nix run é coberto por unfree-packages.nix.
