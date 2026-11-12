@@ -138,12 +138,12 @@
 - Scope insecure-package exceptions to the smallest package set and consumer,
   with the consumer and reason beside it. Do not pin old releases to hide
   insecurity markers or override major versions without validating.
-- Use `inputs.<name>.inputs.nixpkgs.follows = "nixpkgs"` only when compatible;
-  never when the input's cache was built against its own nixpkgs pin.
-- A project locked more than once in `flake.lock` gets a `follows` to the
-  root input (with identical `drvPath`s of every host before and after) or an
-  entry in `flake-duplicates.allowed` with the reason, beside its
-  `flake-file.inputs`. The `flake-duplicates` pre-commit hook reports the rest.
+- A project locked more than once in `flake.lock` follows the root input when
+  compatible: a transitive input this config does not use must leave every
+  host's `drvPath` unchanged, and `nixpkgs` never follows when the input's
+  cache was built against its own pin. Otherwise register it in
+  `flake-duplicates.allowed` with the reason, beside its `flake-file.inputs`.
+  The `flake-duplicates` pre-commit hook reports the rest.
 - Setting `nix.settings.substituters` replaces the defaults; always keep
   `https://cache.nixos.org/`. `nix-settings.nix` lists only general caches.
 - Keep everything an aspect needs in its own module, so deleting it leaves no
@@ -180,6 +180,8 @@ change. A dry-run is a preflight, not proof of runtime correctness.
 - Packages: dry-run the package output; build only if it complies with the
   binary-substitute policy.
 - Home Manager-only: dry-run `homeConfigurations.<user@host>.activationPackage`.
+- Tooling (hooks, dev shell): `.envrc` uses `nix_direnv_manual_reload`, so
+  run `nix-direnv-reload` before committing; otherwise the old hooks run.
 - NixOS, routing, shared inputs, mixed-class, overlays, package sets: evaluate
   `config.system.build.toplevel` of every host whose graph can change.
 - Do not add package outputs just to make aspects buildable.
@@ -191,12 +193,12 @@ change. A dry-run is a preflight, not proof of runtime correctness.
 
 ## Git and commits
 
-- Review status, unstaged and staged diffs; stage explicit paths; one
-  responsibility per commit.
-- Prefer fewer, cohesive commits: changes serving the same goal go together
-  (a fix and the check that prevents it from returning, a change and the
-  `AGENTS.md`, README or `HANDOFF.md` lines describing it). Split only
-  independent goals, never one file's hunks across commits of the same goal.
+- Review status, unstaged and staged diffs; stage explicit paths.
+- One goal per commit, as few commits as that allows: changes serving the
+  same goal go together (a fix and the check that prevents it from returning,
+  a change and the `AGENTS.md`, README or `HANDOFF.md` lines describing it).
+  Split only independent goals, never one file's hunks across commits of the
+  same goal.
 - Messages in Portuguese, `escopo: resumo no imperativo` (checked by the
   `commit-msg-style` hook). Scope is the lowercase aspect, module, or area
   (`nh`, `hosts/aspire`, `agents`), several joined with `, `. Subject ≤ 72
