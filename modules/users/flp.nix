@@ -27,6 +27,8 @@ in
         claude-code
 
         yazi
+
+        libreoffice
       ];
 
       homeManager = {
