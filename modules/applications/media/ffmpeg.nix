@@ -1,7 +1,7 @@
 {
   den.aspects.ffmpeg = {
     nixos = { pkgs, ... }: {
-      environment.systemPackages = [ pkgs.ffmpeg-full ];
+      environment.systemPackages = [ pkgs.ffmpeg ];
     };
   };
 }
