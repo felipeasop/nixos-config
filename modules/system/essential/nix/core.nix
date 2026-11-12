@@ -31,6 +31,7 @@
           useGlobalPkgs = true;
           useUserPackages = true;
           backupFileExtension = "hm-bak";
+          overwriteBackup = true;
         };
       };
     };
