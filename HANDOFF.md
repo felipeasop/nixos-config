@@ -1,6 +1,6 @@
 # HANDOFF
 
-Last updated: 2026-11-11 22:34 UTC
+Last updated: 2026-11-12 01:30 UTC
 
 ## Estado atual
 
@@ -21,6 +21,12 @@ Last updated: 2026-11-11 22:34 UTC
 - Terminal: kitty nos dois hosts (bundle `dev`), padrão via `xdg-terminal-exec`;
   os atalhos do niri, KDE e LXQt chamam `xdg-terminal-exec`. LXQt Wayland
   (labwc) avaliado como próxima etapa possível, ainda não feito.
+- Deploy remoto do aspire pelo desktop como root, como nos tutoriais do
+  nix.dev: só o aspire aceita root por SSH (`prohibit-password`) e só com a
+  chave `hosts/desktop/deploy.pub`. Comando: `nixos-rebuild switch --flake
+  ~/nixos-config#aspire --target-host root@<aspire>`. Exige um switch local no
+  aspire antes. Em todos os hosts só valem chaves declaradas no Nix
+  (`authorizedKeysInHomedir = false`).
 - Não há gerenciamento de segredos.
 
 ## Custo de atualização (máquina limitada)

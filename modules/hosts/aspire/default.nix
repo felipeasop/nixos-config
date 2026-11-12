@@ -26,8 +26,13 @@ in
         { nixos = import ./_hardware.nix; }
       ];
 
-      nixos = {
+      nixos = { lib, ... }: {
         hardware.enableRedistributableFirmware = true;
+
+        # Recebe deploys do desktop (nixos-rebuild --target-host root@aspire)
+        # root só por chave, e só a do desktop.
+        services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
+        users.users.root.openssh.authorizedKeys.keyFiles = [ ../desktop/deploy.pub ];
 
         swapDevices = [
           {
