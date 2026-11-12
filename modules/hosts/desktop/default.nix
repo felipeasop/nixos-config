@@ -25,6 +25,14 @@ in
 
         { nixos = import ./_hardware.nix; }
       ];
+
+      # Chave do host aspire fixada para o deploy (root@aspire.local, via avahi).
+      nixos = {
+        programs.ssh.knownHosts.aspire = {
+          hostNames = [ "aspire.local" ];
+          publicKeyFile = ../aspire/ssh_host_ed25519_key.pub;
+        };
+      };
     };
   };
 }
