@@ -1,13 +1,16 @@
 {
   den.aspects.zapzap = {
-    homeManager = {
+    homeManager = { config, ... }: {
       programs.zapzap = {
         enable = true;
 
         settings = {
+          # Sem isso o menu de config aparece sempre que abrir
+          onboarding.initial_setup_completed = true;
+
           system = {
             scale = 100;
-            theme = "dark";
+            theme = if config.stylix.polarity == "either" then "auto" else config.stylix.polarity;
             wayland = true;
           };
 
