@@ -1,5 +1,5 @@
 let
-  # Mesma política na limpeza semanal e no comando detox.
+  # Mesma política na limpeza semanal e no comando cleanup.
   cleanArgs = "--keep-since 7d --keep 3 --keep-one";
 in
 {
@@ -20,7 +20,7 @@ in
         # Limpeza sob demanda: gerações e lixo do Nix pela política acima,
         # deduplicação do store e runtimes Flatpak sem uso.
         (pkgs.writeShellApplication {
-          name = "detox";
+          name = "cleanup";
           runtimeInputs = [ config.programs.nh.package ];
           text = ''
             nh clean all ${cleanArgs} --optimise
