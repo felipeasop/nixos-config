@@ -11,6 +11,10 @@
             hotkey-overlay.title = "Open Terminal";
             action.spawn = [ "xdg-terminal-exec" ];
           };
+          "Mod+Shift+Return" = {
+            hotkey-overlay.title = "Open Terminal (foot)";
+            action.spawn = [ "foot" ];
+          };
           "Mod+D" = {
             hotkey-overlay.title = "Open App Launcher";
             action.spawn-sh = "noctalia msg panel-toggle launcher";

@@ -28,13 +28,23 @@
               "activate task manager entry 10" = "none";
             };
 
-            "services/plasma-manager-commands.desktop"."launch-terminal" = "Meta+Return";
+            "services/plasma-manager-commands.desktop" = {
+              "launch-terminal" = "Meta+Return";
+              "launch-foot" = "Meta+Shift+Return";
+            };
           };
 
-          hotkeys.commands."launch-terminal" = {
-            name = "Launch Terminal";
-            key = "Meta+Return";
-            command = "xdg-terminal-exec";
+          hotkeys.commands = {
+            "launch-terminal" = {
+              name = "Launch Terminal";
+              key = "Meta+Return";
+              command = "xdg-terminal-exec";
+            };
+            "launch-foot" = {
+              name = "Launch Terminal (foot)";
+              key = "Meta+Shift+Return";
+              command = "foot";
+            };
           };
         };
       };

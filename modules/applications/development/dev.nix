@@ -9,6 +9,7 @@
 
       # Terminal emulator
       kitty
+      foot
 
       # Version control
       git
