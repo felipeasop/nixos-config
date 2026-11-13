@@ -1,7 +1,10 @@
 {
   den.aspects.zed-editor = {
     homeManager = { lib, pkgs, ... }: {
-      stylix.targets.zed.fonts.enable = false;
+      stylix.targets.zed = {
+        enable = true;
+        fonts.enable = false;
+      };
 
       programs.zed-editor = {
         enable = true;

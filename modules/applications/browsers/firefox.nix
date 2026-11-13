@@ -1,7 +1,10 @@
 {
   den.aspects.firefox = {
     homeManager = {
-      stylix.targets.firefox.profileNames = [ "default" ];
+      stylix.targets.firefox = {
+        enable = true;
+        profileNames = [ "default" ];
+      };
 
       programs.firefox = {
         enable = true;

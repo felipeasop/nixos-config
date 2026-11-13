@@ -1,6 +1,8 @@
 {
   den.aspects.kitty = {
     homeManager = {
+      stylix.targets.kitty.enable = true;
+
       programs.kitty = {
         enable = true;
         settings = {

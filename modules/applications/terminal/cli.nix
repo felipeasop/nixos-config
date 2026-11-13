@@ -1,6 +1,13 @@
 {
   den.aspects.cli = {
     homeManager = { pkgs, ... }: {
+      stylix.targets = {
+        bat.enable = true;
+        btop.enable = true;
+        fzf.enable = true;
+        micro.enable = true;
+      };
+
       programs = {
         bat.enable = true;
         btop.enable = true;

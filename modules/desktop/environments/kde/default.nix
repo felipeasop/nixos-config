@@ -29,9 +29,12 @@
           configFile.krunnerrc.Plugins.krunner_appstreamEnabled = false;
         };
 
-        # O lado NixOS já tematiza o Qt pelo Plasma; no Home Manager o alvo
-        # só suporta qtct e avisaria com a plataforma kde herdada.
-        stylix.targets.qt.enable = lib.mkForce false;
+        stylix.targets = {
+          kde.enable = true;
+          # O lado NixOS já tematiza o Qt pelo Plasma; no Home Manager o alvo
+          # só suporta qtct e avisaria com a plataforma kde herdada.
+          qt.enable = lib.mkForce false;
+        };
       };
     };
   };

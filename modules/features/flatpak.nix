@@ -26,5 +26,11 @@
       # O fontDir que o flatpak liga faria o xwayland recompilar com esse caminho.
       programs.xwayland.defaultFontPath = "";
     };
+
+    provides.to-users = {
+      homeManager = {
+        stylix.targets.gtk.flatpakSupport.enable = true;
+      };
+    };
   };
 }

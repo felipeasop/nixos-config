@@ -1,8 +1,11 @@
 {
   den.aspects.noctalia = {
     homeManager = {
-      # As opacidades ficam por componente em ui/*.nix.
-      stylix.targets.noctalia.opacity.enable = false;
+      stylix.targets.noctalia = {
+        enable = true;
+        # As opacidades ficam por componente em ui/*.nix.
+        opacity.enable = false;
+      };
 
       programs.noctalia.settings.theme = {
         pure_black_dark = false;

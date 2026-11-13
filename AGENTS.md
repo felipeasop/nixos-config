@@ -132,6 +132,14 @@
 ## Packages and inputs
 
 - Keep application policy in the consuming aspect, not in `essential`.
+- `stylix.nix` imports Stylix with `autoEnable = false` and enables only the
+  base targets no other aspect owns (gtk, qt, x11, fonts, icons). The theme
+  (scheme, polarity, fonts, cursor, opacity) is the user's preference: it
+  lives in the user aspect (`modules/users/flp/theme.nix`), which also sends
+  it to the host through `provides.to-hosts`. Every other target is enabled
+  explicitly (`stylix.targets.<name>.enable = true`) with its settings in the
+  aspect that owns the app or component. An app without a target reads
+  `config.stylix.*` itself.
 - Install software through its `programs.<name>` or `services.<name>` module
   (NixOS or Home Manager, matching the class) when one exists; use
   `environment.systemPackages` or `home.packages` only when none does.

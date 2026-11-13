@@ -1,6 +1,8 @@
 {
   den.aspects.mangohud = {
     homeManager = {
+      stylix.targets.mangohud.enable = true;
+
       programs.mangohud = {
         enable = true;
         settings = {

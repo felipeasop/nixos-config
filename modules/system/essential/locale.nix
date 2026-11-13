@@ -1,6 +1,8 @@
 {
   den.aspects.essential = {
     nixos = {
+      stylix.targets.console.enable = true;
+
       console.keyMap = "br-abnt2";
       services.xserver.xkb = {
         layout = "br";

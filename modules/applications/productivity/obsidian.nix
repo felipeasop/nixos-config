@@ -6,7 +6,10 @@
         vaults."Documentos/Obsidian Vault" = { };
       };
 
-      stylix.targets.obsidian.vaultNames = [ "Documentos/Obsidian Vault" ];
+      stylix.targets.obsidian = {
+        enable = true;
+        vaultNames = [ "Documentos/Obsidian Vault" ];
+      };
     };
   };
 }
