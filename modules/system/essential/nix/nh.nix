@@ -18,7 +18,8 @@ in
         pkgs.nix-output-monitor
 
         # Limpeza sob demanda: gerações e lixo do Nix pela política acima,
-        # deduplicação do store e runtimes Flatpak sem uso.
+        # deduplicação do store, runtimes Flatpak sem uso e imagens órfãs
+        # do Podman.
         (pkgs.writeShellApplication {
           name = "cleanup";
           runtimeInputs = [ config.programs.nh.package ];
@@ -26,6 +27,9 @@ in
             nh clean all ${cleanArgs} --optimise
             if command -v flatpak >/dev/null; then
               flatpak uninstall --unused --noninteractive
+            fi
+            if command -v podman >/dev/null; then
+              podman image prune -f
             fi
           '';
         })

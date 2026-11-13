@@ -16,6 +16,8 @@
       gimp
 
       orange
+      pgadmin
+      podman
     ];
   };
 }
