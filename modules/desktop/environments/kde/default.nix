@@ -26,6 +26,7 @@
         programs.plasma = {
           enable = true;
           session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
+          configFile.krunnerrc.Plugins.krunner_appstreamEnabled = false;
         };
 
         # O lado NixOS já tematiza o Qt pelo Plasma; no Home Manager o alvo
