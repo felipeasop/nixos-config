@@ -20,6 +20,7 @@ in
 
         kde
         niri-stack
+        umbriel-stack
         desktop-apps
 
         { nixos = import ./_hardware.nix; }

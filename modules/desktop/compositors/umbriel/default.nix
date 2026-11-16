@@ -1,3 +1,9 @@
+# Docs oficiais: https://docs.noctalia.dev/umbriel/ (referência completa em
+# examples/config.toml do repositório). Cada arquivo leva o nome da seção de
+# `programs.umbriel.settings` que define, espelhando o niri. Os valores são os
+# padrões do Umbriel, exceto onde reproduzem o niri; o que o niri não tem fica
+# comentado, e o que falta em relação a ele está anotado no arquivo da seção.
+# O config.toml gerado substitui o do pacote por inteiro, inclusive os atalhos.
 { inputs, ... }: {
   flake-file.inputs.umbriel.url = "github:noctalia-dev/umbriel/cachix";
 
@@ -16,11 +22,9 @@
     };
 
     umbriel = {
-      provides.to-hosts = {
-        nixos = {
-          imports = [ inputs.umbriel.nixosModules.default ];
-          programs.umbriel.enable = true;
-        };
+      nixos = {
+        imports = [ inputs.umbriel.nixosModules.default ];
+        programs.umbriel.enable = true;
       };
 
       homeManager = {
