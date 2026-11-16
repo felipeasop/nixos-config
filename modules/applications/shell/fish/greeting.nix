@@ -1,82 +1,51 @@
 {
   den.aspects.fish = {
-    homeManager = {
-      programs.fish = {
-        shellInit = ''
-          set -g fish_greeting ""
-        '';
+    homeManager =
+      { config, ... }:
+      let
+        c = config.lib.stylix.colors;
+      in
+      {
+        # Cada item é cor, ícone e valor; só o primeiro shell mostra (não subshells).
+        programs.fish.functions.fish_greeting = ''
+          test "$SHLVL" -gt 1 2>/dev/null; and return
 
-        interactiveShellInit = ''
-          function fish_greeting
-              # Correção da leitura do uptime
-              set -l seconds (cut -d. -f1 /proc/uptime)
+          set -l seconds (string split -f1 . < /proc/uptime)
+          set -l days (math -s0 "$seconds / 86400")
+          set -l hours (math -s0 "$seconds % 86400 / 3600")
+          set -l mins (math -s0 "$seconds % 3600 / 60")
+          set -l up "$mins"m
+          if test $days -gt 0
+              set up "$days"d" $hours"h
+          else if test $hours -gt 0
+              set up "$hours"h" $mins"m
+          end
 
-              set -l days (math -s0 "$seconds / 86400")
-              set -l hours (math -s0 "($seconds % 86400) / 3600")
-              set -l mins (math -s0 "($seconds % 3600) / 60")
-              set -l up ""
-              if test $days -gt 0
-                  set up "$days"d" $hours"h
-              else if test $hours -gt 0
-                  set up "$hours"h" $mins"m
-              else
-                  set up "$mins"m
+          set -l items \
+              ${c.base09}  $USER \
+              ${c.base0A}  (prompt_hostname) \
+              ${c.base0D}  (date +%H:%M) \
+              ${c.base0B}  $up \
+              ${c.base0C}  (string replace -rf '^PRETTY_NAME="?([^"]*)"?$' '$1' < /etc/os-release)
+          set -l gen (string match -rg 'system-(\d+)-link' (readlink /nix/var/nix/profiles/system 2>/dev/null))
+          and set -a items ${c.base0F}  "gen $gen"
+          set -a items ${c.base0E}  (uname -r | string split -f1 -)
+
+          set_color ${c.base0D}
+          echo -n \U000F023A"  "
+          for i in (seq 1 3 (count $items))
+              if test $i -gt 1
+                  set_color ${c.base03}
+                  echo -n "  ·  "
               end
-
-              set -l os (grep -m1 '^ID=' /etc/os-release | cut -d= -f2 | string trim -c '"')
-              set -l kernel (uname -r | cut -d- -f1)
-              set -l now (date "+%H:%M")
-
-              # Peixe
-              set_color 7fbbb3
-              echo -n "󰈺  "
-
-              # Relógio e Hora
-              set_color brblue
-              echo -n " "
-              set_color yellow
-              echo -n "$now"
-
-              set_color brblack
-              echo -n "  "
-
-              # Ampulheta e Uptime
-              set_color green
-              echo -n " "
-              set_color brgreen
-              echo -n "$up"
-
-              set_color brblack
-              echo -n "  "
-
-              # Logo do NixOS e OS
-              set_color cyan
-              echo -n " "
-              set_color brcyan
-              echo -n "$os"
-
-              set_color brblack
-              echo -n "  "
-
-              # Tux (Pinguim) e Kernel
-              set_color purple
-              echo -n " "
-              set_color brpurple
-              echo -n "$kernel"
-
-              set_color normal
-              echo
+              set_color $items[$i]
+              echo -n $items[(math $i + 1)]" "
+              set_color ${c.base05}
+              echo -n $items[(math $i + 2)]
           end
-
-          set -x MANROFFOPT "-c"
-          if command -v bat >/dev/null 2>&1
-              set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-          end
-
-          set -U __done_min_cmd_duration 10000
-          set -U __done_notification_urgency_level low
+          set_color normal
+          echo
         '';
       };
-    };
   };
 }

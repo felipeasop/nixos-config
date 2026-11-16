@@ -1,29 +1,31 @@
 {
   den.aspects.fish = {
     homeManager = { pkgs, ... }: {
-      programs.fish.plugins = [
-        {
-          name = "autopair";
-          src = pkgs.fishPlugins.autopair.src;
-        }
-        {
-          name = "fzf-fish";
-          src = pkgs.fishPlugins.fzf-fish.src;
-        }
-        {
-          name = "done";
-          src = pkgs.fishPlugins.done.src;
-        }
-        {
-          name = "sponge";
-          src = pkgs.fetchFromGitHub {
-            owner = "meaningful-ooo";
-            repo = "sponge";
-            rev = "384299545104d5256648cee9d8b117aaa9a6d7be";
-            sha256 = "sha256-MdcZUDRtNJdiyo2l9o5ma7nAX84xEJbGFhAVhK+Zm1w=";
-          };
-        }
-      ];
+      programs.fish = {
+        plugins =
+          map
+            (name: {
+              inherit name;
+              inherit (pkgs.fishPlugins.${name}) src;
+            })
+            [
+              "autopair"
+              "fzf-fish"
+              "done"
+              "sponge"
+            ];
+
+        interactiveShellInit = ''
+          set -g __done_min_cmd_duration 10000
+          set -g __done_notification_urgency_level low
+
+          set -g fzf_preview_dir_cmd eza --all --color=always --icons=always --group-directories-first
+          set -g fzf_fd_opts --hidden --exclude=.git
+        '';
+      };
+
+      # O done notifica pelo notify-send.
+      home.packages = [ pkgs.libnotify ];
     };
   };
 }

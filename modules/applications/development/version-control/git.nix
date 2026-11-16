@@ -1,10 +1,11 @@
+let
+  git = {
+    programs.git.enable = true;
+  };
+in
 {
   den.aspects.git = {
-    nixos = {
-      programs.git.enable = true;
-    };
-    homeManager = {
-      programs.git.enable = true;
-    };
+    nixos = git;
+    homeManager = git;
   };
 }
