@@ -25,6 +25,7 @@
         graphical
         default-browser
         unrar
+        qalculate
         multimedia
         security
         bootloader

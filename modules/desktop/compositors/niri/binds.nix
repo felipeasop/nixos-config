@@ -68,6 +68,10 @@
               "btop"
             ];
           };
+          "XF86Calculator" = {
+            hotkey-overlay.title = "Open Calculator";
+            action.spawn = [ "qalculate-qt" ];
+          };
 
           "Mod+S" = {
             hotkey-overlay.title = "Noctalia Control Center";

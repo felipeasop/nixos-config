@@ -43,6 +43,11 @@
           Enabled=true
           Exec=dolphin
 
+          [XF86Calculator.22]
+          Comment=Calculadora (Qalculate)
+          Enabled=true
+          Exec=qalculate-qt
+
           [Meta%2BAlt%2BL.4]
           Comment=Lock screen
           Enabled=true

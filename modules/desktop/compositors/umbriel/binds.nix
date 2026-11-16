@@ -27,6 +27,7 @@
         "Mod+Shift+S" = "spawn steam";
         "Mod+Z" = "spawn zeditor";
         "Mod+X" = "spawn xdg-terminal-exec btop";
+        "XF86Calculator" = "spawn qalculate-qt";
 
         "Mod+S" = "spawn noctalia msg panel-toggle control-center";
         "Mod+Comma" = "spawn noctalia msg settings-toggle";

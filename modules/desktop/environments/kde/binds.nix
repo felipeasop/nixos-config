@@ -37,6 +37,7 @@
             "launch-yazi" = "Meta+E";
             "launch-browser" = "Meta+B";
             "launch-browser-private" = "Meta+Shift+B";
+            "launch-calculator" = "Calculator";
           };
         };
 
@@ -65,6 +66,11 @@
             name = "Launch Browser (Private)";
             key = "Meta+Shift+B";
             command = "default-browser --private";
+          };
+          "launch-calculator" = {
+            name = "Launch Calculator";
+            key = "Calculator";
+            command = "qalculate-qt";
           };
         };
       };
