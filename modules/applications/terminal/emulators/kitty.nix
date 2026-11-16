@@ -6,9 +6,12 @@
       programs.kitty = {
         enable = true;
         settings = {
-          background_blur = 1;
+          window_padding_width = 6;
+          scrollback_lines = 10000;
+          enable_audio_bell = false;
           mouse_hide_wait = -1;
         };
+        keybindings."ctrl+shift+a" = "launch --stdin-source=@screen_scrollback --type=clipboard";
       };
 
       xdg.terminal-exec = {
