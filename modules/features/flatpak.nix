@@ -30,6 +30,8 @@
     provides.to-users = {
       homeManager = {
         stylix.targets.gtk.flatpakSupport.enable = true;
+
+        xdg.configFile."xdg-ninja/ignore".text = ".var";
       };
     };
   };

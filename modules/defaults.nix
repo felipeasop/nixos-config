@@ -5,6 +5,7 @@
       den.batteries.define-user
       essential
       git
+      xdg-base-dirs
     ];
 
     schema = {

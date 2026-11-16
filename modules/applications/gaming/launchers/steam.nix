@@ -9,5 +9,12 @@
         };
       };
     };
+
+    homeManager = {
+      xdg.configFile."xdg-ninja/ignore".text = ''
+        .steam
+        .steampid
+      '';
+    };
   };
 }

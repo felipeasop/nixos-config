@@ -22,6 +22,7 @@ in
         dev
 
         fish
+        bash
         starship
         claude-code
 
