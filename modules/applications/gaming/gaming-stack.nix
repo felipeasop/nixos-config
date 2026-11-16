@@ -25,10 +25,7 @@ let
   ];
 in
 {
-  # Stack dona-user: Home Manager é resolvido diretamente no usuário, enquanto
-  # as fatias NixOS dos mesmos componentes são entregues ao host relacionado.
   den.aspects.gaming-stack = {
     includes = components;
-    provides.to-hosts.includes = components;
   };
 }

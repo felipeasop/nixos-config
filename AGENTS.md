@@ -57,10 +57,11 @@
   imports (relative paths and colocated assets still depend on location).
 - Preserve the `flake-parts.lib.mkFlake` + `import-tree` pipeline; no raw
   `evalModules`.
-- Module classes: `nixos` and `homeManager`. NixOS hosts declare the user with
-  `classes = [ "homeManager" ]`, so `nh os switch` builds system and home in
-  one generation. Hosts without NixOS use standalone `den.homes` (`nh home
-  switch`). The user aspect is the same either way.
+- Classes: `nixos` and `homeManager`. NixOS hosts declare their users
+  (`users.<name> = { }`) and `den.schema.user.classes` gives them
+  `homeManager`, so `nh os switch` builds system and home together. Hosts
+  without NixOS use standalone `den.homes` (`nh home switch`) with the same
+  user aspect.
 - Use documented Den APIs. Do not invent `_module.args`, overwrite
   `config.den.aspects`, or pass values with `specialArgs`/`extraSpecialArgs`;
   read `inputs` and `self` from the top-level module. Check Den batteries before
@@ -69,23 +70,34 @@
 
 ## Aspect ownership and routing
 
-- The entity that includes an aspect owns it. A host-owned aspect routes Home
-  Manager config with `provides.to-users` (or a named user provider); a
-  user-owned aspect routes NixOS config with `provides.to-hosts` (or a named
-  host provider). Without the matching provider, the minority-class
-  contribution may be silently unreachable.
-- A host-integrated user (`classes = [ "homeManager" ]`) inherits the host's
-  `provides.to-users` automatically; do not add a `provides.<host>` provider
-  for it. A standalone home `<user>@<host>` does not inherit them and resolves
-  the user aspect plus its `provides.<host>` provider.
-- Baselines live only in `modules/defaults.nix`:
-  `den.default.includes` for aspects that apply alike to hosts, users and
-  standalone homes, `den.schema.{host,user,home}.includes` for the rest.
-  Host-only aspects and aspects that take `{ host }` never go in
-  `den.default`: it also walks every user and home, so homes would receive
-  host config and `{ host }` functions run once per scope.
+- The entity that includes an aspect owns it. The plain `nixos` of a
+  user-owned aspect reaches every host the user lives on through
+  `den.batteries.user-aspects` (in `den.schema.host.includes`); use
+  `provides.to-hosts` or `provides.<host>` only to target a named host or read
+  `{ host }`. Without the battery it arrives only through Den's transition
+  default, which ends 2027-01-01. Source: Den's
+  `docs/src/content/docs/explanation/crossing-scopes.mdx` ("Lets a host
+  accept everything its users produce for it, as before #694. While the
+  transition defaults are on, it is on by default; include it explicitly to
+  keep it."); verified 2026-11-16.
+- The plain `homeManager` of a host-owned aspect needs `provides.to-users`
+  (or a named user provider) or `host-aspects` to reach users; other classes,
+  such as `user`, always need `provides.to-users`.
+- Host-integrated users inherit the host's `provides.to-users`; do not add a
+  `provides.<host>` for them. A standalone home `<user>@<host>` does not, and
+  resolves the user aspect plus its `provides.<host>`.
+- `den.batteries.host-aspects` (in `den.schema.user.includes`) gives host
+  users the plain `homeManager` of the host's own `includes`, but not of
+  `den.schema.host.includes`, which need `provides.to-users`. Source: Den's
+  `modules/aspects/batteries/host-aspects.nix` ("Projects all `user.classes`
+  like `homeManager` from the host's aspect tree onto users who opt in");
+  verified 2026-11-15.
+- Baselines live only in `modules/defaults.nix`: `den.default.includes` for
+  what applies alike to hosts, users and homes; `den.schema.{host,user,home}`
+  for the rest. Host-only aspects and `{ host }` functions never go in
+  `den.default`, which also walks every user and home.
 - `modules/system/essential/` is one aspect split across files: extend
-  `den.aspects.essential`, do not create per-file aspects.
+  `den.aspects.essential`.
 
 ## Generated flake
 

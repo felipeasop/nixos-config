@@ -23,17 +23,15 @@
       Configurado via https://github.com/sodiboo/niri-flake.
     '';
 
-    provides.to-hosts = {
-      nixos = { pkgs, ... }: {
-        imports = [ inputs.niri.nixosModules.niri ];
+    nixos = { pkgs, ... }: {
+      imports = [ inputs.niri.nixosModules.niri ];
 
-        programs.niri = {
-          enable = true;
-          package = pkgs.niri;
-        };
-
-        environment.systemPackages = [ pkgs.xwayland-satellite ];
+      programs.niri = {
+        enable = true;
+        package = pkgs.niri;
       };
+
+      environment.systemPackages = [ pkgs.xwayland-satellite ];
     };
   };
 }

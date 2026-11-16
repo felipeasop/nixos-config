@@ -16,7 +16,6 @@ in
 
     aspects.flp = {
       includes = with den.aspects; [
-        den.batteries.host-aspects
         den.batteries.primary-user
         (den.batteries.user-shell "fish")
 
@@ -44,10 +43,8 @@ in
       };
 
       # O SDDM não lê a home do usuário; busca o avatar em AccountsService/icons/<usuário>.
-      provides.to-hosts = {
-        nixos = {
-          systemd.tmpfiles.rules = [ "L+ /var/lib/AccountsService/icons/flp - - - - ${avatar}" ];
-        };
+      nixos = {
+        systemd.tmpfiles.rules = [ "L+ /var/lib/AccountsService/icons/flp - - - - ${avatar}" ];
       };
     };
   };

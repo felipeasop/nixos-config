@@ -1,5 +1,5 @@
 # O que todo host, usuário e home recebe por padrão (ver AGENTS.md).
-{ den, ... }: {
+{ den, lib, ... }: {
   den = {
     default.includes = with den.aspects; [
       den.batteries.define-user
@@ -18,6 +18,7 @@
       ];
 
       host.includes = with den.aspects; [
+        den.batteries.user-aspects
         audio
         graphical
         unrar
@@ -28,10 +29,10 @@
         flatpak
       ];
 
-      # Sem uso com um usuário só: o comum a todos fica em den.default e o resto
-      # no aspect do usuário. Com mais usuários, entra aqui o que todo usuário
-      # recebe e host e home standalone não (ex.: grupos, shell padrão).
-      # user.includes = with den.aspects; [ ];
+      user = {
+        classes = lib.mkDefault [ "homeManager" ];
+        includes = [ den.batteries.host-aspects ];
+      };
     };
   };
 }

@@ -19,22 +19,20 @@
       environment.plasma6.excludePackages = with pkgs.kdePackages; [ discover ];
     };
 
-    provides.to-users = {
-      homeManager = { lib, ... }: {
-        imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
+    homeManager = { lib, ... }: {
+      imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
 
-        programs.plasma = {
-          enable = true;
-          session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
-          configFile.krunnerrc.Plugins.krunner_appstreamEnabled = false;
-        };
+      programs.plasma = {
+        enable = true;
+        session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
+        configFile.krunnerrc.Plugins.krunner_appstreamEnabled = false;
+      };
 
-        stylix.targets = {
-          kde.enable = true;
-          # O lado NixOS já tematiza o Qt pelo Plasma; no Home Manager o alvo
-          # só suporta qtct e avisaria com a plataforma kde herdada.
-          qt.enable = lib.mkForce false;
-        };
+      stylix.targets = {
+        kde.enable = true;
+        # O lado NixOS já tematiza o Qt pelo Plasma; no Home Manager o alvo
+        # só suporta qtct e avisaria com a plataforma kde herdada.
+        qt.enable = lib.mkForce false;
       };
     };
   };
