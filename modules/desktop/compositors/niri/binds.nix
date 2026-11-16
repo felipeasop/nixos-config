@@ -21,11 +21,14 @@
           };
           "Mod+B" = {
             hotkey-overlay.title = "Open Browser";
-            action.spawn-sh = "zen-browser || zen-beta || zen-twilight";
+            action.spawn = [ "default-browser" ];
           };
           "Mod+Shift+B" = {
             hotkey-overlay.title = "Open Browser (Private)";
-            action.spawn-sh = "zen-browser -private-window || zen-beta -private-window || zen-twilight -private-window";
+            action.spawn = [
+              "default-browser"
+              "--private"
+            ];
           };
           "Mod+Alt+L" = {
             hotkey-overlay.title = "Lock Screen";
@@ -36,15 +39,15 @@
             action.spawn-sh = "noctalia msg session menu";
           };
           "Mod+E" = {
-            hotkey-overlay.title = "File Manager";
-            action.spawn = [ "dolphin" ];
-          };
-          "Mod+Shift+E" = {
-            hotkey-overlay.title = "File Manager";
+            hotkey-overlay.title = "File Manager (Yazi)";
             action.spawn = [
               "xdg-terminal-exec"
               "yazi"
             ];
+          };
+          "Mod+Shift+E" = {
+            hotkey-overlay.title = "File Manager (Dolphin)";
+            action.spawn = [ "dolphin" ];
           };
           "Mod+A" = {
             hotkey-overlay.title = "Open Spotify";

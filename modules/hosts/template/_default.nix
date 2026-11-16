@@ -1,17 +1,24 @@
-{ den, ... }: {
+{ den, ... }:
+let
+  system = "x86_64-linux";
+  hostName = "template";
+  userName = "flp";
+in
+{
   den = {
-    hosts.x86_64-linux.template = {
-      hostName = "template";
+    hosts.${system}.${hostName} = {
+      bootloader = "systemd-boot";
       kernel = "latest";
+      browser = "firefox";
+      gpus = [ "intel" ];
+      users.${userName} = { };
     };
-    aspects.template = {
+
+    aspects.${hostName} = {
       includes = with den.aspects; [
-        den.batteries.hostname
-        grub
-        # kde
-        cli
-        fish
-        # { nixos = import ./_hardware.nix; }
+        kde
+
+        { nixos = import ./_hardware.nix; }
       ];
     };
   };

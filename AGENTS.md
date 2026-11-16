@@ -128,10 +128,10 @@
 - `modules/hosts/`: host boot, hardware, and desktop choices. Never edit
   generated `_hardware.nix`.
 - `modules/users/`: per-user apps and preferences beyond the baseline.
-- Name each file after the aspect it defines. An aspect split across files
-  gets a directory named after it, with `default.nix` as the entry. The
-  directory gives the category and may be dropped from the file name
-  (`modules/system/kernel/cachy.nix` defines `cachy-kernel`).
+- Name each file after its aspect. An aspect split across files gets a
+  directory with `default.nix` as entry; the directory may be dropped from the
+  name (`system/kernel/cachy.nix` defines `cachy-kernel`). A host option that
+  picks among a directory's aspects lives there as `<option>-schema.nix`.
 - Directory names are plural for a collection of interchangeable items of one
   kind (`browsers/`, `compositors/`, `bootloaders/`) and singular for a domain
   or area (`development/`, `gaming/`, `security/`).

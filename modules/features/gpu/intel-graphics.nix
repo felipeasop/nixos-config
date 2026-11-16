@@ -3,9 +3,10 @@
     nixos = { pkgs, ... }: {
       hardware.graphics = {
         enable = true;
-        extraPackages = [
-          pkgs.intel-vaapi-driver
-          pkgs.libvdpau-va-gl
+        extraPackages = with pkgs; [
+          intel-media-driver # Broadwell em diante (iHD)
+          intel-vaapi-driver # até Coffee Lake (i965)
+          libvdpau-va-gl
         ];
       };
     };

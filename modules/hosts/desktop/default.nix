@@ -7,16 +7,15 @@ in
 {
   den = {
     hosts.${system}.${hostName} = {
+      bootloader = "grub";
       kernel = "cachy";
-      users.${userName}.classes = [ "homeManager" ];
+      browser = "zen-browser";
+      gpus = [ "amd" ];
+      users.${userName} = { };
     };
 
     aspects.${hostName} = {
       includes = with den.aspects; [
-        den.batteries.hostname
-        grub
-        amd-graphics
-
         solaar-m650l
 
         kde

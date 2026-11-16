@@ -7,21 +7,20 @@ in
 {
   den = {
     hosts.${system}.${hostName} = {
+      bootloader = "systemd-boot";
       kernel = "latest";
-      users.${userName}.classes = [ "homeManager" ];
+      browser = "firefox";
+      gpus = [ "intel" ];
+      users.${userName} = { };
     };
 
     aspects.${hostName} = {
       includes = with den.aspects; [
-        den.batteries.hostname
-        systemd-boot
         laptop
 
         # DEs / WMs
         lxqt
         niri-stack
-        firefox
-        intel-graphics
 
         { nixos = import ./_hardware.nix; }
       ];

@@ -18,14 +18,18 @@
       ];
 
       host.includes = with den.aspects; [
+        den.batteries.hostname
         den.batteries.user-aspects
         audio
         graphical
+        default-browser
         unrar
         multimedia
         security
+        bootloader
         kernel
         kernel-tuning
+        gpu
         flatpak
       ];
 

@@ -1,12 +1,8 @@
 { den, ... }: {
-  # Bundle de apps pra hosts "não leves" (CPU/RAM de sobra) — hosts leves
-  # (ex. aspire) simplesmente não incluem isto.
+  # Apps pesados; o aspire não inclui este aspect.
   den.aspects.desktop-apps = {
     includes = with den.aspects; [
       gaming-stack
-
-      # Browser
-      zen-browser
 
       # Misc
       discord
@@ -15,9 +11,11 @@
       obsidian
       gimp
 
+      podman
+
+      # Estudos
       orange
       pgadmin
-      podman
     ];
   };
 }
