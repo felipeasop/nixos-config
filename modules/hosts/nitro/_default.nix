@@ -14,6 +14,8 @@ in
         "intel"
         "nvidia"
       ];
+      # Após `ssh-keygen -t ed25519` no nitro, copiar a pública para cá.
+      # ssh.deployKey = ./deploy.pub;
       users.${userName} = { };
     };
 

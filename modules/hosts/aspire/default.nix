@@ -11,6 +11,7 @@ in
       kernel = "latest";
       browser = "firefox";
       gpus = [ "intel" ];
+      ssh.hostKey = ./ssh_host_ed25519_key.pub;
       users.${userName} = { };
     };
 
@@ -25,14 +26,8 @@ in
         { nixos = import ./_hardware.nix; }
       ];
 
-      nixos = { lib, ... }: {
+      nixos = {
         hardware.enableRedistributableFirmware = true;
-
-        # Recebe deploys do desktop, rodando lá:
-        # nh os switch ~/nixos-config -H aspire --target-host root@aspire.local
-        # Root só por chave, e só a do desktop. O primeiro switch é local.
-        services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
-        users.users.root.openssh.authorizedKeys.keyFiles = [ ../desktop/deploy.pub ];
 
         swapDevices = [
           {

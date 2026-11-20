@@ -33,6 +33,7 @@
         kernel-tuning
         gpu
         flatpak
+        ssh
       ];
 
       user = {
