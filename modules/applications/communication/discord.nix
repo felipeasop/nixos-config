@@ -22,34 +22,23 @@
       programs.nixcord = {
         enable = true;
 
-        # O cliente oficial permanece desabilitado; o Vesktop é o único cliente.
-        discord.enable = false;
+        discord = {
+          vencord.enable = true;
+          krisp.enable = true;
 
-        vesktop = {
-          enable = true;
-          # Com o Vencord do sistema, vesktop e vencord compilam localmente; sem
-          # ele o vesktop vem do cache e baixa o Vencord em tempo de execução.
-          useSystemVencord = false;
+          # O processo de GPU morre (SIGILL) na RX 580; sem ele o Discord não tenta 3 vezes a cada início.
+          # O settings.json é regravado inteiro a cada switch.
           settings = {
-            discordBranch = "stable";
-            tray = true;
-            minimizeToTray = true;
-            clickTrayToShowHide = true;
-            hardwareAcceleration = false;
-            disableMinSize = true;
-            customTitleBar = false;
-            arRPC = true;
-            spellCheckLanguages = [
-              "pt-BR"
-              "en-US"
-            ];
-
-            audio = {
-              granularSelect = true;
-              ignoreDevices = true;
-              ignoreInputMedia = true;
-              onlySpeakers = true;
-              onlyDefaultSpeakers = true;
+            enableHardwareAcceleration = false;
+            openasar = {
+              setup = true;
+              # "perf" só soma flags de GPU (inúteis sem aceleração) e força a dGPU no laptop.
+              cmdPreset = "battery";
+              noTrack = true;
+              noTyping = false;
+              themeSync = true;
+              quickstart = false;
+              multiInstance = false;
             };
           };
         };
@@ -59,19 +48,12 @@
           autoUpdateNotification = true;
 
           plugins = {
-            # Recursos de desktop ausentes ou incompletos no cliente web
-            webContextMenus.enable = true;
-            webKeybinds.enable = true;
-            pictureInPicture.enable = true;
-            voiceMessages.enable = true;
-
             # Correções de conteúdo e navegação
             fixYoutubeEmbeds.enable = true;
             fixSpotifyEmbeds.enable = true;
             validReply.enable = true;
             validUser.enable = true;
             fullSearchContext.enable = true;
-            fullUserInChatbox.enable = true;
             messageLinkEmbeds.enable = true;
             unsuppressEmbeds.enable = true;
             unindent.enable = true;
@@ -83,8 +65,10 @@
             copyFileContents.enable = true;
             imageZoom.enable = true;
             keepCurrentChannel.enable = true;
+            pictureInPicture.enable = true;
             replyTimestamp.enable = true;
             viewIcons.enable = true;
+            voiceMessages.enable = true;
 
             # QOL
             clearUrls.enable = true;
