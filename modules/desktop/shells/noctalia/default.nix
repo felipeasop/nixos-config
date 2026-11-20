@@ -1,5 +1,6 @@
 # Docs oficiais: https://docs.noctalia.dev/v5/
-# os valores padrão foram extraídos com `noctalia config export full`).
+# Os valores padrão foram extraídos com:
+#   noctalia config export full
 { inputs, ... }: {
   flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia/cachix";
 

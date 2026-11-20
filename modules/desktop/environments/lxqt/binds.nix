@@ -3,7 +3,7 @@
     homeManager = { pkgs, ... }: {
       home.packages = [ pkgs.xcape ];
 
-      # Declarado aqui = imutável; editar pela GUI do LXQt não persiste.
+      # Gerado pelo Home Manager: o que a GUI do LXQt mudar se perde no próximo switch.
       xdg.configFile = {
         # Enxuto: só o essencial (terminal/browser/arquivos/lock/workspaces/
         # mídia/energia), espelhando os binds que já existem no niri. Fora

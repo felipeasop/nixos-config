@@ -1,7 +1,7 @@
 {
   den.aspects.lxqt = {
     homeManager = {
-      # Declarado aqui = imutável; editar pela GUI do LXQt não persiste.
+      # Gerado pelo Home Manager: o que a GUI do LXQt mudar se perde no próximo switch.
       xdg.configFile = {
         "lxqt/panel.conf".text = ''
           [General]

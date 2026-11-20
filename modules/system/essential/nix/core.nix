@@ -17,7 +17,7 @@
             packages = lib.optional (osConfig == null) pkgs.nh;
           };
 
-          # Só comandos legados sem flake (nix-shell -p, nix-env); nix run é coberto por unfree-packages.nix.
+          # Só comandos legados sem flake (nix-shell -p, nix-env); `nix run nixpkgs#pkg` segue puro e recusa unfree.
           xdg.configFile."nixpkgs/config.nix".text = ''
             { allowUnfree = true; }
           '';

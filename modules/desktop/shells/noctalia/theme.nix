@@ -3,7 +3,7 @@
     homeManager = {
       stylix.targets.noctalia = {
         enable = true;
-        # As opacidades ficam por componente em ui/*.nix.
+        # As opacidades ficam em cada componente (bar, dock, osd, notification).
         opacity.enable = false;
       };
 

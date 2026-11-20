@@ -1,6 +1,5 @@
-# TRIM automático semanal — necessário pra SSDs (SATA ou NVMe) manterem
-# performance de escrita ao longo do tempo. Se o host for só HDD, isso
-# não faz mal nenhum (o comando simplesmente não encontra blocos TRIM-áveis).
+# TRIM semanal para SSDs (SATA ou NVMe) manterem a performance de escrita.
+# Em HDD é inofensivo: o serviço pula dispositivos sem suporte a discard.
 {
   den.aspects.essential = {
     nixos = {

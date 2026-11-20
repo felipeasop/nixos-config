@@ -1,5 +1,4 @@
-# Config custom, sem logo/imagem (só o ícone Nerd Font da distro),
-# emojis nas chaves e clima via wttr.in.
+# Config custom: logo NixOS em ASCII e ícones Nerd Font nas chaves.
 {
   den.aspects.fastfetch = {
     homeManager = _: {

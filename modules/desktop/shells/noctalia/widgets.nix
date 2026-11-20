@@ -97,7 +97,7 @@
         # audio_visualizer, media, privacy, battery, brightness, bluetooth, network,
         # keyboard_layout, lock_keys, launcher, custom_button, clipboard, screenshot, weather,
         # notifications, tray, power_profile, caffeine, nightlight, theme_mode, settings,
-        # session, wallpaper. Plugin: type = "<author>/<plugin>:<entry>";
+        # session, wallpaper, text. Plugin: type = "<author>/<plugin>:<entry>";
       };
     };
   };

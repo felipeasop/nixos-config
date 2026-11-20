@@ -50,7 +50,7 @@
             action = "none";
             command = "";
           };
-          # action: none | show-overview | show-launcher | show-control-center | lock | custom
+          # action: none | launcher | control_center | overview | window_switcher | command
         };
 
         keybinds = {
