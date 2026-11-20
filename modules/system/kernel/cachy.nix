@@ -1,7 +1,7 @@
 { inputs, ... }: {
   flake-file.inputs.chaotic = {
     url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    # O home-manager do chaotic só alimenta os homeManagerModules, que esta config não usa.
+    # O home-manager do chaotic só serve às ferramentas de manutenção dele.
     inputs.home-manager.follows = "home-manager";
   };
 
@@ -24,6 +24,11 @@
         imports = [ inputs.chaotic.nixosModules.default ];
         chaotic.nyx.cache.enable = false;
         boot.kernelPackages = pkgs.linuxPackages_cachyos;
+
+        services.scx-loader = {
+          enable = true;
+          config.default_sched = "scx_lavd";
+        };
       };
     };
   };

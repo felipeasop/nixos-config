@@ -3,6 +3,9 @@
     nixos = {
       services.xserver.videoDrivers = [ "nvidia" ];
 
+      # Global de propósito: um app sem a variável volta o cache ao tamanho padrão.
+      environment.sessionVariables.__GL_SHADER_DISK_CACHE_SIZE = "8589934592";
+
       hardware = {
         graphics.enable = true;
 
