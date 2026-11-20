@@ -148,8 +148,10 @@
   `drvPath` unchanged; `nixpkgs` never follows when the input's cache was
   built against its own pin). Otherwise register it in
   `flake-duplicates.allowed` with the reason; the hook reports the rest.
-- Setting `nix.settings.substituters` replaces the defaults; always keep
-  `https://cache.nixos.org/`. `nix-settings.nix` lists only general caches.
+- NixOS always adds `https://cache.nixos.org/` and its key; never declare
+  them. Source: nixpkgs `nixos/modules/config/nix.nix` (`substituters =
+  mkAfter [ "https://cache.nixos.org/" ];`); verified 2026-11-19.
+  `nix-settings.nix` lists only general caches.
 - Keep everything an aspect needs in its own module, so deleting it leaves no
   remnants. Its binary cache goes in the same file, as
   `den.aspects.essential.nixos.nix.settings.{substituters,trusted-public-keys}`.
