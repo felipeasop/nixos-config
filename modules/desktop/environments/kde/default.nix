@@ -26,6 +26,8 @@
         enable = true;
         session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
         configFile.krunnerrc.Plugins.krunner_appstreamEnabled = false;
+        # Ao acordar o monitor, a restauração do brilho por DDC/CI falha e o valor real diverge do mostrado.
+        powerdevil.AC.dimDisplay.enable = false;
       };
 
       stylix.targets = {
