@@ -3,11 +3,13 @@
     includes = [ den.aspects.stylix ];
 
     nixos = { pkgs, ... }: {
-      services.xserver = {
-        enable = true;
-        excludePackages = [ pkgs.xterm ];
+      services = {
+        xserver = {
+          enable = true;
+          excludePackages = [ pkgs.xterm ];
+        };
+        speechd.enable = false;
       };
-      # services.printing.enable = true;
     };
   };
 }

@@ -12,6 +12,7 @@
       services = {
         displayManager.sddm.enable = true;
         desktopManager.plasma6.enable = true;
+        orca.enable = false;
       };
 
       programs.kde-pim.enable = false;
