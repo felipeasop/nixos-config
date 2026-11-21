@@ -23,11 +23,9 @@
         enable = true;
 
         discord = {
-          vencord.enable = true;
+          equicord.enable = true;
           krisp.enable = true;
 
-          # O processo de GPU morre (SIGILL) na RX 580; sem ele o Discord não tenta 3 vezes a cada início.
-          # O settings.json é regravado inteiro a cada switch.
           settings = {
             enableHardwareAcceleration = false;
             openasar = {
@@ -77,7 +75,7 @@
             noTrack.enable = true;
             noTypingAnimation.enable = true;
             youtubeAdblock.enable = true;
-            spotifyControls.enable = true;
+            musicControls.enable = true;
           };
         };
       };
