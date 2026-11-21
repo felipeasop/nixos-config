@@ -28,7 +28,7 @@ in
 
         yazi
 
-        libreoffice
+        onlyoffice
       ];
 
       homeManager = {
