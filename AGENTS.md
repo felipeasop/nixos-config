@@ -176,8 +176,10 @@
 
 ## Validation
 
-Validate the smallest meaningful target, then integration in proportion to the
-change. A dry-run is a preflight, not proof of runtime correctness.
+Run checks and dry-runs only when the user asks; otherwise make the change and
+report what was not validated. When asked, validate the smallest meaningful
+target, then integration in proportion to the change. A dry-run is a
+preflight, not proof of runtime correctness.
 
 - Nix/module changes: `nix flake check --no-build --no-write-lock-file`.
 - Packages: dry-run the package output.
