@@ -1,7 +1,15 @@
 {
   den.aspects.prismlauncher = {
-    homeManager = {
-      programs.prismlauncher.enable = true;
+    homeManager = { pkgs, ... }: {
+      programs.prismlauncher = {
+        enable = true;
+        package = pkgs.prismlauncher.override {
+          jdks = with pkgs; [
+            jdk21
+            jdk25
+          ];
+        };
+      };
     };
   };
 }
